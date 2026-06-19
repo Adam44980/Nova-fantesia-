@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Fantasia | Serveur Minecraft Anarchie</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Icônes professionnelles FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- BARRE DE NAVIGATION -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">Nova<span>Fantasia</span></div>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Accueil</a></li>
+                <li><a href="#stats">Statistiques</a></li>
+                
+                <!-- SOUS-MENU COMMUNAUTÉ -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-trigger">Communauté <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://discord.com/invite/9hEamDNMj" target="_blank"><i class="fab fa-discord"></i> Discord</a></li>
+                        <li><a href="https://www.tiktok.com/@noghosttt08" target="_blank"><i class="fab fa-tiktok"></i> TikTok (@noghosttt08)</a></li>
+                    </ul>
+                </li>
+
+                <!-- SOUS-MENU L'ÉQUIPE (Tes chaînes et celles de ton pote) -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-trigger">Les Créateurs <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">--- ADAM ---</li>
+                        <li><a href="https://www.youtube.com/@adam44-y1y" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
+                        
+                        <li class="dropdown-header">--- NOGHOSTTT ---</li>
+                        <li><a href="https://www.youtube.com/@noghosttt" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
+                        <li><a href="https://m.twitch.tv/noghosttt?desktop-redirect=true" target="_blank"><i class="fab fa-twitch"></i> Twitch Principal</a></li>
+                        <li><a href="https://m.twitch.tv/game_revive44" target="_blank"><i class="fab fa-twitch"></i> Twitch Game Revive</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- SECTION PRINCIPALE (HERO) -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>L'Anarchie à l'État Pur.</h1>
+            <p>Pas de règles. Pas de claims. Juste de la survie, du pillage et de la liberté totale sur Nova Fantasia.</p>
+            
+            <!-- Boite d'IP cliquable pour copier automatiquement -->
+            <div class="server-ip-box" onclick="navigator.clipboard.writeText('<%= stats.ip %>'); alert('IP copiée ! Prêt à rejoindre ?');">
+                <span class="ip-text"><%= stats.ip %></span>
+                <span class="copy-badge"><i class="far fa-copy"></i> Copier l'IP</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION DES STATISTIQUES EN TEMPS RÉEL -->
+    <section id="stats" class="stats-section">
+        <h2>État du Serveur</h2>
+        <div class="stats-container">
+            <div class="stat-card">
+                <i class="fas fa-signal <%= stats.online ? 'status-online' : 'status-offline' %>"></i>
+                <h3>Statut</h3>
+                <p><%= stats.online ? 'En ligne' : 'Hors ligne' %></p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <h3>Joueurs en Ligne</h3>
+                <p><%= stats.currentPlayers %> / <%= stats.maxPlayers %></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION CONTACT & FOOTER -->
+    <footer id="contact">
+        <div class="footer-content">
+            <h3>Rejoindre l'Équipe / Support</h3>
+            <p>Une question, un bug à signaler ou une proposition de partenariat ?</p>
+            <a href="mailto:novafantesia@gmail.com" class="email-btn"><i class="fas fa-envelope"></i> novafantesia@gmail.com</a>
+            <p class="copyright">&copy; 2026 Nova Fantasia. Tous droits réservés. Ce site n'est pas affilié à Mojang Studios.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

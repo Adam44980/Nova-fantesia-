@@ -1,0 +1,285 @@
+/* Palette de couleurs Anarchie Cyber-Sombre */
+:root {
+    --bg-dark: #090a0f;
+    --bg-card: #131520;
+    --accent: #ff4757; /* Rouge vif agressif/anarchie */
+    --text-main: #f5f6fa;
+    --text-muted: #a4b0be;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* NAVIGATION BAR */
+header {
+    background-color: rgba(19, 21, 32, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 18px 20px;
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+
+.nav-links li {
+    position: relative;
+    margin-left: 25px;
+}
+
+.nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: var(--text-main);
+}
+
+/* MENUS DÉROULANTS (DROPDOWNS) */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(15px);
+    background-color: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    min-width: 220px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+    padding: 12px 0;
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.dropdown-menu a:hover {
+    background-color: rgba(255, 63, 87, 0.08);
+    color: var(--text-main);
+}
+
+.dropdown-header {
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 1.5px;
+    text-align: center;
+    padding: 8px 0 4px 0;
+    font-weight: 800;
+    opacity: 0.7;
+}
+
+/* HERO ACCUEIL */
+.hero {
+    height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(rgba(9, 10, 15, 0.85), rgba(9, 10, 15, 1)), url('https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=1200') no-repeat center center/cover;
+    padding-top: 80px;
+}
+
+.hero-content h1 {
+    font-size: 3.8rem;
+    font-weight: 900;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+    text-shadow: 0 0 20px rgba(255, 63, 87, 0.2);
+}
+
+.hero-content p {
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    max-width: 650px;
+    margin: 0 auto 35px auto;
+}
+
+/* BLOC IP CHIC */
+.server-ip-box {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 14px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.server-ip-box:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 63, 87, 0.15);
+}
+
+.ip-text {
+    font-weight: 700;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.1rem;
+    margin-right: 20px;
+}
+
+.copy-badge {
+    font-size: 0.8rem;
+    background-color: rgba(255, 63, 87, 0.15);
+    color: var(--accent);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* SECTION STATISTIQUES */
+.stats-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 20px;
+    text-align: center;
+}
+
+.stats-section h2 {
+    margin-bottom: 50px;
+    font-size: 2.2rem;
+    font-weight: 800;
+}
+
+.stats-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background-color: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    padding: 50px 40px;
+    border-radius: 16px;
+    width: 320px;
+    transition: transform 0.3s, border-color 0.3s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.stat-card i {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.status-online { color: #2ed573; text-shadow: 0 0 15px rgba(46, 213, 115, 0.3); }
+.status-offline { color: #ff4757; text-shadow: 0 0 15px rgba(255, 71, 87, 0.3); }
+.stat-card i:not(.status-online):not(.status-offline) { color: var(--accent); }
+
+.stat-card h3 {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-card p {
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+/* FOOTER & MEIL BTN */
+footer {
+    background-color: #050608;
+    padding: 80px 20px;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.footer-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+    font-weight: 800;
+}
+
+.footer-content p {
+    color: var(--text-muted);
+    margin-bottom: 25px;
+}
+
+.email-btn {
+    display: inline-block;
+    background-color: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+    text-decoration: none;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: all 0.3s;
+}
+
+.email-btn:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 25px rgba(255, 63, 87, 0.4);
+    transform: scale(1.03);
+}
+
+.copyright {
+    margin-top: 50px;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.15) !important;
+}
