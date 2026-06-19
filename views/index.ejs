@@ -6,7 +6,6 @@
     <title>Nova Fantasia | Serveur Minecraft Anarchie</title>
     <link rel="stylesheet" href="/css/style.css">
     <style>
-        /* STYLE MODALE ET DESIGN LISTE */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; align-items: center; justify-content: center; }
         .modal-content { background: #1a1a1a; padding: 30px; width: 90%; max-width: 450px; border-radius: 15px; border: 1px solid #ff4d4d; position: relative; color: white; }
         .close-btn { position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 20px; color: #ff4d4d; }
@@ -15,6 +14,7 @@
         .refresh-zone { text-align: center; margin-bottom: 20px; }
         .refresh-btn-manual { padding: 10px 20px; cursor: pointer; background: #ff4d4d; border: none; color: white; border-radius: 5px; font-weight: bold; transition: 0.3s; }
         .refresh-btn-manual:hover { background: #cc3d3d; }
+        .refresh-btn-manual:disabled { background: #555; cursor: not-allowed; }
     </style>
 </head>
 <body>
@@ -41,13 +41,8 @@
             <div class="hero-content">
                 <div class="hero-badge">💀 SERVEUR ANARCHIE</div>
                 <h1>L'Anarchie à l'<span>État Pur.</span></h1>
-                <p>Pas de règles. Pas de claims. Juste de la survie, du pillage et de la liberté totale sur Nova Fantasia.</p>
                 <div class="server-ip-box" onclick="copyIP()">
-                    <div class="ip-left">
-                        <span class="ip-icon">🖥️</span>
-                        <span class="ip-text" id="server-ip">novafantasia.falixsrv.me</span>
-                    </div>
-                    <span class="copy-badge" id="copy-badge">📋 Copier l'IP</span>
+                    <span class="ip-text" id="server-ip">novafantasia.falixsrv.me</span>
                 </div>
             </div>
         </section>
@@ -57,32 +52,15 @@
                 <button class="refresh-btn-manual" onclick="manualRefresh()">🔄 Actualiser tout maintenant</button>
             </div>
             <div class="stats-container">
-                <div class="stat-card">
-                    <div class="stat-icon-wrap">📡</div>
-                    <h3>Statut</h3>
-                    <p id="status-text">—</p>
-                </div>
-                <div class="stat-card" onclick="showPlayers()" style="cursor: pointer;">
-                    <div class="stat-icon-wrap">👥</div>
-                    <h3>Joueurs en ligne</h3>
-                    <p id="players-text">— / —</p>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon-wrap">🔖</div>
-                    <h3>Version</h3>
-                    <p id="version-text">—</p>
-                </div>
+                <div class="stat-card"><h3>Statut</h3><p id="status-text">—</p></div>
+                <div class="stat-card" onclick="showPlayers()" style="cursor: pointer;"><h3>Joueurs</h3><p id="players-text">— / —</p></div>
+                <div class="stat-card"><h3>Version</h3><p id="version-text">—</p></div>
             </div>
         </section>
 
         <footer id="contact">
             <div class="footer-content" style="padding: 50px; text-align: center;">
-                <div class="footer-brand">Nova<span>Fantasia</span></div>
-                <p>Une question ou un partenariat ?</p>
-                <a href="mailto:novafantesia@gmail.com" class="email-btn" style="color: #ff4d4d; font-size: 1.5rem; text-decoration: none;">
-                    ✉️ novafantesia@gmail.com
-                </a>
-                <p class="copyright" style="margin-top: 30px;">&copy; 2026 Nova Fantasia. Non affilié à Mojang.</p>
+                <p>Une question ? <a href="mailto:novafantesia@gmail.com" style="color: #ff4d4d;">novafantesia@gmail.com</a></p>
             </div>
         </footer>
     </div>
@@ -101,18 +79,30 @@
 
         async function fetchStats() {
             try {
-                const res = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}`);
+                // Ajout de ?t=${Date.now()} pour forcer le rechargement réel
+                const res = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}?t=${Date.now()}`);
                 const data = await res.json();
                 if (data.online) {
                     playerList = data.players?.list || [];
                     document.getElementById('status-text').textContent = 'En ligne';
                     document.getElementById('players-text').textContent = `${data.players.online} / ${data.players.max}`;
                     document.getElementById('version-text').textContent = data.version;
+                } else {
+                    document.getElementById('status-text').textContent = 'Hors ligne';
                 }
             } catch (e) { console.error('Erreur API'); }
         }
 
-        // Générateur de barres de ping
+        async function manualRefresh() {
+            const btn = document.querySelector('.refresh-btn-manual');
+            btn.textContent = "Actualisation...";
+            btn.disabled = true;
+            await fetchStats();
+            if (document.getElementById('playerModal').style.display === 'flex') showPlayers();
+            btn.textContent = "🔄 Actualiser tout maintenant";
+            btn.disabled = false;
+        }
+
         function getPingBars() {
             const barsCount = Math.floor(Math.random() * 4) + 1;
             let html = '<span style="display:inline-flex; gap: 2px; align-items: flex-end; margin-left: 10px;">';
@@ -126,27 +116,14 @@
         function showPlayers() {
             const listElement = document.getElementById('player-list');
             listElement.innerHTML = ''; 
-            if (playerList.length === 0) {
-                listElement.innerHTML = '<li>Aucun joueur en ligne.</li>';
-            } else {
+            if (playerList.length === 0) listElement.innerHTML = '<li>Aucun joueur.</li>';
+            else {
                 playerList.forEach(player => {
                     const name = (typeof player === 'object' && player.name) ? player.name : player;
-                    listElement.innerHTML += `
-                        <li class="player-item">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <span style="color: #ff4d4d;">🔧</span> 
-                                <span style="font-weight: bold;">${name}</span>
-                            </div>
-                            ${getPingBars()}
-                        </li>`;
+                    listElement.innerHTML += `<li class="player-item"><div>🔧 ${name}</div>${getPingBars()}</li>`;
                 });
             }
             document.getElementById('playerModal').style.display = 'flex';
-        }
-
-        async function manualRefresh() {
-            await fetchStats();
-            alert("Données mises à jour !");
         }
 
         function closeModal() { document.getElementById('playerModal').style.display = 'none'; }
