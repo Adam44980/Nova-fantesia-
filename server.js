@@ -38,6 +38,32 @@ app.get('/arene', (req, res) => {
     res.render('arene');
 });
 
+// --- ROUTES AJOUTÉES ---
+
+// Route pour la liste des joueurs
+app.get('/joueurs', async (req, res) => {
+    try {
+        const response = await fetch('https://api.mcsrvstat.us/3/novafantasia.falixsrv.me');
+        const data = await response.json();
+        
+        // On envoie la liste des joueurs à la page EJS
+        res.render('joueurs', { 
+            players: data.players?.list || [] 
+        });
+    } catch (error) {
+        res.render('joueurs', { players: [] });
+    }
+});
+
+// Route pour les détails d'un joueur
+app.get('/details', (req, res) => {
+    const playerName = req.query.player;
+    // On affiche la page détails en lui passant le nom du joueur
+    res.render('details', { player: playerName });
+});
+
+// --- FIN DES AJOUTS ---
+
 app.listen(PORT, () => {
     console.log(`Site en ligne sur le port ${PORT}`);
 });

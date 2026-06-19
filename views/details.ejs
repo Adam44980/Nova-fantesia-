@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Profil - <%= player %></title>
+    <style>
+        .layout { display: flex; gap: 40px; flex-wrap: wrap; margin-top: 30px; }
+        .side-stats { flex: 1; min-width: 300px; background: #111; padding: 25px; border-radius: 15px; }
+        .side-inv { flex: 2; min-width: 300px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Guerrier : <span style="color: #ff4d4d;"><%= player %></span></h1>
+        
+        <div class="layout">
+            <div class="side-stats">
+                <img src="https://mc-heads.net/body/<%= player %>" style="width: 100%; border-radius: 10px;">
+                <h2 style="margin-top: 20px;">Statistiques</h2>
+                <p>Status : <span style="color: #00ff00;">En ligne</span></p>
+                <hr style="border: 0; border-top: 1px solid #333;">
+                <p>Niveau de danger : Élevé</p>
+            </div>
+            
+            <div class="side-inv">
+                <h2>Inventaire en temps réel</h2>
+                <iframe src="http://novafantasia.falixsrv.me:8123/?player=<%= player %>" 
+                        style="width: 100%; height: 500px; border: 1px solid #333; border-radius: 15px;">
+                </iframe>
+            </div>
+        </div>
+        <a href="/joueurs" class="btn-pro" style="margin-top: 30px;">← Retour</a>
+    </div>
+</body>
+</html>

@@ -510,4 +510,12 @@ footer {
     .join-steps { flex-direction: column; gap: 16px; }
     .step-arrow { transform: rotate(90deg); }
     .section-header { flex-direction: column; align-items: flex-start; }
+
+    /* Dashboard Tables & Cards */
+.container { max-width: 1100px; margin: 40px auto; padding: 20px; }
+.player-table { width: 100%; border-collapse: collapse; background: #161b22; border-radius: 12px; overflow: hidden; margin-top: 20px; }
+.player-table th, .player-table td { padding: 16px; text-align: left; border-bottom: 1px solid #21262d; }
+.player-table th { background: #0d1117; color: #ff4747; }
+.btn-action { background: #ff4747; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; }
+.btn-action:hover { background: #e03e3e; }
 }
