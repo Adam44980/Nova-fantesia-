@@ -155,6 +155,20 @@
         </footer>
     </div>
 
+<div class="stat-card" onclick="showPlayers()" style="cursor: pointer;">
+    <div class="stat-icon-wrap">👥</div>
+    <h3>Joueurs en ligne</h3>
+    <p id="players-text">— / —</p>
+</div>
+
+<div id="playerModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">✕</span>
+        <h3>Joueurs connectés</h3>
+        <ul id="player-list"></ul>
+    </div>
+</div>
+
     <script>
         const SERVER_IP = 'novafantasia.falixsrv.me';
         const REFRESH_INTERVAL = 60;
