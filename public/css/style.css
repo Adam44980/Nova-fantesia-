@@ -19,7 +19,7 @@ span {
 }
 
 /* ==========================================================================
-   BARRE DE NAVIGATION (NAVBAR)
+   BARRE DE NAVIGATION (HEADER FIXED)
    ========================================================================== */
 header {
     background-color: #161b22;
@@ -45,16 +45,56 @@ header {
     letter-spacing: 1px;
 }
 
+/* ==========================================================================
+   LE BOUTON BURGER (VISIBLE PARTOUT : PC ET TEL)
+   ========================================================================== */
+.menu-toggle {
+    display: none;
+}
+
+.burger-btn {
+    display: block; /* Visible sur PC et Mobile */
+    font-size: 26px;
+    color: #f0f6fc;
+    cursor: pointer;
+    z-index: 1100;
+    transition: color 0.2s;
+}
+
+.burger-btn:hover {
+    color: #ff4747;
+}
+
+.burger-btn .icon-close {
+    display: none;
+}
+
+/* ==========================================================================
+   LA BARRE LATÉRALE (SIDEBAR) - PARTOUT
+   ========================================================================== */
 .nav-links {
+    position: fixed;
+    top: 0;
+    right: -320px; /* Cachée par défaut à droite de l'écran */
+    width: 300px;
+    height: 100vh;
+    background-color: #161b22;
+    border-left: 2px solid #21262d;
     display: flex;
+    flex-direction: column;
     list-style: none;
+    padding: 100px 30px;
     gap: 25px;
+    transition: right 0.4s cubic-bezier(0.1, 0.7, 0.1, 1); /* Animation fluide */
+    z-index: 1000;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.6);
+    overflow-y: auto; /* Permet de scroller dans le menu si besoin */
 }
 
 .nav-links a {
     color: #c9d1d9;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 500;
     transition: color 0.3s;
 }
@@ -63,68 +103,48 @@ header {
     color: #ff4747;
 }
 
-/* BOUTON BURGER (Caché sur PC) */
-.menu-toggle {
-    display: none;
+/* ACTIONS DE L'ANIMATION (QUAND ON CLIQUE) */
+.menu-toggle:checked ~ .nav-links {
+    right: 0; /* La barre latérale arrive à l'écran */
 }
 
-.burger-btn {
-    display: none;
-    font-size: 24px;
-    color: #f0f6fc;
-    cursor: pointer;
-    z-index: 1100;
+.menu-toggle:checked ~ .burger-btn .icon-open { 
+    display: none; 
 }
 
-.burger-btn .icon-close {
-    display: none;
+.menu-toggle:checked ~ .burger-btn .icon-close { 
+    display: block; 
+    position: fixed; /* Reste au dessus du menu */
 }
 
-/* MENUS DÉROULANTS (PC) */
-.dropdown {
-    position: relative;
-}
-
+/* SOUS-MENUS À L'INTÉRIEUR DE LA BARRE LATÉRALE */
 .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #161b22;
-    border: 1px solid #21262d;
-    border-radius: 6px;
+    display: block; /* Toujours visible à l'intérieur */
     list-style: none;
-    padding: 10px 0;
-    min-width: 200px;
-    display: none;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.5);
-}
-
-.dropdown:hover .dropdown-menu {
-    display: block;
-}
-
-.dropdown-menu li a {
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-}
-
-.dropdown-menu li a:hover {
     background-color: #21262d;
+    border-radius: 6px;
+    margin-top: 8px;
+    padding: 8px 0;
 }
 
 .dropdown-header {
-    padding: 5px 20px;
+    padding: 6px 15px;
     font-size: 11px;
     font-weight: bold;
     color: #8b949e;
     letter-spacing: 1px;
 }
 
+.dropdown-menu li a {
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+}
+
 /* ==========================================================================
-   ACCUEIL, STATS & FOOTER
+   RESTE DE LA PAGE (ADAPTATION RESPONSIVE)
    ========================================================================== */
 .hero {
     background: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.95)), 
@@ -171,55 +191,8 @@ footer { background-color: #090c10; border-top: 1px solid #21262d; padding: 40px
 .email-btn { display: inline-block; background-color: #21262d; color: #f0f6fc; text-decoration: none; padding: 12px 25px; border-radius: 6px; border: 1px solid #30363d; }
 .copyright { font-size: 12px; margin-top: 30px; }
 
-/* ==========================================================================
-   MOBILE & BARRE LATÉRALE (SIDEBAR)
-   ========================================================================== */
+/* MEDIA QUERIES : UNIQ DECORATION ET SURVIE SUR TEL */
 @media (max-width: 768px) {
-    /* On affiche le bouton burger */
-    .burger-btn {
-        display: block;
-    }
-
-    /* Transformation des liens en BARRE LATÉRALE */
-    .nav-links {
-        position: fixed;
-        top: 0;
-        right: -300px; /* Caché par défaut à droite */
-        width: 280px;
-        height: 100vh;
-        background-color: #161b22;
-        border-left: 2px solid #21262d;
-        flex-direction: column;
-        padding: 80px 30px;
-        gap: 20px;
-        transition: right 0.4s ease; /* Animation glissement */
-        z-index: 1000;
-        box-shadow: -5px 0 15px rgba(0,0,0,0.5);
-    }
-
-    /* Quand on coche la case invisible, on fait glisser la barre latérale sur l'écran */
-    .menu-toggle:checked ~ .nav-links {
-        right: 0;
-    }
-
-    /* Changement d'icônes burger (croix quand c'est ouvert) */
-    .menu-toggle:checked ~ .burger-btn .icon-open { display: none; }
-    .menu-toggle:checked ~ .burger-btn .icon-close { display: block; }
-
-    /* Adaptations pour les sous-menus dans la barre latérale */
-    .dropdown-menu {
-        position: static;
-        display: block; /* Toujours visible dans la barre mobile */
-        box-shadow: none;
-        background-color: #21262d;
-        border: none;
-        margin-top: 5px;
-        padding: 5px 0;
-    }
-    .dropdown-header { padding: 5px 15px; }
-    .dropdown-menu li a { padding: 8px 15px; }
-
-    /* Reste du responsive */
     .hero-content h1 { font-size: 32px; }
     .hero-content p { font-size: 15px; }
     .server-ip-box { padding: 12px 20px; flex-direction: column; gap: 8px; }
