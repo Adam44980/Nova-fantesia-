@@ -1,52 +1,262 @@
-/* --- CONFIG PRO --- */
-:root { --bg: #0d1117; --sidebar: #161b22; --accent: #ff4747; --text: #f0f6fc; }
-* { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif; }
-body { background: var(--bg); color: var(--text); overflow-x: hidden; }
+/* ==========================================================================
+   CONFIG DE BASE
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-/* SIDEBAR SLIDE */
+body {
+    background-color: #0d1117;
+    color: #f0f6fc;
+    overflow-x: hidden;
+}
+
+span {
+    color: #ff4747;
+}
+
+/* ==========================================================================
+   BOUTONS DE CONTRÔLE (BURGER ET CROIX SÉPARÉS)
+   ========================================================================== */
+.menu-toggle {
+    display: none;
+}
+
+/* Bouton d'ouverture (Menu principal) */
+.burger-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    color: #f0f6fc;
+    cursor: pointer;
+    z-index: 1000;
+    background-color: #161b22;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #21262d;
+    transition: all 0.2s ease;
+}
+
+.burger-btn:hover {
+    color: #ff4747;
+    border-color: #ff4747;
+    transform: scale(1.05);
+}
+
+/* Bouton de fermeture (Croix à l'intérieur de la sidebar) */
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 22px;
+    color: #8b949e;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #21262d;
+    border: 1px solid #30363d;
+}
+
+.close-btn:hover {
+    color: #ffffff;
+    background-color: #ff4747;
+    border-color: #ff4747;
+    transform: rotate(90deg); /* Effet de rotation stylé sur la croix */
+}
+
+/* ==========================================================================
+   LA SIDEBAR (À GAUCHE)
+   ========================================================================== */
 .sidebar {
-    position: fixed; top:0; left:-320px; width: 300px; height:100vh;
-    background: var(--sidebar); z-index: 1000;
-    transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 10px 0 30px rgba(0,0,0,0.5);
-    display: flex; flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: -320px;
+    width: 300px;
+    height: 100vh;
+    background-color: #161b22;
+    border-right: 2px solid #21262d;
+    padding: 80px 20px 30px 20px;
+    display: flex;
+    flex-direction: column;
+    transition: left 0.4s cubic-bezier(0.1, 0.7, 0.1, 1);
+    z-index: 1100;
+    box-shadow: 10px 0 30px rgba(0,0,0,0.6);
 }
-.menu-toggle:checked ~ .sidebar { left: 0; }
 
-/* SCROLL INTERNE SANS BARRE */
-.sidebar-menu { 
-    height: 100%; overflow-y: auto; padding: 20px; 
-    scrollbar-width: none; 
+.sidebar-brand {
+    font-size: 22px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
 }
-.sidebar-menu::-webkit-scrollbar { display: none; }
 
-/* ÉLÉMENTS DU MENU */
-.sidebar-brand { font-size: 24px; font-weight: 800; padding: 20px; text-align: center; border-bottom: 1px solid #21262d; }
-.sidebar-brand span { color: var(--accent); }
-
-.menu-item, .menu-dropdown summary {
-    display: flex; align-items: center; gap: 15px; padding: 15px;
-    color: var(--text); text-decoration: none; border-radius: 8px;
-    cursor: pointer; transition: 0.3s; list-style: none;
+/* DÉCLENCHEMENT DE L'OUVERTURE VIA CHECKBOX */
+.menu-toggle:checked ~ .sidebar {
+    left: 0;
 }
-.menu-item:hover, .menu-dropdown summary:hover { background: #21262d; color: var(--accent); }
 
-.dropdown-content { padding-left: 45px; display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-.dropdown-content a { color: #8b949e; text-decoration: none; font-size: 14px; transition: 0.2s; }
-.dropdown-content a:hover { color: var(--accent); }
-
-/* BOUTONS */
-.burger-btn { position: fixed; top: 20px; left: 20px; font-size: 24px; color: var(--accent); cursor: pointer; z-index: 900; }
-.close-btn { position: absolute; top: 20px; right: 20px; font-size: 22px; cursor: pointer; }
-.close-btn:hover { color: var(--accent); transform: rotate(90deg); transition: 0.3s; }
-
-/* HERO */
-.main-content { padding: 40px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-.hero { text-align: center; max-width: 800px; }
-.hero h1 { font-size: 50px; text-transform: uppercase; margin-bottom: 20px; }
-.server-ip-box { 
-    background: var(--sidebar); border: 2px dashed var(--accent);
-    padding: 20px 40px; display: inline-flex; border-radius: 50px; 
-    cursor: pointer; margin-top: 30px; transition: 0.3s;
+/* LISTE DU MENU */
+.sidebar-menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
-.server-ip-box:hover { transform: scale(1.05); }
+
+.menu-link {
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.menu-link:hover, .menu-link.active {
+    background-color: #21262d;
+    color: #ff4747;
+}
+
+/* ==========================================================================
+   STYLE DES MENUS DÉROULANTS (ACCORDÉONS)
+   ========================================================================== */
+.menu-dropdown {
+    width: 100%;
+}
+
+.menu-dropdown summary {
+    list-style: none; /* Cache la flèche par défaut du navigateur */
+    color: #c9d1d9;
+    font-size: 17px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.menu-dropdown summary::-webkit-details-marker {
+    display: none; /* Pour Safari */
+}
+
+.menu-dropdown summary:hover {
+    background-color: #21262d;
+    color: #ff4747;
+}
+
+/* Gestion de la petite flèche personnalisée */
+.menu-dropdown summary .arrow {
+    margin-left: auto;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+    color: #8b949e;
+}
+
+/* Rotation de la flèche quand le menu est ouvert */
+.menu-dropdown[open] summary .arrow {
+    transform: rotate(180deg);
+    color: #ff4747;
+}
+
+/* Contenu masqué/affiché du menu déroulant */
+.dropdown-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px 0 8px 40px; /* Aligne parfaitement le texte sous l'icône principale */
+}
+
+.dropdown-content a {
+    color: #8b949e;
+    text-decoration: none;
+    font-size: 15px;
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 0.2s;
+}
+
+.dropdown-content a:hover {
+    color: #ff4747;
+}
+
+/* ==========================================================================
+   CONTENU PRINCIPAL
+   ========================================================================== */
+.main-content {
+    width: 100%;
+}
+
+.hero {
+    background: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.95)), 
+                url('https://images.unsplash.com/photo-1607988795691-3d0147b43231?q=80&w=1920') no-repeat center center/cover;
+    height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.hero-content h1 { font-size: 48px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px;}
+.hero-content p { font-size: 18px; color: #8b949e; max-width: 600px; margin: 0 auto 30px auto; line-height: 1.6;}
+
+.server-ip-box {
+    background-color: #161b22;
+    border: 2px dashed #ff4747;
+    padding: 15px 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+.server-ip-box:hover { transform: scale(1.05); background-color: #21262d; }
+.ip-text { font-size: 18px; font-family: 'Courier New', Courier, monospace; font-weight: bold; }
+.copy-badge { background-color: #ff4747; color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+
+.stats-section { max-width: 1200px; margin: 60px auto; padding: 0 20px; text-align: center; }
+.stats-section h2 { font-size: 32px; margin-bottom: 40px; text-transform: uppercase; }
+.stats-container { display: flex; justify-content: center; gap: 30px; }
+.stat-card { background-color: #161b22; border: 1px solid #21262d; padding: 30px; border-radius: 8px; width: 250px; }
+.stat-card i { font-size: 40px; margin-bottom: 15px; }
+.status-online { color: #2ea043; }
+.status-offline { color: #f85149; }
+.stat-card h3 { font-size: 18px; color: #8b949e; margin-bottom: 10px; }
+.stat-card p { font-size: 22px; font-weight: bold; }
+
+footer { background-color: #090c10; border-top: 1px solid #21262d; padding: 40px 20px; text-align: center; margin-top: 80px; }
+.footer-content h3 { margin-bottom: 15px; }
+.footer-content p { color: #8b949e; margin-bottom: 20px; }
+.email-btn { display: inline-block; background-color: #21262d; color: #f0f6fc; text-decoration: none; padding: 12px 25px; border-radius: 6px; border: 1px solid #30363d; }
+.copyright { font-size: 12px; margin-top: 30px; }
+
+/* REGLAGES TELEPHONE */
+@media (max-width: 768px) {
+    .hero-content h1 { font-size: 32px; }
+    .hero-content p { font-size: 15px; }
+    .server-ip-box { padding: 12px 20px; flex-direction: column; gap: 8px; }
+    .stats-container { flex-direction: column; align-items: center; gap: 20px; }
+    .stat-card { width: 100%; max-width: 320px; }
+}
