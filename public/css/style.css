@@ -1,262 +1,42 @@
-/* ==========================================================================
-   CONFIG DE BASE
-   ========================================================================== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+/* Reset & Base */
+body { background: #0d1117; color: #f0f6fc; margin: 0; font-family: sans-serif; }
 
-body {
-    background-color: #0d1117;
-    color: #f0f6fc;
-    overflow-x: hidden;
-}
-
-span {
-    color: #ff4747;
-}
-
-/* ==========================================================================
-   BOUTONS DE CONTRÔLE (BURGER ET CROIX SÉPARÉS)
-   ========================================================================== */
-.menu-toggle {
-    display: none;
-}
-
-/* Bouton d'ouverture (Menu principal) */
-.burger-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    font-size: 24px;
-    color: #f0f6fc;
-    cursor: pointer;
-    z-index: 1000;
-    background-color: #161b22;
-    padding: 12px 15px;
-    border-radius: 8px;
-    border: 1px solid #21262d;
-    transition: all 0.2s ease;
-}
-
-.burger-btn:hover {
-    color: #ff4747;
-    border-color: #ff4747;
-    transform: scale(1.05);
-}
-
-/* Bouton de fermeture (Croix à l'intérieur de la sidebar) */
-.close-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 22px;
-    color: #8b949e;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: #21262d;
-    border: 1px solid #30363d;
-}
-
-.close-btn:hover {
-    color: #ffffff;
-    background-color: #ff4747;
-    border-color: #ff4747;
-    transform: rotate(90deg); /* Effet de rotation stylé sur la croix */
-}
-
-/* ==========================================================================
-   LA SIDEBAR (À GAUCHE)
-   ========================================================================== */
+/* Sidebar position & animation */
 .sidebar {
-    position: fixed;
-    top: 0;
-    left: -320px;
-    width: 300px;
-    height: 100vh;
-    background-color: #161b22;
-    border-right: 2px solid #21262d;
-    padding: 80px 20px 30px 20px;
-    display: flex;
-    flex-direction: column;
-    transition: left 0.4s cubic-bezier(0.1, 0.7, 0.1, 1);
-    z-index: 1100;
-    box-shadow: 10px 0 30px rgba(0,0,0,0.6);
+    position: fixed; top: 0; left: -300px; width: 300px; height: 100vh;
+    background: #161b22; transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 1000; padding: 20px; box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+    overflow-y: auto; scrollbar-width: none;
 }
+.sidebar::-webkit-scrollbar { display: none; }
+.menu-toggle:checked ~ .sidebar { left: 0; }
 
-.sidebar-brand {
-    font-size: 22px;
-    font-weight: bold;
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 30px;
-    letter-spacing: 1px;
+/* Header de la sidebar */
+.sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+.sidebar-brand { font-weight: 800; font-size: 1.2rem; }
+.sidebar-brand span { color: #ff4747; }
+
+/* Items du menu */
+.menu-item, .menu-dropdown summary {
+    display: flex; align-items: center; gap: 15px; padding: 15px;
+    color: #c9d1d9; text-decoration: none; border-radius: 8px;
+    transition: 0.2s; cursor: pointer; list-style: none;
 }
+.menu-item:hover, .menu-dropdown summary:hover { background: #21262d; color: #ff4747; }
 
-/* DÉCLENCHEMENT DE L'OUVERTURE VIA CHECKBOX */
-.menu-toggle:checked ~ .sidebar {
-    left: 0;
-}
+/* Flèche animation */
+.arrow { margin-left: auto; font-size: 0.8rem; transition: 0.3s; }
+.menu-dropdown[open] .arrow { transform: rotate(180deg); }
 
-/* LISTE DU MENU */
-.sidebar-menu {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+/* Contenu déroulant */
+.dropdown-content { padding-left: 45px; display: flex; flex-direction: column; gap: 10px; margin-top: 5px; }
+.dropdown-content a { color: #8b949e; text-decoration: none; font-size: 0.9rem; transition: 0.2s; }
+.dropdown-content a:hover { color: #ff4747; }
 
-.menu-link {
-    color: #c9d1d9;
-    text-decoration: none;
-    font-size: 17px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    border-radius: 8px;
-    transition: all 0.2s;
-}
+/* Boutons */
+.burger-btn { position: fixed; top: 20px; left: 20px; font-size: 1.5rem; cursor: pointer; color: #ff4747; z-index: 999; }
+.close-btn { cursor: pointer; font-size: 1.5rem; color: #8b949e; }
+.close-btn:hover { color: #fff; }
 
-.menu-link:hover, .menu-link.active {
-    background-color: #21262d;
-    color: #ff4747;
-}
-
-/* ==========================================================================
-   STYLE DES MENUS DÉROULANTS (ACCORDÉONS)
-   ========================================================================== */
-.menu-dropdown {
-    width: 100%;
-}
-
-.menu-dropdown summary {
-    list-style: none; /* Cache la flèche par défaut du navigateur */
-    color: #c9d1d9;
-    font-size: 17px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: all 0.2s;
-    user-select: none;
-}
-
-.menu-dropdown summary::-webkit-details-marker {
-    display: none; /* Pour Safari */
-}
-
-.menu-dropdown summary:hover {
-    background-color: #21262d;
-    color: #ff4747;
-}
-
-/* Gestion de la petite flèche personnalisée */
-.menu-dropdown summary .arrow {
-    margin-left: auto;
-    font-size: 12px;
-    transition: transform 0.3s ease;
-    color: #8b949e;
-}
-
-/* Rotation de la flèche quand le menu est ouvert */
-.menu-dropdown[open] summary .arrow {
-    transform: rotate(180deg);
-    color: #ff4747;
-}
-
-/* Contenu masqué/affiché du menu déroulant */
-.dropdown-content {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 8px 0 8px 40px; /* Aligne parfaitement le texte sous l'icône principale */
-}
-
-.dropdown-content a {
-    color: #8b949e;
-    text-decoration: none;
-    font-size: 15px;
-    padding: 8px 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: color 0.2s;
-}
-
-.dropdown-content a:hover {
-    color: #ff4747;
-}
-
-/* ==========================================================================
-   CONTENU PRINCIPAL
-   ========================================================================== */
-.main-content {
-    width: 100%;
-}
-
-.hero {
-    background: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.95)), 
-                url('https://images.unsplash.com/photo-1607988795691-3d0147b43231?q=80&w=1920') no-repeat center center/cover;
-    height: 75vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-}
-
-.hero-content h1 { font-size: 48px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px;}
-.hero-content p { font-size: 18px; color: #8b949e; max-width: 600px; margin: 0 auto 30px auto; line-height: 1.6;}
-
-.server-ip-box {
-    background-color: #161b22;
-    border: 2px dashed #ff4747;
-    padding: 15px 30px;
-    display: inline-flex;
-    align-items: center;
-    gap: 20px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.2s;
-}
-.server-ip-box:hover { transform: scale(1.05); background-color: #21262d; }
-.ip-text { font-size: 18px; font-family: 'Courier New', Courier, monospace; font-weight: bold; }
-.copy-badge { background-color: #ff4747; color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-
-.stats-section { max-width: 1200px; margin: 60px auto; padding: 0 20px; text-align: center; }
-.stats-section h2 { font-size: 32px; margin-bottom: 40px; text-transform: uppercase; }
-.stats-container { display: flex; justify-content: center; gap: 30px; }
-.stat-card { background-color: #161b22; border: 1px solid #21262d; padding: 30px; border-radius: 8px; width: 250px; }
-.stat-card i { font-size: 40px; margin-bottom: 15px; }
-.status-online { color: #2ea043; }
-.status-offline { color: #f85149; }
-.stat-card h3 { font-size: 18px; color: #8b949e; margin-bottom: 10px; }
-.stat-card p { font-size: 22px; font-weight: bold; }
-
-footer { background-color: #090c10; border-top: 1px solid #21262d; padding: 40px 20px; text-align: center; margin-top: 80px; }
-.footer-content h3 { margin-bottom: 15px; }
-.footer-content p { color: #8b949e; margin-bottom: 20px; }
-.email-btn { display: inline-block; background-color: #21262d; color: #f0f6fc; text-decoration: none; padding: 12px 25px; border-radius: 6px; border: 1px solid #30363d; }
-.copyright { font-size: 12px; margin-top: 30px; }
-
-/* REGLAGES TELEPHONE */
-@media (max-width: 768px) {
-    .hero-content h1 { font-size: 32px; }
-    .hero-content p { font-size: 15px; }
-    .server-ip-box { padding: 12px 20px; flex-direction: column; gap: 8px; }
-    .stats-container { flex-direction: column; align-items: center; gap: 20px; }
-    .stat-card { width: 100%; max-width: 320px; }
-}
+/* Suppression de la checkbox */
+.menu-toggle { display: none; }
