@@ -6,12 +6,15 @@
     <title>Nova Fantasia | Serveur Minecraft Anarchie</title>
     <link rel="stylesheet" href="/css/style.css">
     <style>
-        /* STYLE MODALE JOUEURS */
+        /* STYLE MODALE ET BOUTON REFRESH */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; align-items: center; justify-content: center; }
         .modal-content { background: #1a1a1a; padding: 30px; width: 90%; max-width: 400px; border-radius: 15px; border: 1px solid #ff4d4d; position: relative; color: white; }
         .close-btn { position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 20px; color: #ff4d4d; }
         #player-list { list-style: none; padding: 0; margin-top: 20px; max-height: 300px; overflow-y: auto; }
         #player-list li { padding: 8px; border-bottom: 1px solid #333; }
+        .refresh-zone { text-align: center; margin-bottom: 20px; }
+        .refresh-btn-manual { padding: 10px 20px; cursor: pointer; background: #ff4d4d; border: none; color: white; border-radius: 5px; font-weight: bold; transition: 0.3s; }
+        .refresh-btn-manual:hover { background: #cc3d3d; }
     </style>
 </head>
 <body>
@@ -22,48 +25,14 @@
     <div class="sidebar">
         <label for="menu-toggle" class="close-btn">✕</label>
         <div class="sidebar-brand">Nova<span>Fantasia</span></div>
-
         <ul class="sidebar-menu">
             <li><a href="#" class="menu-link active">🏠 Accueil</a></li>
             <li><a href="#stats" class="menu-link">📊 Statistiques</a></li>
-            <li>
-                <details class="menu-dropdown">
-                    <summary>⚔️ Événement <span class="arrow">▼</span></summary>
-                    <div class="dropdown-content">
-                        <a href="/arene">🔥 L'Arène</a>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details class="menu-dropdown">
-                    <summary>👥 Communauté <span class="arrow">▼</span></summary>
-                    <div class="dropdown-content">
-                        <a href="https://discord.com/invite/9hEamDNMj" target="_blank">💬 Discord</a>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details class="menu-dropdown">
-                    <summary>🎮 Game Revive <span class="arrow">▼</span></summary>
-                    <div class="dropdown-content">
-                        <a href="https://www.youtube.com/@adam44-y1y" target="_blank">📺 YouTube</a>
-                        <a href="https://m.twitch.tv/game_revive44" target="_blank">💜 Twitch</a>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details class="menu-dropdown">
-                    <summary>👻 Noghosttt <span class="arrow">▼</span></summary>
-                    <div class="dropdown-content">
-                        <a href="https://www.youtube.com/@noghosttt" target="_blank">📺 YouTube</a>
-                        <a href="https://m.twitch.tv/noghosttt" target="_blank">💜 Twitch</a>
-                        <a href="https://www.tiktok.com/@noghoos" target="_blank">🎵 TikTok</a>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <a href="#contact" class="menu-link">✉️ Contact</a>
-            </li>
+            <li><details class="menu-dropdown"><summary>⚔️ Événement <span class="arrow">▼</span></summary><div class="dropdown-content"><a href="/arene">🔥 L'Arène</a></div></details></li>
+            <li><details class="menu-dropdown"><summary>👥 Communauté <span class="arrow">▼</span></summary><div class="dropdown-content"><a href="https://discord.com/invite/9hEamDNMj" target="_blank">💬 Discord</a></div></details></li>
+            <li><details class="menu-dropdown"><summary>🎮 Game Revive <span class="arrow">▼</span></summary><div class="dropdown-content"><a href="https://www.youtube.com/@adam44-y1y" target="_blank">📺 YouTube</a><a href="https://m.twitch.tv/game_revive44" target="_blank">💜 Twitch</a></div></details></li>
+            <li><details class="menu-dropdown"><summary>👻 Noghosttt <span class="arrow">▼</span></summary><div class="dropdown-content"><a href="https://www.youtube.com/@noghosttt" target="_blank">📺 YouTube</a><a href="https://m.twitch.tv/noghosttt" target="_blank">💜 Twitch</a><a href="https://www.tiktok.com/@noghoos" target="_blank">🎵 TikTok</a></div></details></li>
+            <li><a href="#contact" class="menu-link">✉️ Contact</a></li>
         </ul>
     </div>
 
@@ -84,6 +53,10 @@
         </section>
 
         <section id="stats" class="stats-section">
+            <div class="refresh-zone">
+                <button class="refresh-btn-manual" onclick="manualRefresh()">🔄 Actualiser tout maintenant</button>
+            </div>
+
             <div class="stats-container">
                 <div class="stat-card">
                     <div class="stat-icon-wrap">📡</div>
@@ -140,15 +113,18 @@
             } catch (e) { console.error('Erreur API'); }
         }
 
+        async function manualRefresh() {
+            await fetchStats();
+            alert("Données mises à jour !");
+        }
+
         function showPlayers() {
             const listElement = document.getElementById('player-list');
             listElement.innerHTML = ''; 
-            
             if (playerList.length === 0) {
                 listElement.innerHTML = '<li>Aucun joueur en ligne.</li>';
             } else {
                 playerList.forEach(player => {
-                    // Correction : on vérifie si le joueur est un objet avec un nom
                     const name = (typeof player === 'object' && player.name) ? player.name : player;
                     listElement.innerHTML += `<li>👤 ${name}</li>`;
                 });
