@@ -7,17 +7,16 @@ const PORT = process.env.PORT || 3000;
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
-// CONFIGURATION DE TON SERVEUR FALIX
-// Si Falix te donne un port différent de 25565 (ex: 31542), change le nombre ci-dessous !
-const MC_IP = 'novafantasia.falixsrv.me'; 
-const MC_PORT = 25565; 
+// CONFIGURATION DE TON SERVEUR FALIX (MISE À JOUR COMPLET)
+const MC_IP = 'eu18-free.falixserver.net'; 
+const MC_PORT = 21365; 
 
 app.get('/', (req, res) => {
     // Récupération en temps réel des joueurs connectés
     minestat.init(MC_IP, MC_PORT, () => {
         
-        // Si le port est 25565, on affiche juste l'IP, sinon on affiche IP:PORT
-        const displayIP = MC_PORT === 25565 ? MC_IP : `${MC_IP}:${MC_PORT}`;
+        // On affiche l'adresse personnalisée pour tes joueurs sur le site
+        const displayIP = 'novafantasia.falixsrv.me';
 
         const serverStats = {
             ip: displayIP,
