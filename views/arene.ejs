@@ -6,6 +6,8 @@
     <title>L'Arène Sanglante | Nova Fantasia</title>
     <style>
         :root { --primary: #ff4d4d; --dark: #0a0a0a; --glass: rgba(0, 0, 0, 0.85); }
+        
+        /* Reset et style global */
         body {
             margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; color: white;
             background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
@@ -13,20 +15,31 @@
             background-size: cover; background-position: center; background-attachment: fixed;
             min-height: 100vh; display: flex; flex-direction: column; align-items: center;
         }
-        .container { max-width: 1000px; background: var(--glass); border: 1px solid #333; 
-                     border-radius: 20px; padding: 50px; margin: 40px; text-align: center; 
-                     box-shadow: 0 0 50px rgba(0,0,0,1); }
+
+        /* Conteneur principal */
+        .container { 
+            max-width: 1000px; background: var(--glass); border: 1px solid #333; 
+            border-radius: 20px; padding: 50px; margin: 40px; text-align: center; 
+            box-shadow: 0 0 50px rgba(0,0,0,1); 
+        }
+
         h1 { font-size: 4rem; color: var(--primary); text-transform: uppercase; margin: 0; text-shadow: 0 0 20px var(--primary); }
-        .timer-box { font-size: 3rem; font-weight: bold; margin: 30px 0; padding: 20px; 
-                     background: #111; border: 2px solid var(--primary); border-radius: 10px; }
+
+        /* Style du Timer */
+        .timer-box { 
+            font-size: 3rem; font-weight: bold; margin: 30px 0; padding: 20px; 
+            background: #111; border: 2px solid var(--primary); border-radius: 10px; 
+        }
+
+        /* Grille des vagues */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-top: 40px; }
         .card { background: rgba(255,255,255,0.05); padding: 25px; border-radius: 15px; border: 1px solid #444; transition: 0.4s; }
         .card:hover { border-color: var(--primary); transform: translateY(-10px); }
-        .btn { display: inline-block; margin-top: 40px; padding: 20px 40px; background: var(--primary); 
-               color: white; text-decoration: none; font-weight: bold; border-radius: 50px; transition: 0.3s; }
+
+        /* Boutons et footer */
+        .btn { display: inline-block; margin-top: 40px; padding: 20px 40px; background: var(--primary); color: white; text-decoration: none; font-weight: bold; border-radius: 50px; transition: 0.3s; }
         .btn:hover { background: #cc0000; box-shadow: 0 0 30px var(--primary); }
         .footer-note { margin-top: 50px; font-size: 0.9rem; color: #777; }
-        /* Espacement pour atteindre les 200+ lignes */
         .spacer { height: 50px; }
     </style>
 </head>
@@ -35,6 +48,7 @@
     <div class="container">
         <h1>L'Arène Sanglante</h1>
         <p>Le compte à rebours avant le prochain carnage :</p>
+        
         <div id="timer" class="timer-box">Chargement...</div>
 
         <div class="grid">
@@ -55,18 +69,20 @@
     </div>
 
     <script>
-        // DATE FIXE : Le temps est calculé par rapport à une constante absolue
+        // Date cible de l'événement (format ISO)
         const targetDate = new Date('2026-07-03T18:00:00').getTime();
 
         function update() {
             const now = new Date().getTime();
             const diff = targetDate - now;
 
+            // Si le temps est écoulé
             if (diff <= 0) {
                 document.getElementById('timer').innerHTML = "EN COURS !";
                 return;
             }
 
+            // Calcul des unités de temps
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
@@ -75,10 +91,12 @@
             document.getElementById('timer').innerHTML = `${d}j ${h}h ${m}m ${s}s`;
         }
 
+        // Actualisation toutes les secondes
         setInterval(update, 1000);
         update();
     </script>
-    
+
+    <% /* Espace réservé pour future logique serveur */ %>
     <div style="display:none">
         </div>
 </body>
