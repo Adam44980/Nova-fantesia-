@@ -1,42 +1,52 @@
-/* Reset & Base */
-body { background: #0d1117; color: #f0f6fc; margin: 0; font-family: sans-serif; }
+/* --- CONFIG PRO --- */
+:root { --bg: #0d1117; --sidebar: #161b22; --accent: #ff4747; --text: #f0f6fc; }
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif; }
+body { background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-/* Sidebar position & animation */
+/* SIDEBAR SLIDE */
 .sidebar {
-    position: fixed; top: 0; left: -300px; width: 300px; height: 100vh;
-    background: #161b22; transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    z-index: 1000; padding: 20px; box-shadow: 2px 0 10px rgba(0,0,0,0.5);
-    overflow-y: auto; scrollbar-width: none;
+    position: fixed; top:0; left:-320px; width: 300px; height:100vh;
+    background: var(--sidebar); z-index: 1000;
+    transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+    display: flex; flex-direction: column;
 }
-.sidebar::-webkit-scrollbar { display: none; }
 .menu-toggle:checked ~ .sidebar { left: 0; }
 
-/* Header de la sidebar */
-.sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-.sidebar-brand { font-weight: 800; font-size: 1.2rem; }
-.sidebar-brand span { color: #ff4747; }
+/* SCROLL INTERNE SANS BARRE */
+.sidebar-menu { 
+    height: 100%; overflow-y: auto; padding: 20px; 
+    scrollbar-width: none; 
+}
+.sidebar-menu::-webkit-scrollbar { display: none; }
 
-/* Items du menu */
+/* ÉLÉMENTS DU MENU */
+.sidebar-brand { font-size: 24px; font-weight: 800; padding: 20px; text-align: center; border-bottom: 1px solid #21262d; }
+.sidebar-brand span { color: var(--accent); }
+
 .menu-item, .menu-dropdown summary {
     display: flex; align-items: center; gap: 15px; padding: 15px;
-    color: #c9d1d9; text-decoration: none; border-radius: 8px;
-    transition: 0.2s; cursor: pointer; list-style: none;
+    color: var(--text); text-decoration: none; border-radius: 8px;
+    cursor: pointer; transition: 0.3s; list-style: none;
 }
-.menu-item:hover, .menu-dropdown summary:hover { background: #21262d; color: #ff4747; }
+.menu-item:hover, .menu-dropdown summary:hover { background: #21262d; color: var(--accent); }
 
-/* Flèche animation */
-.arrow { margin-left: auto; font-size: 0.8rem; transition: 0.3s; }
-.menu-dropdown[open] .arrow { transform: rotate(180deg); }
+.dropdown-content { padding-left: 45px; display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.dropdown-content a { color: #8b949e; text-decoration: none; font-size: 14px; transition: 0.2s; }
+.dropdown-content a:hover { color: var(--accent); }
 
-/* Contenu déroulant */
-.dropdown-content { padding-left: 45px; display: flex; flex-direction: column; gap: 10px; margin-top: 5px; }
-.dropdown-content a { color: #8b949e; text-decoration: none; font-size: 0.9rem; transition: 0.2s; }
-.dropdown-content a:hover { color: #ff4747; }
+/* BOUTONS */
+.burger-btn { position: fixed; top: 20px; left: 20px; font-size: 24px; color: var(--accent); cursor: pointer; z-index: 900; }
+.close-btn { position: absolute; top: 20px; right: 20px; font-size: 22px; cursor: pointer; }
+.close-btn:hover { color: var(--accent); transform: rotate(90deg); transition: 0.3s; }
 
-/* Boutons */
-.burger-btn { position: fixed; top: 20px; left: 20px; font-size: 1.5rem; cursor: pointer; color: #ff4747; z-index: 999; }
-.close-btn { cursor: pointer; font-size: 1.5rem; color: #8b949e; }
-.close-btn:hover { color: #fff; }
-
-/* Suppression de la checkbox */
-.menu-toggle { display: none; }
+/* HERO */
+.main-content { padding: 40px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+.hero { text-align: center; max-width: 800px; }
+.hero h1 { font-size: 50px; text-transform: uppercase; margin-bottom: 20px; }
+.server-ip-box { 
+    background: var(--sidebar); border: 2px dashed var(--accent);
+    padding: 20px 40px; display: inline-flex; border-radius: 50px; 
+    cursor: pointer; margin-top: 30px; transition: 0.3s;
+}
+.server-ip-box:hover { transform: scale(1.05); }
