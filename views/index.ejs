@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nova Fantasia | Serveur Minecraft Anarchie</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -26,7 +27,7 @@
                 <details class="menu-dropdown">
                     <summary>⚔️ Événements <span class="arrow">▼</span></summary>
                     <div class="dropdown-content">
-                        <a href="#">📍 Arène : <strong id="event-timer" style="color: #ff4d4d;">Calcul...</strong></a>
+                        <a href="/arene">📍 Arène : <strong id="event-timer" style="color: #ff4d4d;">Calcul...</strong></a>
                     </div>
                 </details>
             </li>
@@ -35,7 +36,7 @@
                 <details class="menu-dropdown">
                     <summary>👥 Communauté <span class="arrow">▼</span></summary>
                     <div class="dropdown-content">
-                        <a href="https://discord.com/invite/9hEamDNMj" target="_blank">💬 Discord</a>
+                        <a href="https://discord.com/invite/9hEamDNMj" target="_blank"><i class="fab fa-discord"></i> Discord</a>
                     </div>
                 </details>
             </li>
@@ -44,8 +45,8 @@
                 <details class="menu-dropdown">
                     <summary>🎮 Game Revive <span class="arrow">▼</span></summary>
                     <div class="dropdown-content">
-                        <a href="https://www.youtube.com/@adam44-y1y" target="_blank">▶️ YouTube</a>
-                        <a href="https://m.twitch.tv/game_revive44" target="_blank">🟣 Twitch</a>
+                        <a href="https://www.youtube.com/@adam44-y1y" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+                        <a href="https://m.twitch.tv/game_revive44" target="_blank"><i class="fab fa-twitch"></i> Twitch</a>
                     </div>
                 </details>
             </li>
@@ -54,9 +55,9 @@
                 <details class="menu-dropdown">
                     <summary>👻 Noghosttt <span class="arrow">▼</span></summary>
                     <div class="dropdown-content">
-                        <a href="https://www.youtube.com/@noghosttt" target="_blank">▶️ YouTube</a>
-                        <a href="https://m.twitch.tv/noghosttt?desktop-redirect=true" target="_blank">🟣 Twitch</a>
-                        <a href="https://www.tiktok.com/@noghoos" target="_blank">🎵 TikTok</a>
+                        <a href="https://www.youtube.com/@noghosttt" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+                        <a href="https://m.twitch.tv/noghosttt?desktop-redirect=true" target="_blank"><i class="fab fa-twitch"></i> Twitch</a>
+                        <a href="https://www.tiktok.com/@noghoos" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
                     </div>
                 </details>
             </li>
@@ -160,10 +161,10 @@
                     ✉️ novafantesia@gmail.com
                 </a>
                 <div class="footer-links">
-                    <a href="https://discord.com/invite/9hEamDNMj" target="_blank" title="Discord">💬</a>
-                    <a href="https://www.youtube.com/@adam44-y1y" target="_blank" title="YouTube">▶️</a>
-                    <a href="https://m.twitch.tv/game_revive44" target="_blank" title="Twitch">🟣</a>
-                    <a href="https://www.tiktok.com/@noghoos" target="_blank" title="TikTok">🎵</a>
+                    <a href="https://discord.com/invite/9hEamDNMj" target="_blank"><i class="fab fa-discord"></i></a>
+                    <a href="https://www.youtube.com/@adam44-y1y" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://m.twitch.tv/game_revive44" target="_blank"><i class="fab fa-twitch"></i></a>
+                    <a href="https://www.tiktok.com/@noghoos" target="_blank"><i class="fab fa-tiktok"></i></a>
                 </div>
                 <p class="copyright">&copy; 2026 Nova Fantasia — Tous droits réservés. Non affilié à Mojang Studios.</p>
             </div>
@@ -177,7 +178,6 @@
         let countdown = REFRESH_INTERVAL;
         let countdownTimer;
 
-        // Fonction pour les statistiques Minecraft
         async function fetchStats() {
             const icon = document.getElementById('refresh-icon');
             icon.style.transition = 'transform 0.6s ease';
@@ -228,7 +228,6 @@
             countdown = REFRESH_INTERVAL;
         }
 
-        // Compte à rebours de rafraîchissement
         function startCountdown() {
             clearInterval(countdownTimer);
             countdownTimer = setInterval(() => {
@@ -238,7 +237,6 @@
             }, 1000);
         }
 
-        // Copie de l'IP
         function copyIP() {
             navigator.clipboard.writeText(SERVER_IP).then(() => {
                 const badge = document.getElementById('copy-badge');
@@ -251,10 +249,7 @@
             });
         }
 
-        // FONCTION NOUVELLE : COMPTE À REBOURS ÉVÉNEMENT (2 semaines)
         function startEventTimer() {
-            // Ici on fixe une date de fin à 14 jours à partir de maintenant pour l'exemple
-            // Pour une date fixe réelle, remplacez par : const targetDate = new Date('2026-07-03T15:00:00').getTime();
             const targetDate = new Date();
             targetDate.setDate(targetDate.getDate() + 14); 
 
@@ -274,10 +269,9 @@
             }
 
             updateTimer();
-            setInterval(updateTimer, 60000); // Mise à jour chaque minute
+            setInterval(updateTimer, 60000);
         }
 
-        // Lancement initial
         fetchStats();
         startCountdown();
         startEventTimer();
