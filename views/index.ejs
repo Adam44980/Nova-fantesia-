@@ -26,7 +26,6 @@
         <ul class="sidebar-menu">
             <li><a href="#" class="menu-link active">🏠 Accueil</a></li>
             <li><a href="#stats" class="menu-link">📊 Statistiques</a></li>
-
             <li>
                 <details class="menu-dropdown">
                     <summary>⚔️ Événement <span class="arrow">▼</span></summary>
@@ -35,7 +34,6 @@
                     </div>
                 </details>
             </li>
-
             <li>
                 <details class="menu-dropdown">
                     <summary>👥 Communauté <span class="arrow">▼</span></summary>
@@ -44,7 +42,6 @@
                     </div>
                 </details>
             </li>
-
             <li>
                 <details class="menu-dropdown">
                     <summary>🎮 Game Revive <span class="arrow">▼</span></summary>
@@ -54,7 +51,6 @@
                     </div>
                 </details>
             </li>
-
             <li>
                 <details class="menu-dropdown">
                     <summary>👻 Noghosttt <span class="arrow">▼</span></summary>
@@ -65,7 +61,6 @@
                     </div>
                 </details>
             </li>
-
             <li>
                 <a href="#contact" class="menu-link">✉️ Contact</a>
             </li>
@@ -78,7 +73,6 @@
                 <div class="hero-badge">💀 SERVEUR ANARCHIE</div>
                 <h1>L'Anarchie à l'<span>État Pur.</span></h1>
                 <p>Pas de règles. Pas de claims. Juste de la survie, du pillage et de la liberté totale sur Nova Fantasia.</p>
-
                 <div class="server-ip-box" onclick="copyIP()">
                     <div class="ip-left">
                         <span class="ip-icon">🖥️</span>
@@ -96,13 +90,11 @@
                     <h3>Statut</h3>
                     <p id="status-text">—</p>
                 </div>
-                
                 <div class="stat-card" onclick="showPlayers()" style="cursor: pointer;">
                     <div class="stat-icon-wrap">👥</div>
                     <h3>Joueurs en ligne</h3>
                     <p id="players-text">— / —</p>
                 </div>
-
                 <div class="stat-card">
                     <div class="stat-icon-wrap">🔖</div>
                     <h3>Version</h3>
@@ -151,11 +143,14 @@
         function showPlayers() {
             const listElement = document.getElementById('player-list');
             listElement.innerHTML = ''; 
+            
             if (playerList.length === 0) {
                 listElement.innerHTML = '<li>Aucun joueur en ligne.</li>';
             } else {
                 playerList.forEach(player => {
-                    listElement.innerHTML += `<li>👤 ${player}</li>`;
+                    // Correction : on vérifie si le joueur est un objet avec un nom
+                    const name = (typeof player === 'object' && player.name) ? player.name : player;
+                    listElement.innerHTML += `<li>👤 ${name}</li>`;
                 });
             }
             document.getElementById('playerModal').style.display = 'flex';
@@ -172,7 +167,5 @@
 
         fetchStats();
     </script>
-
-    <div style="height: 150px;"></div>
 </body>
 </html>
