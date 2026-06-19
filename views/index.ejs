@@ -5,54 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nova Fantasia | Serveur Minecraft Anarchie</title>
     <link rel="stylesheet" href="/css/style.css">
-    <!-- Icônes professionnelles FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- BARRE DE NAVIGATION -->
     <header>
         <nav class="navbar">
             <div class="logo">Nova<span>Fantasia</span></div>
+            
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            
+            <label for="menu-toggle" class="burger-btn">
+                <i class="fas fa-bars icon-open"></i>
+                <i class="fas fa-times icon-close"></i>
+            </label>
+
             <ul class="nav-links">
-                <li><a href="#" class="active">Accueil</a></li>
-                <li><a href="#stats">Statistiques</a></li>
+                <li><a href="#" class="active"><i class="fas fa-home"></i> Accueil</a></li>
+                <li><a href="#stats"><i class="fas fa-chart-bar"></i> Statistiques</a></li>
                 
-                <!-- SOUS-MENU COMMUNAUTÉ -->
                 <li class="dropdown">
-                    <a href="#" class="dropdown-trigger">Communauté <i class="fas fa-chevron-down"></i></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="https://discord.com/invite/9hEamDNMj" target="_blank"><i class="fab fa-discord"></i> Discord</a></li>
-                    </ul>
+                    <p class="dropdown-header">--- COMMUNAUTÉ ---</p>
+                    <a href="https://discord.com/invite/9hEamDNMj" target="_blank"><i class="fab fa-discord"></i> Discord</a>
                 </li>
 
-                <!-- SOUS-MENU L'ÉQUIPE (Twitch remis sous Game Revive) -->
                 <li class="dropdown">
-                    <a href="#" class="dropdown-trigger">Les Créateurs <i class="fas fa-chevron-down"></i></a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-header">--- GAME REVIVE ---</li>
-                        <li><a href="https://www.youtube.com/@adam44-y1y" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
-                        <li><a href="https://m.twitch.tv/game_revive44" target="_blank"><i class="fab fa-twitch"></i> Twitch Game Revive</a></li>
-                        
-                        <li class="dropdown-header">--- NOGHOSTTT ---</li>
-                        <li><a href="https://www.youtube.com/@noghosttt" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
-                        <li><a href="https://m.twitch.tv/noghosttt?desktop-redirect=true" target="_blank"><i class="fab fa-twitch"></i> Twitch Principal</a></li>
-                        <li><a href="https://www.tiktok.com/@noghoos" target="_blank"><i class="fab fa-tiktok"></i> TikTok (@noghoos)</a></li>
-                    </ul>
+                    <p class="dropdown-header">--- GAME REVIVE ---</p>
+                    <a href="https://www.youtube.com/@adam44-y1y" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+                    <a href="https://m.twitch.tv/game_revive44" target="_blank"><i class="fab fa-twitch"></i> Twitch Game Revive</a>
+                    
+                    <p class="dropdown-header">--- NOGHOSTTT ---</p>
+                    <a href="https://www.youtube.com/@noghosttt" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+                    <a href="https://m.twitch.tv/noghosttt?desktop-redirect=true" target="_blank"><i class="fab fa-twitch"></i> Twitch Principal</a>
+                    <a href="https://www.tiktok.com/@noghoos" target="_blank"><i class="fab fa-tiktok"></i> TikTok (@noghoos)</a>
                 </li>
 
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- SECTION PRINCIPALE (HERO) -->
     <section class="hero">
         <div class="hero-content">
             <h1>L'Anarchie à l'État Pur.</h1>
             <p>Pas de règles. Pas de claims. Juste de la survie, du pillage et de la liberté totale sur Nova Fantasia.</p>
             
-            <!-- Boite d'IP cliquable pour copier automatiquement -->
             <div class="server-ip-box" onclick="navigator.clipboard.writeText('<%= stats.ip %>'); alert('IP copiée ! Prêt à rejoindre ?');">
                 <span class="ip-text"><%= stats.ip %></span>
                 <span class="copy-badge"><i class="far fa-copy"></i> Copier l'IP</span>
@@ -60,7 +57,6 @@
         </div>
     </section>
 
-    <!-- SECTION DES STATISTIQUES EN TEMPS RÉEL -->
     <section id="stats" class="stats-section">
         <h2>État du Serveur</h2>
         <div class="stats-container">
@@ -77,7 +73,6 @@
         </div>
     </section>
 
-    <!-- SECTION CONTACT & FOOTER -->
     <footer id="contact">
         <div class="footer-content">
             <h3>Rejoindre l'Équipe / Support</h3>
