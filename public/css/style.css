@@ -1,5 +1,5 @@
 /* ==========================================================================
-   CONFIG DE BASE & POLICES
+   CONFIG DE BASE
    ========================================================================== */
 * {
     margin: 0;
@@ -19,50 +19,30 @@ span {
 }
 
 /* ==========================================================================
-   BARRE DE NAVIGATION (HEADER FIXED)
-   ========================================================================== */
-header {
-    background-color: #161b22;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    border-bottom: 2px solid #21262d;
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* ==========================================================================
-   LE BOUTON BURGER (VISIBLE PARTOUT : PC ET TEL)
+   BOUTON BURGER (FIXE À GAUCHE)
    ========================================================================== */
 .menu-toggle {
     display: none;
 }
 
 .burger-btn {
-    display: block; /* Visible sur PC et Mobile */
+    position: fixed;
+    top: 20px;
+    left: 20px; /* Aligné à gauche */
     font-size: 26px;
     color: #f0f6fc;
     cursor: pointer;
-    z-index: 1100;
-    transition: color 0.2s;
+    z-index: 1200;
+    background-color: #161b22;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #21262d;
+    transition: all 0.3s;
 }
 
 .burger-btn:hover {
     color: #ff4747;
+    border-color: #ff4747;
 }
 
 .burger-btn .icon-close {
@@ -70,86 +50,120 @@ header {
 }
 
 /* ==========================================================================
-   LA BARRE LATÉRALE (SIDEBAR) - PARTOUT
+   LA SIDEBAR (À GAUCHE)
    ========================================================================== */
-.nav-links {
+.sidebar {
     position: fixed;
     top: 0;
-    right: -320px; /* Cachée par défaut à droite de l'écran */
+    left: -320px; /* Caché à gauche par défaut */
     width: 300px;
     height: 100vh;
     background-color: #161b22;
-    border-left: 2px solid #21262d;
+    border-right: 2px solid #21262d;
+    padding: 80px 20px 30px 20px;
     display: flex;
     flex-direction: column;
-    list-style: none;
-    padding: 100px 30px;
-    gap: 25px;
-    transition: right 0.4s cubic-bezier(0.1, 0.7, 0.1, 1); /* Animation fluide */
-    z-index: 1000;
-    box-shadow: -10px 0 30px rgba(0,0,0,0.6);
-    overflow-y: auto; /* Permet de scroller dans le menu si besoin */
+    gap: 20px;
+    transition: left 0.4s cubic-bezier(0.1, 0.7, 0.1, 1);
+    z-index: 1100;
+    box-shadow: 10px 0 30px rgba(0,0,0,0.6);
+    overflow-y: auto;
 }
 
-.nav-links a {
+.sidebar-brand {
+    font-size: 22px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+/* QUAND LE BURGER EST COCHÉ -> LA SIDEBAR SORT */
+.menu-toggle:checked ~ .sidebar {
+    left: 0;
+}
+
+.menu-toggle:checked ~ .burger-btn .icon-open { display: none; }
+.menu-toggle:checked ~ .burger-btn .icon-close { display: block; }
+.menu-toggle:checked ~ .burger-btn { left: 240px; } /* Décale le bouton pour pas qu'il gêne */
+
+/* LISTE DU MENU */
+.sidebar-menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.menu-link {
     color: #c9d1d9;
     text-decoration: none;
     font-size: 18px;
     font-weight: 500;
-    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
 }
 
-.nav-links a:hover, .nav-links a.active {
+.menu-link:hover, .menu-link.active {
+    background-color: #21262d;
     color: #ff4747;
 }
 
-/* ACTIONS DE L'ANIMATION (QUAND ON CLIQUE) */
-.menu-toggle:checked ~ .nav-links {
-    right: 0; /* La barre latérale arrive à l'écran */
+/* STRUCTURE DES SECTIONS / TEXTES DÉROULANTS CORRIGÉS */
+.menu-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 5px 10px;
 }
 
-.menu-toggle:checked ~ .burger-btn .icon-open { 
-    display: none; 
-}
-
-.menu-toggle:checked ~ .burger-btn .icon-close { 
-    display: block; 
-    position: fixed; /* Reste au dessus du menu */
-}
-
-/* SOUS-MENUS À L'INTÉRIEUR DE LA BARRE LATÉRALE */
-.dropdown-menu {
-    display: block; /* Toujours visible à l'intérieur */
-    list-style: none;
-    background-color: #21262d;
-    border-radius: 6px;
-    margin-top: 8px;
-    padding: 8px 0;
-}
-
-.dropdown-header {
-    padding: 6px 15px;
+.section-title {
     font-size: 11px;
     font-weight: bold;
     color: #8b949e;
     letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
 }
 
-.dropdown-menu li a {
-    padding: 8px 15px;
+.section-links {
+    display: flex;
+    flex-direction: column; /* Aligne les liens proprement l'un sous l'autre */
+    gap: 10px;
+    padding-left: 10px;
+}
+
+.section-links a {
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: 15px;
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 15px;
+    transition: color 0.2s;
+}
+
+.section-links a:hover {
+    color: #ff4747;
 }
 
 /* ==========================================================================
-   RESTE DE LA PAGE (ADAPTATION RESPONSIVE)
+   CONTENU PRINCIPAL
    ========================================================================== */
+.main-content {
+    width: 100%;
+    transition: padding-left 0.4s;
+}
+
 .hero {
     background: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.95)), 
                 url('https://images.unsplash.com/photo-1607988795691-3d0147b43231?q=80&w=1920') no-repeat center center/cover;
-    height: 70vh;
+    height: 75vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -191,7 +205,7 @@ footer { background-color: #090c10; border-top: 1px solid #21262d; padding: 40px
 .email-btn { display: inline-block; background-color: #21262d; color: #f0f6fc; text-decoration: none; padding: 12px 25px; border-radius: 6px; border: 1px solid #30363d; }
 .copyright { font-size: 12px; margin-top: 30px; }
 
-/* MEDIA QUERIES : UNIQ DECORATION ET SURVIE SUR TEL */
+/* REGLAGES TELEPHONE */
 @media (max-width: 768px) {
     .hero-content h1 { font-size: 32px; }
     .hero-content p { font-size: 15px; }
