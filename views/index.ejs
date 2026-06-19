@@ -5,65 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nova Fantasia | Serveur Minecraft Anarchie</title>
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
     <!-- ===================== BURGER ===================== -->
     <input type="checkbox" id="menu-toggle" class="menu-toggle">
-    <label for="menu-toggle" class="burger-btn">
-        <i class="fas fa-bars"></i>
-    </label>
+    <label for="menu-toggle" class="burger-btn">☰</label>
 
     <!-- ==================== SIDEBAR ==================== -->
     <div class="sidebar">
 
-        <label for="menu-toggle" class="close-btn">
-            <i class="fas fa-times"></i>
-        </label>
+        <label for="menu-toggle" class="close-btn">✕</label>
 
         <div class="sidebar-brand">Nova<span>Fantasia</span></div>
 
         <ul class="sidebar-menu">
 
-            <li><a href="#" class="menu-link active"><i class="fas fa-home"></i> Accueil</a></li>
-            <li><a href="#stats" class="menu-link"><i class="fas fa-chart-bar"></i> Statistiques</a></li>
+            <li><a href="#" class="menu-link active">🏠 Accueil</a></li>
+            <li><a href="#stats" class="menu-link">📊 Statistiques</a></li>
 
             <li>
                 <details class="menu-dropdown">
-                    <summary><i class="fas fa-users"></i> Communauté <i class="fas fa-chevron-down arrow"></i></summary>
+                    <summary>👥 Communauté <span class="arrow">▼</span></summary>
                     <div class="dropdown-content">
-                        <a href="https://discord.com/invite/9hEamDNMj" target="_blank"><i class="fab fa-discord"></i> Discord</a>
+                        <a href="https://discord.com/invite/9hEamDNMj" target="_blank">💬 Discord</a>
                     </div>
                 </details>
             </li>
 
             <li>
                 <details class="menu-dropdown">
-                    <summary><i class="fas fa-gamepad"></i> Game Revive <i class="fas fa-chevron-down arrow"></i></summary>
+                    <summary>🎮 Game Revive <span class="arrow">▼</span></summary>
                     <div class="dropdown-content">
-                        <a href="https://www.youtube.com/@adam44-y1y" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
-                        <a href="https://m.twitch.tv/game_revive44" target="_blank"><i class="fab fa-twitch"></i> Twitch</a>
+                        <a href="https://www.youtube.com/@adam44-y1y" target="_blank">▶️ YouTube</a>
+                        <a href="https://m.twitch.tv/game_revive44" target="_blank">🟣 Twitch</a>
                     </div>
                 </details>
             </li>
 
             <li>
                 <details class="menu-dropdown">
-                    <summary><i class="fas fa-ghost"></i> Noghosttt <i class="fas fa-chevron-down arrow"></i></summary>
+                    <summary>👻 Noghosttt <span class="arrow">▼</span></summary>
                     <div class="dropdown-content">
-                        <a href="https://www.youtube.com/@noghosttt" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
-                        <a href="https://m.twitch.tv/noghosttt?desktop-redirect=true" target="_blank"><i class="fab fa-twitch"></i> Twitch</a>
-                        <a href="https://www.tiktok.com/@noghoos" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
+                        <a href="https://www.youtube.com/@noghosttt" target="_blank">▶️ YouTube</a>
+                        <a href="https://m.twitch.tv/noghosttt?desktop-redirect=true" target="_blank">🟣 Twitch</a>
+                        <a href="https://www.tiktok.com/@noghoos" target="_blank">🎵 TikTok</a>
                     </div>
                 </details>
             </li>
 
             <li>
                 <details class="menu-dropdown">
-                    <summary><i class="fas fa-envelope"></i> Contact <i class="fas fa-chevron-down arrow"></i></summary>
+                    <summary>✉️ Contact <span class="arrow">▼</span></summary>
                     <div class="dropdown-content">
-                        <a href="mailto:novafantesia@gmail.com"><i class="fas fa-paper-plane"></i> Nous écrire</a>
+                        <a href="mailto:novafantesia@gmail.com">📨 Nous écrire</a>
                     </div>
                 </details>
             </li>
@@ -77,18 +72,16 @@
         <!-- HERO -->
         <section class="hero">
             <div class="hero-content">
-                <div class="hero-badge"><i class="fas fa-skull"></i> SERVEUR ANARCHIE</div>
+                <div class="hero-badge">💀 SERVEUR ANARCHIE</div>
                 <h1>L'Anarchie à l'<span>État Pur.</span></h1>
                 <p>Pas de règles. Pas de claims. Juste de la survie, du pillage et de la liberté totale sur Nova Fantasia.</p>
 
                 <div class="server-ip-box" onclick="copyIP()">
                     <div class="ip-left">
-                        <i class="fas fa-server ip-icon"></i>
+                        <span class="ip-icon">🖥️</span>
                         <span class="ip-text" id="server-ip">novafantasia.falixsrv.me</span>
                     </div>
-                    <span class="copy-badge" id="copy-badge">
-                        <i class="far fa-copy"></i> Copier l'IP
-                    </span>
+                    <span class="copy-badge" id="copy-badge">📋 Copier l'IP</span>
                 </div>
 
                 <div class="hero-live">
@@ -105,7 +98,7 @@
                 <div class="refresh-info">
                     <span>Actualisation dans <strong id="countdown">60</strong>s</span>
                     <button class="refresh-btn" onclick="fetchStats()" title="Actualiser maintenant">
-                        <i class="fas fa-sync-alt" id="refresh-icon"></i>
+                        <span id="refresh-icon">🔄</span>
                     </button>
                 </div>
             </div>
@@ -113,33 +106,25 @@
             <div class="stats-container">
 
                 <div class="stat-card">
-                    <div class="stat-icon-wrap">
-                        <i class="fas fa-signal" id="status-icon"></i>
-                    </div>
+                    <div class="stat-icon-wrap" id="status-icon">📡</div>
                     <h3>Statut</h3>
                     <p id="status-text">—</p>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-icon-wrap">
-                        <i class="fas fa-users"></i>
-                    </div>
+                    <div class="stat-icon-wrap">👥</div>
                     <h3>Joueurs en ligne</h3>
                     <p id="players-text">— / —</p>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-icon-wrap">
-                        <i class="fas fa-code-branch"></i>
-                    </div>
+                    <div class="stat-icon-wrap">🔖</div>
                     <h3>Version</h3>
                     <p id="version-text">—</p>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-icon-wrap">
-                        <i class="fas fa-plug"></i>
-                    </div>
+                    <div class="stat-icon-wrap">🔌</div>
                     <h3>IP de connexion</h3>
                     <p style="font-size:14px;">novafantasia.falixsrv.me</p>
                 </div>
@@ -154,11 +139,11 @@
                 <p>Lance Minecraft, ajoute le serveur et plonge dans l'anarchie totale. Aucune inscription requise.</p>
                 <div class="join-steps">
                     <div class="step"><span class="step-num">1</span><p>Lance <strong>Minecraft Java</strong></p></div>
-                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="step-arrow">→</div>
                     <div class="step"><span class="step-num">2</span><p>Va dans <strong>Multijoueur</strong></p></div>
-                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="step-arrow">→</div>
                     <div class="step"><span class="step-num">3</span><p>Ajoute <strong>l'IP</strong> du serveur</p></div>
-                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="step-arrow">→</div>
                     <div class="step"><span class="step-num">4</span><p><strong>Connecte-toi</strong> et survive !</p></div>
                 </div>
             </div>
@@ -170,13 +155,13 @@
                 <div class="footer-brand">Nova<span>Fantasia</span></div>
                 <p>Une question, un bug à signaler ou une proposition de partenariat ?</p>
                 <a href="mailto:novafantesia@gmail.com" class="email-btn">
-                    <i class="fas fa-envelope"></i> novafantesia@gmail.com
+                    ✉️ novafantesia@gmail.com
                 </a>
                 <div class="footer-links">
-                    <a href="https://discord.com/invite/9hEamDNMj" target="_blank"><i class="fab fa-discord"></i></a>
-                    <a href="https://www.youtube.com/@adam44-y1y" target="_blank"><i class="fab fa-youtube"></i></a>
-                    <a href="https://m.twitch.tv/game_revive44" target="_blank"><i class="fab fa-twitch"></i></a>
-                    <a href="https://www.tiktok.com/@noghoos" target="_blank"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://discord.com/invite/9hEamDNMj" target="_blank" title="Discord">💬</a>
+                    <a href="https://www.youtube.com/@adam44-y1y" target="_blank" title="YouTube">▶️</a>
+                    <a href="https://m.twitch.tv/game_revive44" target="_blank" title="Twitch">🟣</a>
+                    <a href="https://www.tiktok.com/@noghoos" target="_blank" title="TikTok">🎵</a>
                 </div>
                 <p class="copyright">&copy; 2026 Nova Fantasia — Tous droits réservés. Non affilié à Mojang Studios.</p>
             </div>
@@ -212,7 +197,7 @@
                     const online = data.players?.online ?? 0;
                     const max = data.players?.max ?? 0;
 
-                    statusIcon.className = 'fas fa-signal status-online';
+                    statusIcon.textContent = '🟢';
                     statusText.textContent = 'En ligne';
                     playersText.textContent = `${online} / ${max}`;
                     versionText.textContent = data.version ?? 'Inconnue';
@@ -221,7 +206,7 @@
                     heroDot.classList.remove('dot-offline');
                     heroPlayers.textContent = `${online} joueur${online > 1 ? 's' : ''} en ligne`;
                 } else {
-                    statusIcon.className = 'fas fa-signal status-offline';
+                    statusIcon.textContent = '🔴';
                     statusText.textContent = 'Hors ligne';
                     playersText.textContent = '0 / —';
                     versionText.textContent = '—';
@@ -232,7 +217,7 @@
                 }
 
             } catch (e) {
-                document.getElementById('status-icon').className = 'fas fa-signal status-offline';
+                document.getElementById('status-icon').textContent = '🔴';
                 document.getElementById('status-text').textContent = 'Erreur réseau';
                 document.getElementById('hero-players').textContent = 'Impossible de joindre le serveur';
                 console.error('Erreur API:', e);
@@ -253,13 +238,11 @@
         function copyIP() {
             navigator.clipboard.writeText(SERVER_IP).then(() => {
                 const badge = document.getElementById('copy-badge');
-                badge.innerHTML = '<i class="fas fa-check"></i> Copié !';
+                badge.textContent = '✅ Copié !';
                 badge.style.backgroundColor = '#2ea043';
-                badge.style.borderColor = '#2ea043';
                 setTimeout(() => {
-                    badge.innerHTML = '<i class="far fa-copy"></i> Copier l\'IP';
+                    badge.textContent = '📋 Copier l\'IP';
                     badge.style.backgroundColor = '';
-                    badge.style.borderColor = '';
                 }, 2000);
             });
         }

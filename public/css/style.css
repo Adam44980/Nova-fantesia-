@@ -365,10 +365,9 @@ span { color: #ff4747; }
 
 .stat-icon-wrap {
     margin-bottom: 14px;
+    font-size: 36px;
+    line-height: 1;
 }
-.stat-icon-wrap i { font-size: 36px; color: #ff4747; }
-.stat-card .status-online { color: #2ea043; }
-.stat-card .status-offline { color: #f85149; }
 
 .stat-card h3 {
     font-size: 13px;
