@@ -4,17 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nova Fantasia | Serveur Minecraft Anarchie</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; align-items: center; justify-content: center; }
-        .modal-content { background: #1a1a1a; padding: 30px; width: 90%; max-width: 450px; border-radius: 15px; border: 1px solid #ff4d4d; position: relative; color: white; }
-        .close-btn { position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 20px; color: #ff4d4d; }
-        #player-list { list-style: none; padding: 0; margin-top: 20px; max-height: 350px; overflow-y: auto; }
-        .player-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; border-bottom: 1px solid #333; }
-        .refresh-zone { text-align: center; margin-bottom: 20px; }
-        .refresh-btn-manual { padding: 10px 20px; cursor: pointer; background: #ff4d4d; border: none; color: white; border-radius: 5px; font-weight: bold; transition: 0.3s; }
-        .refresh-btn-manual:hover { background: #cc3d3d; }
-        .refresh-btn-manual:disabled { background: #555; cursor: not-allowed; }
+        /* =========================================
+           VARIABLES ET RESET DE BASE
+           ========================================= */
+        :root {
+            --primary-color: #ff4d4d;
+            --primary-hover: #cc3d3d;
+            --bg-color: #0d0d0d;
+            --surface-color: #1a1a1a;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --border-color: #333333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-color); color: var(--text-main); display: flex; overflow-x: hidden; scroll-behavior: smooth; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* =========================================
+           SIDEBAR (MENU GAUCHE)
+           ========================================= */
+        .sidebar { width: 250px; background-color: var(--surface-color); height: 100vh; position: fixed; border-right: 1px solid var(--border-color); padding: 20px; z-index: 100; overflow-y: auto; }
+        .sidebar-brand { font-size: 24px; font-weight: 900; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 1px; }
+        .sidebar-brand span { color: var(--primary-color); }
+        .sidebar-menu li { margin-bottom: 15px; }
+        .menu-link { display: block; padding: 10px; border-radius: 8px; color: var(--text-muted); font-weight: 600; transition: 0.3s; }
+        .menu-link:hover, .menu-link.active { background-color: rgba(255, 77, 77, 0.1); color: var(--primary-color); }
+        
+        details.menu-dropdown { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 10px; cursor: pointer; color: var(--text-muted); font-weight: 600; }
+        details.menu-dropdown summary { list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        details.menu-dropdown[open] summary { color: var(--primary-color); margin-bottom: 10px; }
+        .dropdown-content a { display: block; padding: 8px 10px; font-size: 14px; color: #aaa; transition: 0.2s; border-left: 2px solid transparent; }
+        .dropdown-content a:hover { color: white; border-left: 2px solid var(--primary-color); padding-left: 15px; }
+
+        /* MENU MOBILE BURGER */
+        .menu-toggle { display: none; }
+        .burger-btn { display: none; position: fixed; top: 15px; left: 15px; z-index: 1001; font-size: 24px; cursor: pointer; background: var(--surface-color); padding: 5px 10px; border-radius: 5px; border: 1px solid var(--border-color); }
+
+        /* =========================================
+           CONTENU PRINCIPAL
+           ========================================= */
+        .main-content { margin-left: 250px; flex: 1; min-height: 100vh; display: flex; flex-direction: column; }
+        section { padding: 80px 40px; }
+
+        /* HERO SECTION (REFAITE POUR MATCHER L'IMAGE) */
+        .hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #2a1111 0%, var(--bg-color) 70%); border-bottom: 1px solid var(--border-color); position: relative; }
+        .hero-badge { background: rgba(255, 77, 77, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: bold; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; }
+        .hero h1 { font-size: 4rem; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; line-height: 1.1; }
+        .hero h1 span { color: var(--primary-color); }
+        .hero p { color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto 40px auto; line-height: 1.6; }
+
+        /* BOUTON COPIER IP (STYLE PRO ET FONCTIONNEL) */
+        .ip-container { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .server-ip-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px 30px; border-radius: 50px; font-size: 1.2rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 15px; }
+        .server-ip-box:hover { background: rgba(255,255,255,0.1); border-color: var(--primary-color); transform: translateY(-2px); }
+        .server-ip-box:active { transform: translateY(1px); }
+        .ip-hint { font-size: 0.85rem; color: var(--text-muted); transition: color 0.3s; }
+
+        /* SECTION LA BIO / À PROPOS */
+        .about-section { background: var(--surface-color); }
+        .section-title { font-size: 2.5rem; text-align: center; margin-bottom: 50px; font-weight: 800; text-transform: uppercase; }
+        .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1000px; margin: 0 auto; }
+        .about-card { background: var(--bg-color); padding: 30px; border-radius: 15px; border: 1px solid var(--border-color); border-top: 4px solid var(--primary-color); }
+        .about-card h3 { font-size: 1.5rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .about-card p { color: var(--text-muted); line-height: 1.7; }
+
+        /* SECTION STATISTIQUES */
+        .stats-header { display: flex; justify-content: space-between; align-items: flex-end; max-width: 1000px; margin: 0 auto 30px auto; flex-wrap: wrap; gap: 20px; }
+        .refresh-btn-manual { background: var(--primary-color); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; font-family: 'Montserrat', sans-serif; display: flex; align-items: center; gap: 8px; }
+        .refresh-btn-manual:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .refresh-btn-manual:disabled { background: #555; cursor: not-allowed; transform: none; }
+        .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
+        .stat-card { background: var(--surface-color); padding: 30px; border-radius: 15px; border: 1px solid var(--border-color); text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
+        .stat-card:hover { border-color: var(--primary-color); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255,77,77,0.1); }
+        .stat-icon { font-size: 30px; margin-bottom: 15px; display: block; }
+        .stat-card h3 { color: var(--text-muted); font-size: 1rem; margin-bottom: 10px; font-weight: 600; text-transform: uppercase; }
+        .stat-card p { font-size: 1.8rem; font-weight: 800; color: white; }
+
+        /* =========================================
+           FOOTER ET MENTIONS LÉGALES (REFAIT)
+           ========================================= */
+        footer { background: #080808; padding: 60px 20px; text-align: center; border-top: 1px solid var(--border-color); margin-top: auto; }
+        .footer-logo { font-size: 2rem; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; }
+        .footer-logo span { color: var(--primary-color); }
+        .footer-contact { margin-bottom: 40px; }
+        .footer-contact p { color: var(--text-muted); margin-bottom: 10px; font-size: 1.1rem; }
+        .footer-email { color: var(--primary-color); font-size: 1.2rem; font-weight: bold; transition: color 0.3s; }
+        .footer-email:hover { color: white; }
+        .footer-legal { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; color: #555; font-size: 0.85rem; max-width: 600px; margin: 0 auto; line-height: 1.5; }
+
+        /* =========================================
+           MODALE (LISTE DES JOUEURS)
+           ========================================= */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: var(--surface-color); padding: 30px; width: 90%; max-width: 500px; border-radius: 15px; border: 1px solid var(--primary-color); position: relative; box-shadow: 0 0 50px rgba(255,77,77,0.1); }
+        .close-btn { position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 24px; color: var(--text-muted); transition: 0.3s; }
+        .close-btn:hover { color: var(--primary-color); }
+        .modal-title { font-size: 1.5rem; margin-bottom: 20px; font-weight: 800; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        #player-list { max-height: 400px; overflow-y: auto; padding-right: 5px; }
+        #player-list::-webkit-scrollbar { width: 6px; }
+        #player-list::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+        .player-item { display: flex; align-items: center; justify-content: space-between; padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.2); margin-bottom: 5px; border-radius: 8px; }
+
+        /* =========================================
+           RESPONSIVE DESIGN (MOBILES)
+           ========================================= */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .main-content { margin-left: 0; }
+            .burger-btn { display: block; }
+            #menu-toggle:checked ~ .sidebar { transform: translateX(0); box-shadow: 5px 0 20px rgba(0,0,0,0.5); }
+            .hero h1 { font-size: 2.5rem; }
+        }
     </style>
 </head>
 <body>
@@ -23,52 +127,132 @@
     <label for="menu-toggle" class="burger-btn">☰</label>
 
     <div class="sidebar">
-        <label for="menu-toggle" class="close-btn">✕</label>
         <div class="sidebar-brand">Nova<span>Fantasia</span></div>
         <ul class="sidebar-menu">
             <li><a href="#" class="menu-link active">🏠 Accueil</a></li>
+            <li><a href="#about" class="menu-link">📖 La Bio</a></li>
             <li><a href="#stats" class="menu-link">📊 Statistiques</a></li>
-            <li><details class="menu-dropdown"><summary>⚔️ Événement <span class="arrow">▼</span></summary><div class="dropdown-content"><a href="/arene">🔥 L'Arène</a></div></details></li>
-            <li><details class="menu-dropdown"><summary>👥 Communauté <span class="arrow">▼</span></summary><div class="dropdown-content"><a href="https://discord.com/invite/9hEamDNMj" target="_blank">💬 Discord</a></div></details></li>
-            <li><details class="menu-dropdown"><summary>🎮 Game Revive <span class="arrow">▼</span></summary><div class="dropdown-content"><a href="https://www.youtube.com/@adam44-y1y" target="_blank">📺 YouTube</a><a href="https://m.twitch.tv/game_revive44" target="_blank">💜 Twitch</a></div></details></li>
-            <li><details class="menu-dropdown"><summary>👻 Noghosttt <span class="arrow">▼</span></summary><div class="dropdown-content"><a href="https://www.youtube.com/@noghosttt" target="_blank">📺 YouTube</a><a href="https://m.twitch.tv/noghosttt" target="_blank">💜 Twitch</a><a href="https://www.tiktok.com/@noghoos" target="_blank">🎵 TikTok</a></div></details></li>
-            <li><a href="#contact" class="menu-link">✉️ Contact</a></li>
+            <li>
+                <details class="menu-dropdown">
+                    <summary>⚔️ Événement ▼</summary>
+                    <div class="dropdown-content">
+                        <a href="/arene">🔥 L'Arène</a>
+                    </div>
+                </details>
+            </li>
+            <li>
+                <details class="menu-dropdown">
+                    <summary>👥 Communauté ▼</summary>
+                    <div class="dropdown-content">
+                        <a href="https://discord.com/invite/9hEamDNMj" target="_blank">💬 Discord</a>
+                    </div>
+                </details>
+            </li>
+            <li>
+                <details class="menu-dropdown">
+                    <summary>🎮 Game Revive ▼</summary>
+                    <div class="dropdown-content">
+                        <a href="https://www.youtube.com/@adam44-y1y" target="_blank">📺 YouTube</a>
+                        <a href="https://m.twitch.tv/game_revive44" target="_blank">💜 Twitch</a>
+                    </div>
+                </details>
+            </li>
+            <li>
+                <details class="menu-dropdown">
+                    <summary>👻 Noghosttt ▼</summary>
+                    <div class="dropdown-content">
+                        <a href="https://www.youtube.com/@noghosttt" target="_blank">📺 YouTube</a>
+                        <a href="https://m.twitch.tv/noghosttt" target="_blank">💜 Twitch</a>
+                        <a href="https://www.tiktok.com/@noghoos" target="_blank">🎵 TikTok</a>
+                    </div>
+                </details>
+            </li>
         </ul>
     </div>
 
     <div class="main-content">
+        
         <section class="hero">
-            <div class="hero-content">
-                <div class="hero-badge">💀 SERVEUR ANARCHIE</div>
-                <h1>L'Anarchie à l'<span>État Pur.</span></h1>
-                <div class="server-ip-box" onclick="copyIP()">
-                    <span class="ip-text" id="server-ip">novafantasia.falixsrv.me</span>
+            <div class="hero-badge">💀 SERVEUR ANARCHIE</div>
+            <h1>L'Anarchie à l'<span>État Pur.</span></h1>
+            <p>Pas de règles. Pas de claims. Juste de la survie, du pillage et de la liberté totale. Rejoins l'expérience ultime sur Nova Fantasia.</p>
+            
+            <div class="ip-container">
+                <div class="server-ip-box" onclick="copyIP()" title="Cliquez pour copier l'IP">
+                    <span style="color: var(--primary-color);">🖥️</span>
+                    <span id="server-ip-text">novafantasia.falixsrv.me</span>
+                </div>
+                <span id="copy-hint" class="ip-hint">Cliquez sur l'IP pour la copier</span>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <h2 class="section-title">L'Expérience <span>Nova</span></h2>
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>🛡️ Aucune Règle</h3>
+                    <p>Sur Nova Fantasia, tu es livré à toi-même. Le grief, le pillage et le PvP sont non seulement autorisés, mais font partie intégrante du gameplay. Fais confiance à personne.</p>
+                </div>
+                <div class="about-card">
+                    <h3>🗺️ Survie Vanilla</h3>
+                    <p>Nous offrons une expérience de survie authentique sans plugins envahissants modifiant les mécaniques de base. La carte est générée de manière naturelle et n'est jamais réinitialisée (No Wipe).</p>
+                </div>
+                <div class="about-card">
+                    <h3>🤝 Communauté Forte</h3>
+                    <p>Malgré le chaos, des alliances se forgent et se brisent chaque jour. Rejoins notre Discord pour négocier, échanger, ou déclarer la guerre aux autres factions du serveur.</p>
                 </div>
             </div>
         </section>
 
-        <section id="stats" class="stats-section">
-            <div class="refresh-zone">
-                <button class="refresh-btn-manual" onclick="manualRefresh()">🔄 Actualiser tout maintenant</button>
+        <section id="stats">
+            <div class="stats-header">
+                <div>
+                    <h2 style="font-size: 2rem; font-weight: 800; text-transform: uppercase;">État du <span>Serveur</span></h2>
+                    <p style="color: var(--text-muted); margin-top: 5px;">Données récupérées en temps réel via l'API.</p>
+                </div>
+                <button class="refresh-btn-manual" onclick="manualRefresh()" id="refresh-btn">
+                    <span>🔄</span> Actualiser maintenant
+                </button>
             </div>
+
             <div class="stats-container">
-                <div class="stat-card"><h3>Statut</h3><p id="status-text">—</p></div>
-                <div class="stat-card" onclick="showPlayers()" style="cursor: pointer;"><h3>Joueurs</h3><p id="players-text">— / —</p></div>
-                <div class="stat-card"><h3>Version</h3><p id="version-text">—</p></div>
+                <div class="stat-card">
+                    <span class="stat-icon">📡</span>
+                    <h3>Statut</h3>
+                    <p id="status-text" style="color: #ff4d4d;">Chargement...</p>
+                </div>
+                <div class="stat-card" onclick="showPlayers()" style="cursor: pointer;" title="Voir la liste des joueurs">
+                    <span class="stat-icon">👥</span>
+                    <h3>Joueurs en ligne</h3>
+                    <p id="players-text">— / —</p>
+                    <small style="color: var(--primary-color); display: block; margin-top: 10px; font-weight: bold;">Cliquez pour voir la liste</small>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🔖</span>
+                    <h3>Version</h3>
+                    <p id="version-text">—</p>
+                </div>
             </div>
         </section>
 
         <footer id="contact">
-            <div class="footer-content" style="padding: 50px; text-align: center;">
-                <p>Une question ? <a href="mailto:novafantesia@gmail.com" style="color: #ff4d4d;">novafantesia@gmail.com</a></p>
+            <div class="footer-logo">Nova<span>Fantasia</span></div>
+            
+            <div class="footer-contact">
+                <p>Une question ? <a href="mailto:novafantesia@gmail.com" class="footer-email">novafantesia@gmail.com</a></p>
+            </div>
+
+            <div class="footer-legal">
+                <p>&copy; 2026 Nova Fantasia. Tous droits réservés.</p>
+                <p>Nova Fantasia est une marque déposée. Ce serveur n'est en aucun cas affilié, approuvé ou soutenu par Mojang AB, Microsoft Corporation ou tout autre ayant droit officiel de Minecraft. "Minecraft" est une marque commerciale de Mojang Synergies AB.</p>
             </div>
         </footer>
     </div>
 
-    <div id="playerModal" class="modal" style="display:none;">
+    <div id="playerModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">✕</span>
-            <h3>Joueurs connectés</h3>
+            <h3 class="modal-title">Joueurs Connectés</h3>
             <ul id="player-list"></ul>
         </div>
     </div>
@@ -77,59 +261,127 @@
         const SERVER_IP = 'novafantasia.falixsrv.me';
         let playerList = []; 
 
+        // 1. Fonction pour récupérer les données API sans cache
         async function fetchStats() {
             try {
-                // Ajout de ?t=${Date.now()} pour forcer le rechargement réel
+                // ?t=Date.now() pour forcer le VRAI reload sans utiliser le cache du navigateur
                 const res = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}?t=${Date.now()}`);
                 const data = await res.json();
+                
                 if (data.online) {
                     playerList = data.players?.list || [];
-                    document.getElementById('status-text').textContent = 'En ligne';
+                    const statusText = document.getElementById('status-text');
+                    statusText.textContent = 'En ligne';
+                    statusText.style.color = '#4caf50'; // Vert si en ligne
                     document.getElementById('players-text').textContent = `${data.players.online} / ${data.players.max}`;
                     document.getElementById('version-text').textContent = data.version;
                 } else {
                     document.getElementById('status-text').textContent = 'Hors ligne';
+                    document.getElementById('players-text').textContent = '0 / 0';
                 }
-            } catch (e) { console.error('Erreur API'); }
-        }
-
-        async function manualRefresh() {
-            const btn = document.querySelector('.refresh-btn-manual');
-            btn.textContent = "Actualisation...";
-            btn.disabled = true;
-            await fetchStats();
-            if (document.getElementById('playerModal').style.display === 'flex') showPlayers();
-            btn.textContent = "🔄 Actualiser tout maintenant";
-            btn.disabled = false;
-        }
-
-        function getPingBars() {
-            const barsCount = Math.floor(Math.random() * 4) + 1;
-            let html = '<span style="display:inline-flex; gap: 2px; align-items: flex-end; margin-left: 10px;">';
-            for (let i = 0; i < 4; i++) {
-                const color = (i < barsCount) ? (barsCount > 2 ? '#4caf50' : '#ff9800') : '#333';
-                html += `<span style="width: 4px; height: ${5 + (i * 3)}px; background: ${color};"></span>`;
+            } catch (e) { 
+                console.error('Erreur de connexion à l\'API', e); 
+                document.getElementById('status-text').textContent = 'Erreur API';
             }
-            return html + '</span>';
         }
 
+        // 2. Bouton d'actualisation manuelle avec feedback visuel
+        async function manualRefresh() {
+            const btn = document.getElementById('refresh-btn');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = "<span>⏳</span> Chargement...";
+            btn.disabled = true;
+            
+            await fetchStats();
+            
+            // Si la fenêtre des joueurs est ouverte, on la recharge dynamiquement
+            if (document.getElementById('playerModal').style.display === 'flex') {
+                showPlayers();
+            }
+            
+            btn.innerHTML = "<span>✔️</span> À jour !";
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 2000);
+        }
+
+        // 3. Générateur de barres de connexion visuelles (Ping simulé)
+        function getPingBars() {
+            const barsCount = Math.floor(Math.random() * 4) + 1; // Entre 1 et 4 barres
+            let html = '<div style="display:flex; gap: 3px; align-items: flex-end;">';
+            for (let i = 0; i < 4; i++) {
+                const color = (i < barsCount) ? (barsCount > 2 ? '#4caf50' : '#ff9800') : '#333333';
+                const height = 8 + (i * 4); // La barre grandit
+                html += `<span style="width: 5px; height: ${height}px; background-color: ${color}; border-radius: 1px;"></span>`;
+            }
+            html += '</div>';
+            return html;
+        }
+
+        // 4. Affichage de la modale des joueurs (Correction du bug Object)
         function showPlayers() {
             const listElement = document.getElementById('player-list');
             listElement.innerHTML = ''; 
-            if (playerList.length === 0) listElement.innerHTML = '<li>Aucun joueur.</li>';
-            else {
+            
+            if (playerList.length === 0) {
+                listElement.innerHTML = '<li style="text-align:center; padding: 20px; color:#888;">Aucun joueur n\'est en ligne actuellement.</li>';
+            } else {
                 playerList.forEach(player => {
+                    // C'est ici qu'on règle le bug "[object Object]"
                     const name = (typeof player === 'object' && player.name) ? player.name : player;
-                    listElement.innerHTML += `<li class="player-item"><div>🔧 ${name}</div>${getPingBars()}</li>`;
+                    
+                    listElement.innerHTML += `
+                        <li class="player-item">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <img src="https://mc-heads.net/avatar/${name}/32" alt="${name}" style="border-radius: 4px; width: 32px; height: 32px; border: 1px solid #333;">
+                                <span style="font-weight: bold; font-size: 1.1rem; letter-spacing: 0.5px;">${name}</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="font-size: 0.8rem; color: #888; text-transform: uppercase;">Ping</span>
+                                ${getPingBars()}
+                            </div>
+                        </li>`;
                 });
             }
             document.getElementById('playerModal').style.display = 'flex';
         }
 
-        function closeModal() { document.getElementById('playerModal').style.display = 'none'; }
-        function copyIP() { navigator.clipboard.writeText(SERVER_IP); alert('IP copiée !'); }
+        // 5. Fermer la modale
+        function closeModal() { 
+            document.getElementById('playerModal').style.display = 'none'; 
+        }
 
-        fetchStats();
+        // 6. Système de copie d'IP optimisé
+        function copyIP() { 
+            navigator.clipboard.writeText(SERVER_IP).then(() => {
+                const hint = document.getElementById('copy-hint');
+                hint.textContent = '✔️ IP copiée dans le presse-papiers !';
+                hint.style.color = '#4caf50';
+                hint.style.fontWeight = 'bold';
+                
+                // Remet le texte normal après 3 secondes
+                setTimeout(() => {
+                    hint.textContent = 'Cliquez sur l\'IP pour la copier';
+                    hint.style.color = 'var(--text-muted)';
+                    hint.style.fontWeight = 'normal';
+                }, 3000);
+            }).catch(err => {
+                console.error('Erreur lors de la copie', err);
+            });
+        }
+
+        // 7. Initialisation au chargement de la page
+        window.onload = fetchStats;
+
+        // 8. Fermer la modale en cliquant en dehors
+        window.onclick = function(event) {
+            const modal = document.getElementById('playerModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
     </script>
 </body>
 </html>
