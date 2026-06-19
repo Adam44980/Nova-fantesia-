@@ -8,11 +8,9 @@
 </head>
 <body>
 
-    <!-- ===================== BURGER ===================== -->
     <input type="checkbox" id="menu-toggle" class="menu-toggle">
     <label for="menu-toggle" class="burger-btn">☰</label>
 
-    <!-- ==================== SIDEBAR ==================== -->
     <div class="sidebar">
 
         <label for="menu-toggle" class="close-btn">✕</label>
@@ -23,6 +21,15 @@
 
             <li><a href="#" class="menu-link active">🏠 Accueil</a></li>
             <li><a href="#stats" class="menu-link">📊 Statistiques</a></li>
+
+            <li>
+                <details class="menu-dropdown">
+                    <summary>⚔️ Événements <span class="arrow">▼</span></summary>
+                    <div class="dropdown-content">
+                        <a href="#">📍 Arène : <strong id="event-timer" style="color: #ff4d4d;">Calcul...</strong></a>
+                    </div>
+                </details>
+            </li>
 
             <li>
                 <details class="menu-dropdown">
@@ -66,10 +73,8 @@
         </ul>
     </div>
 
-    <!-- ================== CONTENU PRINCIPAL ================== -->
     <div class="main-content">
 
-        <!-- HERO -->
         <section class="hero">
             <div class="hero-content">
                 <div class="hero-badge">💀 SERVEUR ANARCHIE</div>
@@ -91,7 +96,6 @@
             </div>
         </section>
 
-        <!-- STATS -->
         <section id="stats" class="stats-section">
             <div class="section-header">
                 <h2>État du <span>Serveur</span></h2>
@@ -132,7 +136,6 @@
             </div>
         </section>
 
-        <!-- REJOINDRE -->
         <section class="join-section">
             <div class="join-content">
                 <h2>Prêt à rejoindre le chaos ?</h2>
@@ -149,7 +152,6 @@
             </div>
         </section>
 
-        <!-- FOOTER -->
         <footer id="contact">
             <div class="footer-content">
                 <div class="footer-brand">Nova<span>Fantasia</span></div>
@@ -169,13 +171,13 @@
 
     </div>
 
-    <!-- ===================== SCRIPTS ===================== -->
     <script>
         const SERVER_IP = 'novafantasia.falixsrv.me';
         const REFRESH_INTERVAL = 60;
         let countdown = REFRESH_INTERVAL;
         let countdownTimer;
 
+        // Fonction pour les statistiques Minecraft
         async function fetchStats() {
             const icon = document.getElementById('refresh-icon');
             icon.style.transition = 'transform 0.6s ease';
@@ -226,6 +228,7 @@
             countdown = REFRESH_INTERVAL;
         }
 
+        // Compte à rebours de rafraîchissement
         function startCountdown() {
             clearInterval(countdownTimer);
             countdownTimer = setInterval(() => {
@@ -235,6 +238,7 @@
             }, 1000);
         }
 
+        // Copie de l'IP
         function copyIP() {
             navigator.clipboard.writeText(SERVER_IP).then(() => {
                 const badge = document.getElementById('copy-badge');
@@ -247,8 +251,36 @@
             });
         }
 
+        // FONCTION NOUVELLE : COMPTE À REBOURS ÉVÉNEMENT (2 semaines)
+        function startEventTimer() {
+            // Ici on fixe une date de fin à 14 jours à partir de maintenant pour l'exemple
+            // Pour une date fixe réelle, remplacez par : const targetDate = new Date('2026-07-03T15:00:00').getTime();
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + 14); 
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const diff = targetDate - now;
+
+                if (diff <= 0) {
+                    document.getElementById('event-timer').textContent = "EN COURS !";
+                    return;
+                }
+
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                
+                document.getElementById('event-timer').textContent = d + "j " + h + "h";
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 60000); // Mise à jour chaque minute
+        }
+
+        // Lancement initial
         fetchStats();
         startCountdown();
+        startEventTimer();
     </script>
 
 </body>
