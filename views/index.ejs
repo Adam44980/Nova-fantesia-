@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Nova Fantasia - Le serveur Minecraft Anarchie ultime. Survie, PvP, pillage, zéro règle. Rejoignez l'expérience No Wipe dès maintenant.">
+    <meta name="keywords" content="Minecraft, Anarchie, Serveur, PvP, Survie, Nova Fantasia, FalixNodes">
     <title>Nova Fantasia | Serveur Minecraft Anarchie</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
-        /* =========================================
-           VARIABLES ET RESET DE BASE
-           ========================================= */
+        /* VARIABLES ET RESET DE BASE */
         :root {
             --primary-color: #ff4d4d;
             --primary-hover: #cc3d3d;
@@ -24,9 +24,26 @@
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
-        /* =========================================
-           SIDEBAR (MENU GAUCHE)
-           ========================================= */
+        /* NOUVEAU : SCROLLBAR GLOBALE PERSONNALISÉE */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
+
+        /* NOUVEAU : ANIMATIONS CSS */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(255, 77, 77, 0.6); }
+            100% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.2); }
+        }
+        .reveal { opacity: 0; transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* SIDEBAR (MENU GAUCHE) */
         .sidebar { width: 250px; background-color: var(--surface-color); height: 100vh; position: fixed; border-right: 1px solid var(--border-color); padding: 20px; z-index: 100; overflow-y: auto; }
         .sidebar-brand { font-size: 24px; font-weight: 900; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 1px; }
         .sidebar-brand span { color: var(--primary-color); }
@@ -34,7 +51,8 @@
         .menu-link { display: block; padding: 10px; border-radius: 8px; color: var(--text-muted); font-weight: 600; transition: 0.3s; }
         .menu-link:hover, .menu-link.active { background-color: rgba(255, 77, 77, 0.1); color: var(--primary-color); }
         
-        details.menu-dropdown { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 10px; cursor: pointer; color: var(--text-muted); font-weight: 600; }
+        details.menu-dropdown { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 10px; cursor: pointer; color: var(--text-muted); font-weight: 600; transition: 0.3s; }
+        details.menu-dropdown:hover { background: rgba(255,255,255,0.06); }
         details.menu-dropdown summary { list-style: none; display: flex; justify-content: space-between; align-items: center; }
         details.menu-dropdown[open] summary { color: var(--primary-color); margin-bottom: 10px; }
         .dropdown-content a { display: block; padding: 8px 10px; font-size: 14px; color: #aaa; transition: 0.2s; border-left: 2px solid transparent; }
@@ -44,23 +62,21 @@
         .menu-toggle { display: none; }
         .burger-btn { display: none; position: fixed; top: 15px; left: 15px; z-index: 1001; font-size: 24px; cursor: pointer; background: var(--surface-color); padding: 5px 10px; border-radius: 5px; border: 1px solid var(--border-color); }
 
-        /* =========================================
-           CONTENU PRINCIPAL
-           ========================================= */
+        /* CONTENU PRINCIPAL */
         .main-content { margin-left: 250px; flex: 1; min-height: 100vh; display: flex; flex-direction: column; }
         section { padding: 80px 40px; }
 
-        /* HERO SECTION (REFAITE POUR MATCHER L'IMAGE) */
+        /* HERO SECTION */
         .hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #2a1111 0%, var(--bg-color) 70%); border-bottom: 1px solid var(--border-color); position: relative; }
-        .hero-badge { background: rgba(255, 77, 77, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: bold; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; }
-        .hero h1 { font-size: 4rem; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; line-height: 1.1; }
+        .hero-badge { background: rgba(255, 77, 77, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: bold; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; animation: pulseGlow 3s infinite; }
+        .hero h1 { font-size: 4rem; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; line-height: 1.1; animation: fadeUp 1s ease-out; }
         .hero h1 span { color: var(--primary-color); }
-        .hero p { color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto 40px auto; line-height: 1.6; }
+        .hero p { color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto 40px auto; line-height: 1.6; animation: fadeUp 1.2s ease-out; }
 
-        /* BOUTON COPIER IP (STYLE PRO ET FONCTIONNEL) */
-        .ip-container { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        .server-ip-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px 30px; border-radius: 50px; font-size: 1.2rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 15px; }
-        .server-ip-box:hover { background: rgba(255,255,255,0.1); border-color: var(--primary-color); transform: translateY(-2px); }
+        /* BOUTON COPIER IP */
+        .ip-container { display: flex; flex-direction: column; align-items: center; gap: 10px; animation: fadeUp 1.4s ease-out; }
+        .server-ip-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px 30px; border-radius: 50px; font-size: 1.2rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 15px; position: relative; overflow: hidden; }
+        .server-ip-box:hover { background: rgba(255,255,255,0.1); border-color: var(--primary-color); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 77, 77, 0.2); }
         .server-ip-box:active { transform: translateY(1px); }
         .ip-hint { font-size: 0.85rem; color: var(--text-muted); transition: color 0.3s; }
 
@@ -68,50 +84,47 @@
         .about-section { background: var(--surface-color); }
         .section-title { font-size: 2.5rem; text-align: center; margin-bottom: 50px; font-weight: 800; text-transform: uppercase; }
         .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1000px; margin: 0 auto; }
-        .about-card { background: var(--bg-color); padding: 30px; border-radius: 15px; border: 1px solid var(--border-color); border-top: 4px solid var(--primary-color); }
+        .about-card { background: var(--bg-color); padding: 30px; border-radius: 15px; border: 1px solid var(--border-color); border-top: 4px solid var(--primary-color); transition: transform 0.3s, box-shadow 0.3s; }
+        .about-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .about-card h3 { font-size: 1.5rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
         .about-card p { color: var(--text-muted); line-height: 1.7; }
 
         /* SECTION STATISTIQUES */
         .stats-header { display: flex; justify-content: space-between; align-items: flex-end; max-width: 1000px; margin: 0 auto 30px auto; flex-wrap: wrap; gap: 20px; }
         .refresh-btn-manual { background: var(--primary-color); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; font-family: 'Montserrat', sans-serif; display: flex; align-items: center; gap: 8px; }
-        .refresh-btn-manual:hover { background: var(--primary-hover); transform: translateY(-2px); }
-        .refresh-btn-manual:disabled { background: #555; cursor: not-allowed; transform: none; }
+        .refresh-btn-manual:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 77, 77, 0.3); }
+        .refresh-btn-manual:disabled { background: #555; cursor: not-allowed; transform: none; box-shadow: none; }
         .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
         .stat-card { background: var(--surface-color); padding: 30px; border-radius: 15px; border: 1px solid var(--border-color); text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
         .stat-card:hover { border-color: var(--primary-color); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255,77,77,0.1); }
-        .stat-icon { font-size: 30px; margin-bottom: 15px; display: block; }
+        .stat-icon { font-size: 30px; margin-bottom: 15px; display: block; transition: transform 0.3s; }
+        .stat-card:hover .stat-icon { transform: scale(1.2); }
         .stat-card h3 { color: var(--text-muted); font-size: 1rem; margin-bottom: 10px; font-weight: 600; text-transform: uppercase; }
         .stat-card p { font-size: 1.8rem; font-weight: 800; color: white; }
 
-        /* =========================================
-           FOOTER ET MENTIONS LÉGALES (REFAIT)
-           ========================================= */
+        /* FOOTER ET MENTIONS LÉGALES */
         footer { background: #080808; padding: 60px 20px; text-align: center; border-top: 1px solid var(--border-color); margin-top: auto; }
         .footer-logo { font-size: 2rem; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; }
         .footer-logo span { color: var(--primary-color); }
         .footer-contact { margin-bottom: 40px; }
         .footer-contact p { color: var(--text-muted); margin-bottom: 10px; font-size: 1.1rem; }
-        .footer-email { color: var(--primary-color); font-size: 1.2rem; font-weight: bold; transition: color 0.3s; }
-        .footer-email:hover { color: white; }
+        .footer-email { color: var(--primary-color); font-size: 1.2rem; font-weight: bold; transition: color 0.3s, text-shadow 0.3s; }
+        .footer-email:hover { color: white; text-shadow: 0 0 10px var(--primary-color); }
         .footer-legal { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; color: #555; font-size: 0.85rem; max-width: 600px; margin: 0 auto; line-height: 1.5; }
 
-        /* =========================================
-           MODALE (LISTE DES JOUEURS)
-           ========================================= */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-content { background: var(--surface-color); padding: 30px; width: 90%; max-width: 500px; border-radius: 15px; border: 1px solid var(--primary-color); position: relative; box-shadow: 0 0 50px rgba(255,77,77,0.1); }
+        /* MODALE (LISTE DES JOUEURS) */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content { background: var(--surface-color); padding: 30px; width: 90%; max-width: 500px; border-radius: 15px; border: 1px solid var(--primary-color); position: relative; box-shadow: 0 0 50px rgba(255,77,77,0.1); transform: scale(0.95); animation: scaleUp 0.3s forwards; }
+        @keyframes scaleUp { to { transform: scale(1); } }
         .close-btn { position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 24px; color: var(--text-muted); transition: 0.3s; }
-        .close-btn:hover { color: var(--primary-color); }
+        .close-btn:hover { color: var(--primary-color); transform: rotate(90deg); }
         .modal-title { font-size: 1.5rem; margin-bottom: 20px; font-weight: 800; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
         #player-list { max-height: 400px; overflow-y: auto; padding-right: 5px; }
-        #player-list::-webkit-scrollbar { width: 6px; }
-        #player-list::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
-        .player-item { display: flex; align-items: center; justify-content: space-between; padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.2); margin-bottom: 5px; border-radius: 8px; }
+        .player-item { display: flex; align-items: center; justify-content: space-between; padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.2); margin-bottom: 5px; border-radius: 8px; transition: background 0.2s; }
+        .player-item:hover { background: rgba(255,255,255,0.05); }
 
-        /* =========================================
-           RESPONSIVE DESIGN (MOBILES)
-           ========================================= */
+        /* RESPONSIVE DESIGN (MOBILES) */
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
             .main-content { margin-left: 0; }
@@ -186,7 +199,7 @@
             </div>
         </section>
 
-        <section id="about" class="about-section">
+        <section id="about" class="about-section reveal">
             <h2 class="section-title">L'Expérience <span>Nova</span></h2>
             <div class="about-grid">
                 <div class="about-card">
@@ -204,7 +217,7 @@
             </div>
         </section>
 
-        <section id="stats">
+        <section id="stats" class="reveal">
             <div class="stats-header">
                 <div>
                     <h2 style="font-size: 2rem; font-weight: 800; text-transform: uppercase;">État du <span>Serveur</span></h2>
@@ -225,7 +238,7 @@
                     <span class="stat-icon">👥</span>
                     <h3>Joueurs en ligne</h3>
                     <p id="players-text">— / —</p>
-                    <small style="color: var(--primary-color); display: block; margin-top: 10px; font-weight: bold;">Cliquez pour voir la liste</small>
+                    <small style="color: var(--primary-color); display: block; margin-top: 10px; font-weight: bold; transition: 0.3s;">Cliquez pour voir la liste</small>
                 </div>
                 <div class="stat-card">
                     <span class="stat-icon">🔖</span>
@@ -235,7 +248,7 @@
             </div>
         </section>
 
-        <footer id="contact">
+        <footer id="contact" class="reveal">
             <div class="footer-logo">Nova<span>Fantasia</span></div>
             
             <div class="footer-contact">
@@ -264,7 +277,6 @@
         // 1. Fonction pour récupérer les données API sans cache
         async function fetchStats() {
             try {
-                // ?t=Date.now() pour forcer le VRAI reload sans utiliser le cache du navigateur
                 const res = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}?t=${Date.now()}`);
                 const data = await res.json();
                 
@@ -272,15 +284,16 @@
                     playerList = data.players?.list || [];
                     const statusText = document.getElementById('status-text');
                     statusText.textContent = 'En ligne';
-                    statusText.style.color = '#4caf50'; // Vert si en ligne
+                    statusText.style.color = '#4caf50';
                     document.getElementById('players-text').textContent = `${data.players.online} / ${data.players.max}`;
                     document.getElementById('version-text').textContent = data.version;
                 } else {
                     document.getElementById('status-text').textContent = 'Hors ligne';
+                    document.getElementById('status-text').style.color = '#ff4d4d';
                     document.getElementById('players-text').textContent = '0 / 0';
                 }
             } catch (e) { 
-                console.error('Erreur de connexion à l\'API', e); 
+                console.error('Erreur API', e); 
                 document.getElementById('status-text').textContent = 'Erreur API';
             }
         }
@@ -295,7 +308,6 @@
             
             await fetchStats();
             
-            // Si la fenêtre des joueurs est ouverte, on la recharge dynamiquement
             if (document.getElementById('playerModal').style.display === 'flex') {
                 showPlayers();
             }
@@ -307,20 +319,29 @@
             }, 2000);
         }
 
+        // NOUVEAU : Auto-refresh toutes les 2 minutes (120 000 ms)
+        setInterval(() => {
+            fetchStats();
+            // Si la modale est ouverte pendant l'auto-refresh, on l'actualise aussi
+            if (document.getElementById('playerModal').style.display === 'flex') {
+                showPlayers();
+            }
+        }, 120000);
+
         // 3. Générateur de barres de connexion visuelles (Ping simulé)
         function getPingBars() {
-            const barsCount = Math.floor(Math.random() * 4) + 1; // Entre 1 et 4 barres
+            const barsCount = Math.floor(Math.random() * 4) + 1;
             let html = '<div style="display:flex; gap: 3px; align-items: flex-end;">';
             for (let i = 0; i < 4; i++) {
                 const color = (i < barsCount) ? (barsCount > 2 ? '#4caf50' : '#ff9800') : '#333333';
-                const height = 8 + (i * 4); // La barre grandit
+                const height = 8 + (i * 4);
                 html += `<span style="width: 5px; height: ${height}px; background-color: ${color}; border-radius: 1px;"></span>`;
             }
             html += '</div>';
             return html;
         }
 
-        // 4. Affichage de la modale des joueurs (Correction du bug Object)
+        // 4. Affichage de la modale des joueurs
         function showPlayers() {
             const listElement = document.getElementById('player-list');
             listElement.innerHTML = ''; 
@@ -329,9 +350,7 @@
                 listElement.innerHTML = '<li style="text-align:center; padding: 20px; color:#888;">Aucun joueur n\'est en ligne actuellement.</li>';
             } else {
                 playerList.forEach(player => {
-                    // C'est ici qu'on règle le bug "[object Object]"
                     const name = (typeof player === 'object' && player.name) ? player.name : player;
-                    
                     listElement.innerHTML += `
                         <li class="player-item">
                             <div style="display: flex; align-items: center; gap: 12px;">
@@ -353,7 +372,7 @@
             document.getElementById('playerModal').style.display = 'none'; 
         }
 
-        // 6. Système de copie d'IP optimisé
+        // 6. Système de copie d'IP
         function copyIP() { 
             navigator.clipboard.writeText(SERVER_IP).then(() => {
                 const hint = document.getElementById('copy-hint');
@@ -361,21 +380,35 @@
                 hint.style.color = '#4caf50';
                 hint.style.fontWeight = 'bold';
                 
-                // Remet le texte normal après 3 secondes
                 setTimeout(() => {
                     hint.textContent = 'Cliquez sur l\'IP pour la copier';
                     hint.style.color = 'var(--text-muted)';
                     hint.style.fontWeight = 'normal';
                 }, 3000);
-            }).catch(err => {
-                console.error('Erreur lors de la copie', err);
             });
         }
 
-        // 7. Initialisation au chargement de la page
-        window.onload = fetchStats;
+        // NOUVEAU : 7. Animations au défilement (Scroll Reveal)
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        window.addEventListener('scroll', revealOnScroll);
 
-        // 8. Fermer la modale en cliquant en dehors
+        // 8. Initialisation au chargement de la page
+        window.onload = () => {
+            fetchStats();
+            revealOnScroll(); // Pour afficher les éléments déjà visibles
+        };
+
+        // 9. Fermer la modale en cliquant en dehors
         window.onclick = function(event) {
             const modal = document.getElementById('playerModal');
             if (event.target === modal) {
