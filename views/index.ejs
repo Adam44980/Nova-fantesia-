@@ -5,33 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nova Fantasia | Serveur Minecraft Anarchie</title>
     <link rel="stylesheet" href="/css/style.css">
-    <!-- Icônes FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- BOUTON BURGER FIXE À GAUCHE -->
+    <!-- ===================== BURGER ===================== -->
     <input type="checkbox" id="menu-toggle" class="menu-toggle">
     <label for="menu-toggle" class="burger-btn">
-        <i class="fas fa-bars icon-open"></i>
+        <i class="fas fa-bars"></i>
     </label>
 
-    <!-- BARRE LATÉRALE À GAUCHE (SIDEBAR) -->
+    <!-- ==================== SIDEBAR ==================== -->
     <div class="sidebar">
-        <!-- Bouton Fermer (Croix) propre et aligné en haut à droite de la sidebar -->
+
         <label for="menu-toggle" class="close-btn">
             <i class="fas fa-times"></i>
         </label>
 
-        <div class="sidebar-brand">
-            Nova<span>Fantasia</span>
-        </div>
-        
+        <div class="sidebar-brand">Nova<span>Fantasia</span></div>
+
         <ul class="sidebar-menu">
+
             <li><a href="#" class="menu-link active"><i class="fas fa-home"></i> Accueil</a></li>
             <li><a href="#stats" class="menu-link"><i class="fas fa-chart-bar"></i> Statistiques</a></li>
-            
-            <!-- MENU DÉROULANT : COMMUNAUTÉ -->
+
             <li>
                 <details class="menu-dropdown">
                     <summary><i class="fas fa-users"></i> Communauté <i class="fas fa-chevron-down arrow"></i></summary>
@@ -41,7 +38,6 @@
                 </details>
             </li>
 
-            <!-- MENU DÉROULANT : GAME REVIVE -->
             <li>
                 <details class="menu-dropdown">
                     <summary><i class="fas fa-gamepad"></i> Game Revive <i class="fas fa-chevron-down arrow"></i></summary>
@@ -51,20 +47,18 @@
                     </div>
                 </details>
             </li>
-            
-            <!-- MENU DÉROULANT : NOGHOSTTT -->
+
             <li>
                 <details class="menu-dropdown">
                     <summary><i class="fas fa-ghost"></i> Noghosttt <i class="fas fa-chevron-down arrow"></i></summary>
                     <div class="dropdown-content">
                         <a href="https://www.youtube.com/@noghosttt" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
-                        <a href="https://m.twitch.tv/noghosttt?desktop-redirect=true" target="_blank"><i class="fab fa-twitch"></i> Twitch Principal</a>
+                        <a href="https://m.twitch.tv/noghosttt?desktop-redirect=true" target="_blank"><i class="fab fa-twitch"></i> Twitch</a>
                         <a href="https://www.tiktok.com/@noghoos" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
                     </div>
                 </details>
             </li>
 
-            <!-- MENU DÉROULANT : CONTACT -->
             <li>
                 <details class="menu-dropdown">
                     <summary><i class="fas fa-envelope"></i> Contact <i class="fas fa-chevron-down arrow"></i></summary>
@@ -73,48 +67,206 @@
                     </div>
                 </details>
             </li>
+
         </ul>
     </div>
 
-    <!-- ZONE DE CONTENU PRINCIPAL -->
+    <!-- ================== CONTENU PRINCIPAL ================== -->
     <div class="main-content">
+
+        <!-- HERO -->
         <section class="hero">
             <div class="hero-content">
-                <h1>L'Anarchie à l'État Pur.</h1>
+                <div class="hero-badge"><i class="fas fa-skull"></i> SERVEUR ANARCHIE</div>
+                <h1>L'Anarchie à l'<span>État Pur.</span></h1>
                 <p>Pas de règles. Pas de claims. Juste de la survie, du pillage et de la liberté totale sur Nova Fantasia.</p>
-                
-                <div class="server-ip-box" onclick="navigator.clipboard.writeText('<%= stats.ip %>'); alert('IP copiée ! Prêt à rejoindre ?');">
-                    <span class="ip-text"><%= stats.ip %></span>
-                    <span class="copy-badge"><i class="far fa-copy"></i> Copier l'IP</span>
+
+                <div class="server-ip-box" onclick="copyIP()">
+                    <div class="ip-left">
+                        <i class="fas fa-server ip-icon"></i>
+                        <span class="ip-text" id="server-ip">novafantasia.falixsrv.me</span>
+                    </div>
+                    <span class="copy-badge" id="copy-badge">
+                        <i class="far fa-copy"></i> Copier l'IP
+                    </span>
+                </div>
+
+                <div class="hero-live">
+                    <span class="live-dot" id="hero-dot"></span>
+                    <span id="hero-players">Chargement...</span>
                 </div>
             </div>
         </section>
 
+        <!-- STATS -->
         <section id="stats" class="stats-section">
-            <h2>État du Serveur</h2>
-            <div class="stats-container">
-                <div class="stat-card">
-                    <i class="fas fa-signal <%= stats.online ? 'status-online' : 'status-offline' %>"></i>
-                    <h3>Statut</h3>
-                    <p><%= stats.online ? 'En ligne' : 'Hors ligne' %></p>
+            <div class="section-header">
+                <h2>État du <span>Serveur</span></h2>
+                <div class="refresh-info">
+                    <span>Actualisation dans <strong id="countdown">60</strong>s</span>
+                    <button class="refresh-btn" onclick="fetchStats()" title="Actualiser maintenant">
+                        <i class="fas fa-sync-alt" id="refresh-icon"></i>
+                    </button>
                 </div>
+            </div>
+
+            <div class="stats-container">
+
                 <div class="stat-card">
-                    <i class="fas fa-users"></i>
-                    <h3>Joueurs en Ligne</h3>
-                    <p><%= stats.currentPlayers %> / <%= stats.maxPlayers %></p>
+                    <div class="stat-icon-wrap">
+                        <i class="fas fa-signal" id="status-icon"></i>
+                    </div>
+                    <h3>Statut</h3>
+                    <p id="status-text">—</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon-wrap">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Joueurs en ligne</h3>
+                    <p id="players-text">— / —</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon-wrap">
+                        <i class="fas fa-code-branch"></i>
+                    </div>
+                    <h3>Version</h3>
+                    <p id="version-text">—</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon-wrap">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h3>IP de connexion</h3>
+                    <p style="font-size:14px;">novafantasia.falixsrv.me</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- REJOINDRE -->
+        <section class="join-section">
+            <div class="join-content">
+                <h2>Prêt à rejoindre le chaos ?</h2>
+                <p>Lance Minecraft, ajoute le serveur et plonge dans l'anarchie totale. Aucune inscription requise.</p>
+                <div class="join-steps">
+                    <div class="step"><span class="step-num">1</span><p>Lance <strong>Minecraft Java</strong></p></div>
+                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="step"><span class="step-num">2</span><p>Va dans <strong>Multijoueur</strong></p></div>
+                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="step"><span class="step-num">3</span><p>Ajoute <strong>l'IP</strong> du serveur</p></div>
+                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="step"><span class="step-num">4</span><p><strong>Connecte-toi</strong> et survive !</p></div>
                 </div>
             </div>
         </section>
 
+        <!-- FOOTER -->
         <footer id="contact">
             <div class="footer-content">
-                <h3>Rejoindre l'Équipe / Support</h3>
+                <div class="footer-brand">Nova<span>Fantasia</span></div>
                 <p>Une question, un bug à signaler ou une proposition de partenariat ?</p>
-                <a href="mailto:novafantesia@gmail.com" class="email-btn"><i class="fas fa-envelope"></i> novafantesia@gmail.com</a>
-                <p class="copyright">&copy; 2026 Nova Fantasia. Tous droits réservés. Ce site n'est pas affilié à Mojang Studios.</p>
+                <a href="mailto:novafantesia@gmail.com" class="email-btn">
+                    <i class="fas fa-envelope"></i> novafantesia@gmail.com
+                </a>
+                <div class="footer-links">
+                    <a href="https://discord.com/invite/9hEamDNMj" target="_blank"><i class="fab fa-discord"></i></a>
+                    <a href="https://www.youtube.com/@adam44-y1y" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://m.twitch.tv/game_revive44" target="_blank"><i class="fab fa-twitch"></i></a>
+                    <a href="https://www.tiktok.com/@noghoos" target="_blank"><i class="fab fa-tiktok"></i></a>
+                </div>
+                <p class="copyright">&copy; 2026 Nova Fantasia — Tous droits réservés. Non affilié à Mojang Studios.</p>
             </div>
         </footer>
+
     </div>
+
+    <!-- ===================== SCRIPTS ===================== -->
+    <script>
+        const SERVER_IP = 'novafantasia.falixsrv.me';
+        const REFRESH_INTERVAL = 60;
+        let countdown = REFRESH_INTERVAL;
+        let countdownTimer;
+
+        async function fetchStats() {
+            const icon = document.getElementById('refresh-icon');
+            icon.style.transition = 'transform 0.6s ease';
+            icon.style.transform = 'rotate(360deg)';
+            setTimeout(() => { icon.style.transition = ''; icon.style.transform = ''; }, 600);
+
+            try {
+                const res = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}`);
+                const data = await res.json();
+
+                const statusIcon = document.getElementById('status-icon');
+                const statusText = document.getElementById('status-text');
+                const playersText = document.getElementById('players-text');
+                const versionText = document.getElementById('version-text');
+                const heroDot = document.getElementById('hero-dot');
+                const heroPlayers = document.getElementById('hero-players');
+
+                if (data.online) {
+                    const online = data.players?.online ?? 0;
+                    const max = data.players?.max ?? 0;
+
+                    statusIcon.className = 'fas fa-signal status-online';
+                    statusText.textContent = 'En ligne';
+                    playersText.textContent = `${online} / ${max}`;
+                    versionText.textContent = data.version ?? 'Inconnue';
+
+                    heroDot.classList.add('dot-online');
+                    heroDot.classList.remove('dot-offline');
+                    heroPlayers.textContent = `${online} joueur${online > 1 ? 's' : ''} en ligne`;
+                } else {
+                    statusIcon.className = 'fas fa-signal status-offline';
+                    statusText.textContent = 'Hors ligne';
+                    playersText.textContent = '0 / —';
+                    versionText.textContent = '—';
+
+                    heroDot.classList.add('dot-offline');
+                    heroDot.classList.remove('dot-online');
+                    heroPlayers.textContent = 'Serveur hors ligne';
+                }
+
+            } catch (e) {
+                document.getElementById('status-icon').className = 'fas fa-signal status-offline';
+                document.getElementById('status-text').textContent = 'Erreur réseau';
+                document.getElementById('hero-players').textContent = 'Impossible de joindre le serveur';
+                console.error('Erreur API:', e);
+            }
+
+            countdown = REFRESH_INTERVAL;
+        }
+
+        function startCountdown() {
+            clearInterval(countdownTimer);
+            countdownTimer = setInterval(() => {
+                countdown--;
+                document.getElementById('countdown').textContent = countdown;
+                if (countdown <= 0) fetchStats();
+            }, 1000);
+        }
+
+        function copyIP() {
+            navigator.clipboard.writeText(SERVER_IP).then(() => {
+                const badge = document.getElementById('copy-badge');
+                badge.innerHTML = '<i class="fas fa-check"></i> Copié !';
+                badge.style.backgroundColor = '#2ea043';
+                badge.style.borderColor = '#2ea043';
+                setTimeout(() => {
+                    badge.innerHTML = '<i class="far fa-copy"></i> Copier l\'IP';
+                    badge.style.backgroundColor = '';
+                    badge.style.borderColor = '';
+                }, 2000);
+            });
+        }
+
+        fetchStats();
+        startCountdown();
+    </script>
 
 </body>
 </html>
