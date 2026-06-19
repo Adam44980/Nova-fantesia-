@@ -8,6 +8,6 @@
   },
   "dependencies": {
     "express": "^4.19.2",
-    "minestat": "^1.2.0"
+    "minestat": "*"
   }
 }
