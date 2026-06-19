@@ -4,417 +4,1755 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Nova Fantasia - Le serveur Minecraft Anarchie ultime. Survie, PvP, pillage, zéro règle. Rejoignez l'expérience No Wipe dès maintenant.">
-    <meta name="keywords" content="Minecraft, Anarchie, Serveur, PvP, Survie, Nova Fantasia, FalixNodes">
+    <meta name="keywords" content="Minecraft, Anarchie, Serveur, PvP, Survie, Nova Fantasia, FalixNodes, No Rules">
+    <meta name="author" content="Nova Fantasia">
     <title>Nova Fantasia | Serveur Minecraft Anarchie</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        /* VARIABLES ET RESET DE BASE */
+        /* =========================================
+           VARIABLES ET RESET DE BASE
+           ========================================= */
         :root {
             --primary-color: #ff4d4d;
             --primary-hover: #cc3d3d;
-            --bg-color: #0d0d0d;
-            --surface-color: #1a1a1a;
+            --primary-dim: rgba(255, 77, 77, 0.15);
+            --bg-color: #060606;
+            --surface-color: #101010;
+            --surface-light: #1a1a1a;
             --text-main: #ffffff;
             --text-muted: #888888;
-            --border-color: #333333;
+            --border-color: #222222;
+            --accent-glow: rgba(255, 77, 77, 0.35);
+            --accent-glow-strong: rgba(255, 77, 77, 0.6);
+            --gold: #f0a500;
+            --green: #4caf50;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-color); color: var(--text-main); display: flex; overflow-x: hidden; scroll-behavior: smooth; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; }
 
-        /* NOUVEAU : SCROLLBAR GLOBALE PERSONNALISÉE */
-        ::-webkit-scrollbar { width: 10px; }
+        /* SCROLLBAR PERSONNALISÉE */
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-color); }
-        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
 
-        /* NOUVEAU : ANIMATIONS CSS */
+        /* =========================================
+           ANIMATIONS CSS GLOBALES
+           ========================================= */
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(50px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.2); }
-            50% { box-shadow: 0 0 20px rgba(255, 77, 77, 0.6); }
-            100% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.2); }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-        .reveal { opacity: 0; transition: all 0.8s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 10px var(--accent-glow), 0 0 20px var(--accent-glow); }
+            50% { box-shadow: 0 0 20px var(--accent-glow-strong), 0 0 40px var(--accent-glow-strong); }
+        }
+        @keyframes pulseGlowText {
+            0%, 100% { text-shadow: 0 0 10px var(--accent-glow); }
+            50% { text-shadow: 0 0 25px var(--accent-glow-strong), 0 0 50px rgba(255, 77, 77, 0.3); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes scanline {
+            0% { top: -5%; }
+            100% { top: 105%; }
+        }
+        @keyframes glitch1 {
+            0%, 90%, 100% { clip-path: none; transform: none; }
+            91% { clip-path: inset(20% 0 60% 0); transform: translateX(-4px); }
+            93% { clip-path: inset(40% 0 40% 0); transform: translateX(4px); }
+            95% { clip-path: inset(60% 0 20% 0); transform: translateX(-2px); }
+        }
+        @keyframes glitch2 {
+            0%, 88%, 100% { clip-path: none; transform: none; opacity: 0; }
+            89% { clip-path: inset(10% 0 70% 0); transform: translateX(5px); opacity: 0.8; color: #ff4d4d; }
+            91% { clip-path: inset(50% 0 30% 0); transform: translateX(-5px); opacity: 0.8; color: #00ffff; }
+        }
+        @keyframes borderSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes modalPop {
+            from { transform: scale(0.85) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        @keyframes fadeOutRight {
+            to { opacity: 0; transform: translateX(110%); }
+        }
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink {
+            0%, 100% { border-right-color: var(--primary-color); }
+            50% { border-right-color: transparent; }
+        }
+        @keyframes floatY {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+            20%, 40%, 60%, 80% { transform: translateX(4px); }
+        }
+        @keyframes countUp {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes heroLineGrow {
+            from { width: 0; }
+            to { width: 80px; }
+        }
+        @keyframes neonFlicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 0 0 5px var(--primary-color), 0 0 20px var(--accent-glow);
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+            }
+        }
 
-        /* SIDEBAR (MENU GAUCHE) */
-        .sidebar { width: 250px; background-color: var(--surface-color); height: 100vh; position: fixed; border-right: 1px solid var(--border-color); padding: 20px; z-index: 100; overflow-y: auto; }
-        .sidebar-brand { font-size: 24px; font-weight: 900; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 1px; }
-        .sidebar-brand span { color: var(--primary-color); }
-        .sidebar-menu li { margin-bottom: 15px; }
-        .menu-link { display: block; padding: 10px; border-radius: 8px; color: var(--text-muted); font-weight: 600; transition: 0.3s; }
-        .menu-link:hover, .menu-link.active { background-color: rgba(255, 77, 77, 0.1); color: var(--primary-color); }
-        
-        details.menu-dropdown { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 10px; cursor: pointer; color: var(--text-muted); font-weight: 600; transition: 0.3s; }
-        details.menu-dropdown:hover { background: rgba(255,255,255,0.06); }
-        details.menu-dropdown summary { list-style: none; display: flex; justify-content: space-between; align-items: center; }
-        details.menu-dropdown[open] summary { color: var(--primary-color); margin-bottom: 10px; }
-        .dropdown-content a { display: block; padding: 8px 10px; font-size: 14px; color: #aaa; transition: 0.2s; border-left: 2px solid transparent; }
-        .dropdown-content a:hover { color: white; border-left: 2px solid var(--primary-color); padding-left: 15px; }
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: all 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: all 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
 
-        /* MENU MOBILE BURGER */
+        /* =========================================
+           CANVAS BACKGROUND (PARTICULES CENDRES)
+           ========================================= */
+        #particle-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* =========================================
+           SIDEBAR PREMIUM
+           ========================================= */
+        .sidebar {
+            width: 270px;
+            background: linear-gradient(180deg, #0e0e0e 0%, #080808 100%);
+            height: 100vh;
+            position: fixed;
+            border-right: 1px solid #1e1e1e;
+            padding: 30px 18px;
+            z-index: 200;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .sidebar::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, var(--primary-color), transparent);
+            opacity: 0.4;
+        }
+
+        .sidebar-brand {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #1a1a1a;
+            position: relative;
+        }
+        .sidebar-brand span { color: var(--primary-color); animation: neonFlicker 5s infinite; }
+        .sidebar-brand .brand-dot {
+            display: block;
+            width: 6px; height: 6px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            margin: 8px auto 0 auto;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .sidebar-menu { flex-grow: 1; }
+        .sidebar-menu li { margin-bottom: 6px; }
+        .menu-label {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #444;
+            padding: 12px 15px 6px 15px;
+        }
+        .menu-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 15px;
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.25s ease;
+            border-left: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .menu-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--primary-color);
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+        .menu-link:hover, .menu-link.active {
+            background: rgba(255, 77, 77, 0.06);
+            color: var(--text-main);
+            border-left-color: var(--primary-color);
+            padding-left: 20px;
+        }
+
+        details.menu-dropdown { cursor: pointer; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; }
+        details.menu-dropdown summary {
+            padding: 11px 15px;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px;
+            border-left: 2px solid transparent;
+            transition: 0.25s;
+        }
+        details.menu-dropdown[open] summary {
+            color: var(--primary-color);
+            background: rgba(255, 77, 77, 0.06);
+            border-left-color: var(--primary-color);
+        }
+        .dropdown-content { padding: 4px 0 8px 12px; }
+        .dropdown-content a {
+            display: block;
+            padding: 7px 10px 7px 14px;
+            font-size: 13px;
+            color: #666;
+            transition: 0.2s;
+            border-left: 1px solid #1e1e1e;
+            margin-left: 8px;
+        }
+        .dropdown-content a:hover {
+            color: var(--text-main);
+            border-left-color: var(--primary-color);
+            padding-left: 18px;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #3a3a3a;
+        }
+        .sidebar-footer .status-dot {
+            display: inline-block;
+            width: 6px; height: 6px;
+            background: #4caf50;
+            border-radius: 50%;
+            margin-right: 6px;
+            box-shadow: 0 0 6px #4caf50;
+            animation: pulseGlow 2s infinite;
+        }
+
         .menu-toggle { display: none; }
-        .burger-btn { display: none; position: fixed; top: 15px; left: 15px; z-index: 1001; font-size: 24px; cursor: pointer; background: var(--surface-color); padding: 5px 10px; border-radius: 5px; border: 1px solid var(--border-color); }
+        .burger-btn {
+            display: none;
+            position: fixed;
+            top: 18px; left: 18px;
+            z-index: 1001;
+            font-size: 20px;
+            cursor: pointer;
+            background: var(--surface-color);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+        }
 
-        /* CONTENU PRINCIPAL */
-        .main-content { margin-left: 250px; flex: 1; min-height: 100vh; display: flex; flex-direction: column; }
-        section { padding: 80px 40px; }
+        /* =========================================
+           CONTENU PRINCIPAL
+           ========================================= */
+        .main-content {
+            margin-left: 270px;
+            flex: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+        }
+        section { padding: 110px 6%; position: relative; z-index: 2; }
 
-        /* HERO SECTION */
-        .hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #2a1111 0%, var(--bg-color) 70%); border-bottom: 1px solid var(--border-color); position: relative; }
-        .hero-badge { background: rgba(255, 77, 77, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: bold; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; animation: pulseGlow 3s infinite; }
-        .hero h1 { font-size: 4rem; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; line-height: 1.1; animation: fadeUp 1s ease-out; }
-        .hero h1 span { color: var(--primary-color); }
-        .hero p { color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto 40px auto; line-height: 1.6; animation: fadeUp 1.2s ease-out; }
+        .section-title {
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            text-align: center;
+            margin-bottom: 70px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px; height: 3px;
+            background: var(--primary-color);
+            margin: 16px auto 0 auto;
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--accent-glow);
+            animation: heroLineGrow 1s ease forwards;
+        }
+        .section-title span { color: var(--primary-color); }
 
-        /* BOUTON COPIER IP */
-        .ip-container { display: flex; flex-direction: column; align-items: center; gap: 10px; animation: fadeUp 1.4s ease-out; }
-        .server-ip-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px 30px; border-radius: 50px; font-size: 1.2rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 15px; position: relative; overflow: hidden; }
-        .server-ip-box:hover { background: rgba(255,255,255,0.1); border-color: var(--primary-color); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 77, 77, 0.2); }
-        .server-ip-box:active { transform: translateY(1px); }
-        .ip-hint { font-size: 0.85rem; color: var(--text-muted); transition: color 0.3s; }
+        /* =========================================
+           SECTION HERO — GLITCH PREMIUM
+           ========================================= */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(ellipse at 50% 40%, rgba(60, 10, 10, 0.7) 0%, var(--bg-color) 65%);
+            border-bottom: 1px solid #181818;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-scanline {
+            position: absolute;
+            left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(255, 77, 77, 0.15), transparent);
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
+        }
+        .hero-badge {
+            background: rgba(255, 77, 77, 0.07);
+            border: 1px solid rgba(255, 77, 77, 0.5);
+            color: var(--primary-color);
+            padding: 8px 22px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            margin-bottom: 28px;
+            text-transform: uppercase;
+            animation: pulseGlow 3s infinite;
+        }
 
-        /* SECTION LA BIO / À PROPOS */
-        .about-section { background: var(--surface-color); }
-        .section-title { font-size: 2.5rem; text-align: center; margin-bottom: 50px; font-weight: 800; text-transform: uppercase; }
-        .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1000px; margin: 0 auto; }
-        .about-card { background: var(--bg-color); padding: 30px; border-radius: 15px; border: 1px solid var(--border-color); border-top: 4px solid var(--primary-color); transition: transform 0.3s, box-shadow 0.3s; }
-        .about-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .about-card h3 { font-size: 1.5rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .about-card p { color: var(--text-muted); line-height: 1.7; }
+        .hero-title-wrap { position: relative; display: inline-block; }
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.0;
+            animation: fadeUp 0.9s ease-out forwards;
+            letter-spacing: -1px;
+        }
+        .hero h1 .line1 { display: block; color: #fff; }
+        .hero h1 .line2 { display: block; color: var(--primary-color); animation: pulseGlowText 4s infinite; }
 
-        /* SECTION STATISTIQUES */
-        .stats-header { display: flex; justify-content: space-between; align-items: flex-end; max-width: 1000px; margin: 0 auto 30px auto; flex-wrap: wrap; gap: 20px; }
-        .refresh-btn-manual { background: var(--primary-color); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; font-family: 'Montserrat', sans-serif; display: flex; align-items: center; gap: 8px; }
-        .refresh-btn-manual:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 77, 77, 0.3); }
-        .refresh-btn-manual:disabled { background: #555; cursor: not-allowed; transform: none; box-shadow: none; }
-        .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
-        .stat-card { background: var(--surface-color); padding: 30px; border-radius: 15px; border: 1px solid var(--border-color); text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
-        .stat-card:hover { border-color: var(--primary-color); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255,77,77,0.1); }
-        .stat-icon { font-size: 30px; margin-bottom: 15px; display: block; transition: transform 0.3s; }
-        .stat-card:hover .stat-icon { transform: scale(1.2); }
-        .stat-card h3 { color: var(--text-muted); font-size: 1rem; margin-bottom: 10px; font-weight: 600; text-transform: uppercase; }
-        .stat-card p { font-size: 1.8rem; font-weight: 800; color: white; }
+        /* GLITCH EFFECT */
+        .glitch-wrap { position: relative; }
+        .glitch-wrap::before, .glitch-wrap::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            font-size: inherit;
+            font-weight: inherit;
+            text-transform: inherit;
+            letter-spacing: inherit;
+            line-height: inherit;
+        }
+        .glitch-wrap::before {
+            animation: glitch1 7s infinite;
+            color: #ff4d4d;
+        }
+        .glitch-wrap::after {
+            animation: glitch2 7s infinite;
+            color: #00ffff;
+        }
 
-        /* FOOTER ET MENTIONS LÉGALES */
-        footer { background: #080808; padding: 60px 20px; text-align: center; border-top: 1px solid var(--border-color); margin-top: auto; }
-        .footer-logo { font-size: 2rem; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; }
+        .hero p {
+            color: var(--text-muted);
+            font-size: clamp(1rem, 1.4vw, 1.2rem);
+            max-width: 620px;
+            margin: 28px auto 50px auto;
+            animation: fadeUp 1.1s ease-out forwards;
+            font-weight: 500;
+            line-height: 1.8;
+        }
+
+        /* BOUTON IP */
+        .ip-container { animation: fadeUp 1.3s ease-out forwards; }
+        .server-ip-box {
+            background: rgba(15, 15, 15, 0.9);
+            border: 1px solid #2a2a2a;
+            padding: 18px 45px;
+            border-radius: 50px;
+            font-size: clamp(1rem, 1.5vw, 1.35rem);
+            font-weight: 800;
+            font-family: 'Share Tech Mono', monospace;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+        .server-ip-box::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50px;
+            background: linear-gradient(90deg, var(--primary-color), #ff9944, var(--primary-color));
+            background-size: 200% 100%;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+            animation: borderSpin 3s linear infinite;
+        }
+        .server-ip-box:hover::before { opacity: 1; }
+        .server-ip-box:hover {
+            background: #0d0d0d;
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 15px 35px rgba(255, 77, 77, 0.25);
+        }
+        .server-ip-box:active { transform: translateY(1px) scale(0.98); }
+        .ip-hint { margin-top: 14px; font-size: 0.82rem; color: #444; }
+
+        /* =========================================
+           SECTION FEATURES / ABOUT
+           ========================================= */
+        .about-section {
+            background: linear-gradient(180deg, #080808, #0c0c0c);
+            border-bottom: 1px solid #181818;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .about-card {
+            background: #0b0b0b;
+            padding: 38px 32px;
+            border-radius: 16px;
+            border: 1px solid #1c1c1c;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: default;
+        }
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), #ff9944);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        .about-card::after {
+            content: '';
+            position: absolute;
+            bottom: -60px; right: -60px;
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,77,77,0.06) 0%, transparent 70%);
+            transition: all 0.5s ease;
+        }
+        .about-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+            border-color: rgba(255, 77, 77, 0.25);
+        }
+        .about-card:hover::before { transform: scaleX(1); }
+        .about-card:hover::after { width: 250px; height: 250px; bottom: -80px; right: -80px; }
+        .about-card h3 { font-size: 1.4rem; margin-bottom: 16px; font-weight: 800; }
+        .about-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; }
+        .icon-large {
+            font-size: 2.2rem;
+            display: block;
+            margin-bottom: 18px;
+            transition: transform 0.3s;
+        }
+        .about-card:hover .icon-large { transform: scale(1.2) rotate(-5deg); animation: floatY 2s ease infinite; }
+
+        /* =========================================
+           SECTION GALERIE PREMIUM
+           ========================================= */
+        .gallery-section { background: #060606; }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .gallery-item {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 16/9;
+            background: var(--surface-light);
+            border: 1px solid #1c1c1c;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.4s;
+            filter: brightness(0.6) saturate(0.8);
+        }
+        .gallery-item:hover img { transform: scale(1.1); filter: brightness(0.9) saturate(1.1); }
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.35s;
+        }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+        .gallery-overlay span {
+            font-weight: 800;
+            font-size: 1.05rem;
+            transform: translateY(15px);
+            transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .gallery-overlay .gallery-tag {
+            font-size: 0.7rem;
+            color: var(--primary-color);
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transform: translateY(20px);
+            transition: transform 0.35s 0.05s cubic-bezier(0.25, 0.8, 0.25, 1);
+            margin-bottom: 6px;
+        }
+        .gallery-item:hover .gallery-overlay span,
+        .gallery-item:hover .gallery-overlay .gallery-tag {
+            transform: translateY(0);
+        }
+        /* Highlight : première grande image */
+        .gallery-item.highlight {
+            grid-column: span 2;
+        }
+        @media (max-width: 700px) { .gallery-item.highlight { grid-column: span 1; } }
+
+        /* =========================================
+           SECTION STATISTIQUES ULTRA PREMIUM
+           ========================================= */
+        .stats-section { background: #070707; border-top: 1px solid #181818; }
+        .stats-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            max-width: 1200px;
+            margin: 0 auto 50px auto;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .stats-header-text h2 { font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 900; text-transform: uppercase; }
+        .stats-header-text p { color: var(--text-muted); margin-top: 8px; font-size: 0.95rem; }
+        .refresh-btn-manual {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .refresh-btn-manual:hover {
+            background: var(--primary-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 77, 77, 0.3);
+        }
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .stat-card {
+            background: linear-gradient(145deg, #0e0e0e, #080808);
+            padding: 40px 30px;
+            border-radius: 16px;
+            border: 1px solid #1c1c1c;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .stat-card:hover { border-color: rgba(255,77,77,0.3); transform: translateY(-6px); box-shadow: 0 20px 40px rgba(255,77,77,0.1); }
+        .stat-card:hover::before { opacity: 1; }
+        .stat-icon { font-size: 38px; margin-bottom: 18px; display: block; filter: drop-shadow(0 0 8px rgba(255,255,255,0.15)); }
+        .stat-card h3 { color: #555; font-size: 0.85rem; margin-bottom: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+        .stat-card p { font-size: 2.3rem; font-weight: 900; color: white; }
+        .stat-card.clickable { cursor: pointer; }
+        .stat-card.clickable .click-hint {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .stat-card.clickable:hover .click-hint { opacity: 1; }
+
+        /* =========================================
+           SECTION FAQ PREMIUM
+           ========================================= */
+        .faq-section { background: linear-gradient(180deg, #0a0a0a, #060606); }
+        .faq-container { max-width: 820px; margin: 0 auto; }
+        .faq-item {
+            background: #0b0b0b;
+            border: 1px solid #1e1e1e;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .faq-item.active { border-color: rgba(255, 77, 77, 0.4); box-shadow: 0 8px 25px rgba(255,77,77,0.1); }
+        .faq-question {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: background 0.2s;
+            user-select: none;
+        }
+        .faq-question:hover { background: rgba(255,255,255,0.02); }
+        .faq-icon { font-size: 1.4rem; color: var(--primary-color); transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); flex-shrink: 0; }
+        .faq-item.active .faq-icon { transform: rotate(45deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.45s ease, padding 0.3s; padding: 0 25px; color: var(--text-muted); line-height: 1.8; font-size: 0.95rem; }
+        .faq-item.active .faq-answer { max-height: 300px; padding: 0 25px 22px 25px; }
+
+        /* =========================================
+           SECTION CONTACT FORMULAIRE — NOUVEAU
+           ========================================= */
+        .contact-section {
+            background: #080808;
+            border-top: 1px solid #181818;
+        }
+        .contact-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+        @media (max-width: 900px) { .contact-wrapper { grid-template-columns: 1fr; } }
+
+        .contact-info h3 { font-size: 1.8rem; font-weight: 900; margin-bottom: 16px; }
+        .contact-info p { color: var(--text-muted); line-height: 1.8; margin-bottom: 35px; }
+
+        .contact-email-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            background: #0d0d0d;
+            border: 1px solid #252525;
+            border-radius: 12px;
+            padding: 18px 25px;
+            transition: all 0.3s;
+            margin-bottom: 35px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+        .contact-email-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary-color), #ff9944);
+            border-radius: 3px 0 0 3px;
+        }
+        .contact-email-box:hover {
+            border-color: rgba(255,77,77,0.3);
+            box-shadow: 0 10px 30px rgba(255,77,77,0.1);
+            transform: translateY(-2px);
+        }
+        .email-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .email-details { flex: 1; }
+        .email-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #555; margin-bottom: 3px; }
+        .email-address { font-family: 'Share Tech Mono', monospace; color: var(--primary-color); font-size: 0.95rem; font-weight: 600; }
+        .email-copy-hint { font-size: 0.72rem; color: #444; margin-top: 2px; }
+
+        .contact-tags { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+        .contact-tag {
+            background: rgba(255,77,77,0.07);
+            border: 1px solid rgba(255,77,77,0.2);
+            color: #888;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        /* FORMULAIRE CONTACT */
+        .contact-form-wrap {
+            background: #0b0b0b;
+            border: 1px solid #1e1e1e;
+            border-radius: 20px;
+            padding: 36px;
+            position: relative;
+            overflow: hidden;
+        }
+        .contact-form-wrap::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        }
+        .contact-form-wrap h4 { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
+        .contact-form-wrap .form-desc { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 28px; }
+
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            background: #080808;
+            border: 1px solid #1e1e1e;
+            border-radius: 10px;
+            padding: 14px 18px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            outline: none;
+            resize: none;
+            -webkit-appearance: none;
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder { color: #333; }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: rgba(255,77,77,0.5);
+            box-shadow: 0 0 0 3px rgba(255,77,77,0.07);
+            background: #0a0a0a;
+        }
+        .form-group select { cursor: pointer; }
+        .form-group select option { background: #111; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color), #cc2200);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: rgba(255,255,255,0.12);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+        .submit-btn:hover::before { width: 300px; height: 300px; }
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255,77,77,0.3); }
+        .submit-btn:active { transform: translateY(1px); }
+
+        .form-note { font-size: 0.75rem; color: #444; text-align: center; margin-top: 14px; }
+
+        /* =========================================
+           FOOTER ULTRA PREMIUM
+           ========================================= */
+        footer {
+            background: #040404;
+            padding: 80px 6% 40px 6%;
+            border-top: 1px solid #181818;
+            margin-top: auto;
+            position: relative;
+            z-index: 10;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 6%; right: 6%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            opacity: 0.4;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 50px;
+            max-width: 1100px;
+            margin: 0 auto 50px auto;
+        }
+        @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; } }
+
+        .footer-col h4 { font-size: 0.85rem; color: #666; margin-bottom: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
+        .footer-col ul li { margin-bottom: 10px; color: var(--text-muted); font-size: 0.9rem; }
+        .footer-col ul li a { transition: 0.2s; }
+        .footer-col ul li a:hover { color: var(--primary-color); padding-left: 4px; }
+
+        .footer-logo { font-size: 2rem; font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
         .footer-logo span { color: var(--primary-color); }
-        .footer-contact { margin-bottom: 40px; }
-        .footer-contact p { color: var(--text-muted); margin-bottom: 10px; font-size: 1.1rem; }
-        .footer-email { color: var(--primary-color); font-size: 1.2rem; font-weight: bold; transition: color 0.3s, text-shadow 0.3s; }
-        .footer-email:hover { color: white; text-shadow: 0 0 10px var(--primary-color); }
-        .footer-legal { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; color: #555; font-size: 0.85rem; max-width: 600px; margin: 0 auto; line-height: 1.5; }
+        .footer-desc { color: #444; font-size: 0.88rem; line-height: 1.8; margin-bottom: 22px; }
+        .footer-mail-link { color: var(--primary-color); font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .footer-mail-link:hover { text-decoration: underline; }
 
-        /* MODALE (LISTE DES JOUEURS) */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); animation: fadeIn 0.3s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .modal-content { background: var(--surface-color); padding: 30px; width: 90%; max-width: 500px; border-radius: 15px; border: 1px solid var(--primary-color); position: relative; box-shadow: 0 0 50px rgba(255,77,77,0.1); transform: scale(0.95); animation: scaleUp 0.3s forwards; }
-        @keyframes scaleUp { to { transform: scale(1); } }
-        .close-btn { position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 24px; color: var(--text-muted); transition: 0.3s; }
-        .close-btn:hover { color: var(--primary-color); transform: rotate(90deg); }
-        .modal-title { font-size: 1.5rem; margin-bottom: 20px; font-weight: 800; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        #player-list { max-height: 400px; overflow-y: auto; padding-right: 5px; }
-        .player-item { display: flex; align-items: center; justify-content: space-between; padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.2); margin-bottom: 5px; border-radius: 8px; transition: background 0.2s; }
-        .player-item:hover { background: rgba(255,255,255,0.05); }
+        .social-links { display: flex; gap: 10px; margin-top: 18px; }
+        .social-btn {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #222;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+        .social-btn:hover { background: var(--primary-color); border-color: var(--primary-color); transform: translateY(-3px) rotate(-5deg); }
 
-        /* RESPONSIVE DESIGN (MOBILES) */
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.04);
+            padding-top: 28px;
+            text-align: center;
+            color: #333;
+            font-size: 0.78rem;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 2;
+        }
+
+        /* =========================================
+           TOAST — SYSTÈME NOTIFICATIONS
+           ========================================= */
+        .toast-container {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+        .toast {
+            background: #111;
+            border: 1px solid #222;
+            border-left: 3px solid var(--primary-color);
+            padding: 14px 22px;
+            border-radius: 10px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            color: white;
+            font-weight: 600;
+            font-size: 0.88rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            transform: translateX(100%);
+            animation: slideInRight 0.35s forwards;
+            pointer-events: all;
+        }
+        .toast.success { border-left-color: #4caf50; }
+        .toast.error { border-left-color: var(--primary-color); }
+        .toast.hide { animation: fadeOutRight 0.4s forwards; }
+
+        /* =========================================
+           MODALE JOUEURS
+           ========================================= */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.88);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        .modal-content {
+            background: #0d0d0d;
+            width: 90%; max-width: 520px;
+            border-radius: 18px;
+            border: 1px solid #222;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.9);
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .modal-header {
+            padding: 22px 28px;
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-title { font-size: 1.3rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .close-btn {
+            cursor: pointer;
+            font-size: 20px;
+            color: #555;
+            transition: 0.3s;
+            width: 30px; height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #111;
+            border: 1px solid #222;
+        }
+        .close-btn:hover { color: white; background: var(--primary-color); border-color: var(--primary-color); transform: rotate(90deg); }
+        #player-list { max-height: 430px; overflow-y: auto; padding: 18px 25px; }
+        .player-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px;
+            background: rgba(0,0,0,0.25);
+            border: 1px solid #1a1a1a;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            transition: 0.25s;
+        }
+        .player-item:hover { background: rgba(255,255,255,0.03); border-color: #2a2a2a; transform: translateX(4px); }
+        .player-info { display: flex; align-items: center; gap: 14px; }
+        .player-info img { border-radius: 6px; box-shadow: 0 0 12px rgba(0,0,0,0.6); }
+        .player-name { font-weight: 700; }
+
+        /* BACK TO TOP */
+        #backToTop {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            background: #111;
+            color: white;
+            width: 46px; height: 46px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+            border: 1px solid #222;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 998;
+        }
+        #backToTop.visible { opacity: 1; visibility: visible; }
+        #backToTop:hover { background: var(--primary-color); border-color: var(--primary-color); transform: translateY(-4px); }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
         @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar { transform: translateX(-100%); }
             .main-content { margin-left: 0; }
             .burger-btn { display: block; }
-            #menu-toggle:checked ~ .sidebar { transform: translateX(0); box-shadow: 5px 0 20px rgba(0,0,0,0.5); }
-            .hero h1 { font-size: 2.5rem; }
+            #menu-toggle:checked ~ .sidebar { transform: translateX(0); box-shadow: 15px 0 40px rgba(0,0,0,0.9); }
+            section { padding: 70px 5%; }
+            .toast-container, #backToTop { bottom: 20px; right: 20px; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2.4rem; }
+            .server-ip-box { font-size: 0.95rem; padding: 14px 22px; }
         }
     </style>
 </head>
 <body>
 
-    <input type="checkbox" id="menu-toggle" class="menu-toggle">
-    <label for="menu-toggle" class="burger-btn">☰</label>
+<canvas id="particle-canvas"></canvas>
 
-    <div class="sidebar">
-        <div class="sidebar-brand">Nova<span>Fantasia</span></div>
-        <ul class="sidebar-menu">
-            <li><a href="#" class="menu-link active">🏠 Accueil</a></li>
-            <li><a href="#about" class="menu-link">📖 La Bio</a></li>
-            <li><a href="#stats" class="menu-link">📊 Statistiques</a></li>
-            <li>
-                <details class="menu-dropdown">
-                    <summary>⚔️ Événement ▼</summary>
-                    <div class="dropdown-content">
-                        <a href="/arene">🔥 L'Arène</a>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details class="menu-dropdown">
-                    <summary>👥 Communauté ▼</summary>
-                    <div class="dropdown-content">
-                        <a href="https://discord.com/invite/9hEamDNMj" target="_blank">💬 Discord</a>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details class="menu-dropdown">
-                    <summary>🎮 Game Revive ▼</summary>
-                    <div class="dropdown-content">
-                        <a href="https://www.youtube.com/@adam44-y1y" target="_blank">📺 YouTube</a>
-                        <a href="https://m.twitch.tv/game_revive44" target="_blank">💜 Twitch</a>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details class="menu-dropdown">
-                    <summary>👻 Noghosttt ▼</summary>
-                    <div class="dropdown-content">
-                        <a href="https://www.youtube.com/@noghosttt" target="_blank">📺 YouTube</a>
-                        <a href="https://m.twitch.tv/noghosttt" target="_blank">💜 Twitch</a>
-                        <a href="https://www.tiktok.com/@noghoos" target="_blank">🎵 TikTok</a>
-                    </div>
-                </details>
-            </li>
-        </ul>
+<input type="checkbox" id="menu-toggle" class="menu-toggle">
+<label for="menu-toggle" class="burger-btn">☰</label>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        Nova<br><span>Fantasia</span>
+        <span class="brand-dot"></span>
     </div>
+    <ul class="sidebar-menu">
+        <li><div class="menu-label">Navigation</div></li>
+        <li><a href="#home" class="menu-link active">🏠 Accueil</a></li>
+        <li><a href="#about" class="menu-link">📖 L'Expérience</a></li>
+        <li><a href="#gallery" class="menu-link">📸 Galerie</a></li>
+        <li><a href="#stats" class="menu-link">📊 Statistiques</a></li>
+        <li><a href="#faq" class="menu-link">❓ F.A.Q</a></li>
+        <li><a href="#contact" class="menu-link">✉️ Contact</a></li>
 
-    <div class="main-content">
-        
-        <section class="hero">
-            <div class="hero-badge">💀 SERVEUR ANARCHIE</div>
-            <h1>L'Anarchie à l'<span>État Pur.</span></h1>
-            <p>Pas de règles. Pas de claims. Juste de la survie, du pillage et de la liberté totale. Rejoins l'expérience ultime sur Nova Fantasia.</p>
-            
-            <div class="ip-container">
-                <div class="server-ip-box" onclick="copyIP()" title="Cliquez pour copier l'IP">
-                    <span style="color: var(--primary-color);">🖥️</span>
-                    <span id="server-ip-text">novafantasia.falixsrv.me</span>
+        <li style="margin-top: 18px;">
+            <div class="menu-label">Communauté</div>
+        </li>
+        <li>
+            <details class="menu-dropdown">
+                <summary>⚔️ Événement ▼</summary>
+                <div class="dropdown-content">
+                    <a href="/arene">🔥 L'Arène</a>
                 </div>
-                <span id="copy-hint" class="ip-hint">Cliquez sur l'IP pour la copier</span>
-            </div>
-        </section>
-
-        <section id="about" class="about-section reveal">
-            <h2 class="section-title">L'Expérience <span>Nova</span></h2>
-            <div class="about-grid">
-                <div class="about-card">
-                    <h3>🛡️ Aucune Règle</h3>
-                    <p>Sur Nova Fantasia, tu es livré à toi-même. Le grief, le pillage et le PvP sont non seulement autorisés, mais font partie intégrante du gameplay. Fais confiance à personne.</p>
+            </details>
+        </li>
+        <li>
+            <details class="menu-dropdown">
+                <summary>👥 Réseaux ▼</summary>
+                <div class="dropdown-content">
+                    <a href="https://discord.com/invite/9hEamDNMj" target="_blank">💬 Discord Officiel</a>
+                    <a href="https://www.youtube.com/@adam44-y1y" target="_blank">📺 Game Revive (YT)</a>
+                    <a href="https://m.twitch.tv/game_revive44" target="_blank">💜 Game Revive (Twitch)</a>
+                    <a href="https://www.youtube.com/@noghosttt" target="_blank">📺 Noghosttt (YT)</a>
+                    <a href="https://m.twitch.tv/noghosttt" target="_blank">💜 Noghosttt (Twitch)</a>
                 </div>
-                <div class="about-card">
-                    <h3>🗺️ Survie Vanilla</h3>
-                    <p>Nous offrons une expérience de survie authentique sans plugins envahissants modifiant les mécaniques de base. La carte est générée de manière naturelle et n'est jamais réinitialisée (No Wipe).</p>
-                </div>
-                <div class="about-card">
-                    <h3>🤝 Communauté Forte</h3>
-                    <p>Malgré le chaos, des alliances se forgent et se brisent chaque jour. Rejoins notre Discord pour négocier, échanger, ou déclarer la guerre aux autres factions du serveur.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="stats" class="reveal">
-            <div class="stats-header">
-                <div>
-                    <h2 style="font-size: 2rem; font-weight: 800; text-transform: uppercase;">État du <span>Serveur</span></h2>
-                    <p style="color: var(--text-muted); margin-top: 5px;">Données récupérées en temps réel via l'API.</p>
-                </div>
-                <button class="refresh-btn-manual" onclick="manualRefresh()" id="refresh-btn">
-                    <span>🔄</span> Actualiser maintenant
-                </button>
-            </div>
-
-            <div class="stats-container">
-                <div class="stat-card">
-                    <span class="stat-icon">📡</span>
-                    <h3>Statut</h3>
-                    <p id="status-text" style="color: #ff4d4d;">Chargement...</p>
-                </div>
-                <div class="stat-card" onclick="showPlayers()" style="cursor: pointer;" title="Voir la liste des joueurs">
-                    <span class="stat-icon">👥</span>
-                    <h3>Joueurs en ligne</h3>
-                    <p id="players-text">— / —</p>
-                    <small style="color: var(--primary-color); display: block; margin-top: 10px; font-weight: bold; transition: 0.3s;">Cliquez pour voir la liste</small>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-icon">🔖</span>
-                    <h3>Version</h3>
-                    <p id="version-text">—</p>
-                </div>
-            </div>
-        </section>
-
-        <footer id="contact" class="reveal">
-            <div class="footer-logo">Nova<span>Fantasia</span></div>
-            
-            <div class="footer-contact">
-                <p>Une question ? <a href="mailto:novafantesia@gmail.com" class="footer-email">novafantesia@gmail.com</a></p>
-            </div>
-
-            <div class="footer-legal">
-                <p>&copy; 2026 Nova Fantasia. Tous droits réservés.</p>
-                <p>Nova Fantasia est une marque déposée. Ce serveur n'est en aucun cas affilié, approuvé ou soutenu par Mojang AB, Microsoft Corporation ou tout autre ayant droit officiel de Minecraft. "Minecraft" est une marque commerciale de Mojang Synergies AB.</p>
-            </div>
-        </footer>
+            </details>
+        </li>
+    </ul>
+    <div class="sidebar-footer">
+        <span class="status-dot"></span> Serveur 1.20+ No Wipe
     </div>
+</aside>
 
-    <div id="playerModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">✕</span>
-            <h3 class="modal-title">Joueurs Connectés</h3>
-            <ul id="player-list"></ul>
+<!-- MAIN -->
+<main class="main-content">
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="hero-scanline"></div>
+        <div class="hero-badge">💀 Anarchie Extrême — No Wipe</div>
+        <div class="hero-title-wrap">
+            <h1>
+                <span class="line1">L'Anarchie à</span>
+                <span class="line2 glitch-wrap" data-text="l'État Pur.">l'État Pur.</span>
+            </h1>
         </div>
+        <p>Ni règles, ni admins, ni pitié. Forge ton destin, trahis tes alliés, détruit des empires. Bienvenue dans l'enfer qui ne se réinitialise jamais.</p>
+
+        <div class="ip-container">
+            <button class="server-ip-box" onclick="copyIP()" title="Copier l'adresse IP">
+                <span style="color: var(--primary-color);">⚔️</span>
+                <span id="server-ip-text">novafantasia.falixsrv.me</span>
+                <span style="color: #333; font-size: 0.8rem;">📋</span>
+            </button>
+            <div class="ip-hint">Cliquez pour copier et rejoindre le chaos</div>
+        </div>
+    </section>
+
+    <!-- FEATURES / ABOUT -->
+    <section id="about" class="about-section">
+        <h2 class="section-title reveal">Les Lois du <span>Chaos</span></h2>
+        <div class="about-grid">
+            <div class="about-card reveal">
+                <span class="icon-large">🔪</span>
+                <h3>Zéro Règle Absolue</h3>
+                <p>Le grief, le vol, les trahisons et le PvP sauvage sont l'essence même du serveur. Tout ce qui n'est pas un hack ruinant le serveur techniquement est permis. Fais confiance à tes propres armes.</p>
+            </div>
+            <div class="about-card reveal" style="transition-delay: 0.12s;">
+                <span class="icon-large">🗺️</span>
+                <h3>Jamais Réinitialisé</h3>
+                <p>Notre promesse No Wipe garantit que tes ruines, tes monuments et tes cratères resteront gravés pour toujours. Laisse ton empreinte dans ce monde dévasté à jamais.</p>
+            </div>
+            <div class="about-card reveal" style="transition-delay: 0.24s;">
+                <span class="icon-large">🔥</span>
+                <h3>Économie de Guerre</h3>
+                <p>Pas de monnaie virtuelle, pas de shop. La seule valeur est celle des ressources que tu parviens à extraire, cacher ou voler. L'économie est 100% menée par les joueurs.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERIE -->
+    <section id="gallery" class="gallery-section">
+        <h2 class="section-title reveal">Vestiges & <span>Guerres</span></h2>
+        <div class="gallery-grid">
+            <div class="gallery-item highlight reveal">
+                <img src="https://images.unsplash.com/photo-1606169493527-31368297b4dd?auto=format&fit=crop&q=80&w=900&h=506" alt="Ruines du spawn">
+                <div class="gallery-overlay">
+                    <div class="gallery-tag">📍 Zone 0,0</div>
+                    <span>Les ruines du spawn</span>
+                </div>
+            </div>
+            <div class="gallery-item reveal" style="transition-delay: 0.1s;">
+                <img src="https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?auto=format&fit=crop&q=80&w=600&h=337" alt="Combat PvP">
+                <div class="gallery-overlay">
+                    <div class="gallery-tag">⚔️ PvP</div>
+                    <span>Combat au Nether</span>
+                </div>
+            </div>
+            <div class="gallery-item reveal" style="transition-delay: 0.2s;">
+                <img src="https://images.unsplash.com/photo-1542840410-3092f99611a3?auto=format&fit=crop&q=80&w=600&h=337" alt="Paysage ravagé">
+                <div class="gallery-overlay">
+                    <div class="gallery-tag">💣 Destruction</div>
+                    <span>Le cratère 0,0</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section id="stats" class="stats-section">
+        <div class="stats-header reveal">
+            <div class="stats-header-text">
+                <h2>État du <span style="color:var(--primary-color);">Serveur</span></h2>
+                <p>Connexion directe avec les serveurs FalixNodes — données en temps réel.</p>
+            </div>
+            <button class="refresh-btn-manual" onclick="manualRefresh()" id="refresh-btn">
+                <span>🔄</span> Forcer l'actualisation
+            </button>
+        </div>
+        <div class="stats-container">
+            <div class="stat-card reveal">
+                <span class="stat-icon">📡</span>
+                <h3>Statut Réseau</h3>
+                <p id="status-text" style="color: #ff4d4d; font-size: 1.8rem;">Recherche...</p>
+            </div>
+            <div class="stat-card clickable reveal" onclick="showPlayers()" style="transition-delay: 0.1s;">
+                <span class="stat-icon">💀</span>
+                <h3>Survivants Connectés</h3>
+                <p id="players-text">— / —</p>
+                <span class="click-hint">→ Voir la liste</span>
+            </div>
+            <div class="stat-card reveal" style="transition-delay: 0.2s;">
+                <span class="stat-icon">⚙️</span>
+                <h3>Version Requise</h3>
+                <p id="version-text">1.20+</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="faq-section">
+        <h2 class="section-title reveal">Questions <span>Fréquentes</span></h2>
+        <div class="faq-container reveal">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Puis-je utiliser un client cheat (Hacks) ?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>L'utilisation de clients modifiés (X-Ray, KillAura, Flight) dépend de la politique exacte du moment. Généralement sur un serveur purement anarchique, le principe est de ne pas intervenir — MAIS tout hack causant des crashs délibérés (Lag machines) est passible d'un bannissement réseau.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Le serveur va-t-il fermer ou reset la map ?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Non. Nova Fantasia a été conçu avec la promesse d'une map intemporelle. La taille du monde augmentera, mais les chunks générés ne seront jamais effacés par les administrateurs.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Est-il possible d'acheter un grade ou des avantages ?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Absolument pas. Nova Fantasia est strictement anti-Pay-To-Win. Il n'y a pas de boutique, pas de kits, pas de commandes VIP. Tout le monde naît nu et misérable sur ce serveur.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Comment rejoindre le serveur pour la première fois ?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Lance Minecraft Java Edition version 1.20 ou supérieure. Va dans "Multijoueur" → "Ajouter un serveur" → entre l'adresse <strong style="color: var(--primary-color);">novafantasia.falixsrv.me</strong> et connecte-toi. Tu spawnes au centre, prépare-toi à courir.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Y a-t-il un Discord officiel ?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Oui ! Rejoins notre Discord officiel via le lien dans la section "Réseaux" du menu. Tu pourras y trouver les annonces, signaler des bugs, et contacter l'équipe directement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT — NOUVEAU SECTION -->
+    <section id="contact" class="contact-section">
+        <h2 class="section-title reveal">Contacte <span>l'Équipe</span></h2>
+        <div class="contact-wrapper">
+
+            <!-- COLONNE INFOS -->
+            <div class="contact-info reveal-left">
+                <h3>Un bug, un problème<br>ou une question ?</h3>
+                <p>L'équipe Nova Fantasia est disponible pour toute demande sérieuse : signalement de joueurs, problèmes techniques, suggestions d'événements ou partenariats. Nous répondons sous 48h.</p>
+
+                <!-- ENCADRÉ EMAIL PREMIUM -->
+                <div class="contact-email-box" onclick="copyEmail()" title="Cliquer pour copier l'adresse mail">
+                    <span class="email-icon">✉️</span>
+                    <div class="email-details">
+                        <div class="email-label">Adresse officielle</div>
+                        <div class="email-address">novafantesia@gmail.com</div>
+                        <div class="email-copy-hint">Cliquez pour copier</div>
+                    </div>
+                    <span style="color: #333; font-size: 1.1rem;">📋</span>
+                </div>
+
+                <div class="contact-tags">
+                    <span class="contact-tag">🐛 Bug Report</span>
+                    <span class="contact-tag">❓ Question</span>
+                    <span class="contact-tag">🤝 Partenariat</span>
+                    <span class="contact-tag">🚨 Signalement</span>
+                    <span class="contact-tag">💡 Suggestion</span>
+                </div>
+            </div>
+
+            <!-- FORMULAIRE -->
+            <div class="contact-form-wrap reveal-right">
+                <h4>Écrivez-nous</h4>
+                <p class="form-desc">Remplis le formulaire ci-dessous, nous vous répondrons rapidement.</p>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Pseudo Minecraft</label>
+                        <input type="text" id="f-pseudo" placeholder="Steve_PvP_44" maxlength="16">
+                    </div>
+                    <div class="form-group">
+                        <label>Email (optionnel)</label>
+                        <input type="email" id="f-email" placeholder="toi@exemple.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Type de demande</label>
+                    <select id="f-type">
+                        <option value="">— Choisir une catégorie —</option>
+                        <option value="bug">🐛 Signaler un bug / crash</option>
+                        <option value="probleme">🚨 Problème avec un joueur</option>
+                        <option value="question">❓ Question générale</option>
+                        <option value="suggestion">💡 Suggestion / idée</option>
+                        <option value="partenariat">🤝 Partenariat</option>
+                        <option value="autre">📌 Autre</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Votre message</label>
+                    <textarea id="f-message" rows="5" placeholder="Décris ton problème ou ta question en détail. Plus tu es précis, plus on peut t'aider rapidement..."></textarea>
+                </div>
+
+                <button class="submit-btn" onclick="submitForm()">
+                    🚀 Envoyer le message
+                </button>
+                <p class="form-note">Réponse sous 24–48h · Données non partagées à des tiers</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-logo">Nova<span>Fantasia</span></div>
+                <p class="footer-desc">L'expérience Anarchie ultime sur Minecraft. Survis, combats, et laisse ta marque dans l'histoire de ce monde dévasté.</p>
+                <a href="mailto:novafantesia@gmail.com" class="footer-mail-link">✉️ novafantesia@gmail.com</a>
+                <div class="social-links">
+                    <a href="https://www.youtube.com/@adam44-y1y" target="_blank" class="social-btn" title="Game Revive YT">📺</a>
+                    <a href="https://m.twitch.tv/game_revive44" target="_blank" class="social-btn" title="Game Revive Twitch">💜</a>
+                    <a href="https://www.youtube.com/@noghosttt" target="_blank" class="social-btn" title="Noghosttt">🎥</a>
+                    <a href="https://www.tiktok.com/@noghoos" target="_blank" class="social-btn" title="TikTok">🎵</a>
+                    <a href="https://discord.com/invite/9hEamDNMj" target="_blank" class="social-btn" title="Discord">💬</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="#home">Accueil</a></li>
+                    <li><a href="#about">L'Expérience</a></li>
+                    <li><a href="#gallery">Galerie</a></li>
+                    <li><a href="#stats">Statut du serveur</a></li>
+                    <li><a href="#faq">Support & FAQ</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Liens</h4>
+                <ul>
+                    <li><a href="/arene">🔥 L'Arène (Event)</a></li>
+                    <li><a href="https://discord.com/invite/9hEamDNMj" target="_blank">💬 Discord</a></li>
+                    <li><a href="https://www.youtube.com/@adam44-y1y" target="_blank">📺 Game Revive</a></li>
+                    <li><a href="https://www.youtube.com/@noghosttt" target="_blank">📺 Noghosttt</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Nova Fantasia. Tous droits réservés.</p>
+            <p>Projet indépendant. Non affilié à Mojang AB ou Microsoft Corporation. "Minecraft" est une marque déposée de Mojang Synergies AB.</p>
+        </div>
+    </footer>
+</main>
+
+<!-- MODALE JOUEURS -->
+<div id="playerModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title"><span style="color:var(--primary-color);">👥</span> Survivants en ligne</h3>
+            <span class="close-btn" onclick="closeModal()">✕</span>
+        </div>
+        <ul id="player-list"></ul>
     </div>
+</div>
 
-    <script>
-        const SERVER_IP = 'novafantasia.falixsrv.me';
-        let playerList = []; 
+<!-- TOASTS -->
+<div id="toast-container" class="toast-container"></div>
 
-        // 1. Fonction pour récupérer les données API sans cache
-        async function fetchStats() {
-            try {
-                const res = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}?t=${Date.now()}`);
-                const data = await res.json();
-                
-                if (data.online) {
-                    playerList = data.players?.list || [];
-                    const statusText = document.getElementById('status-text');
-                    statusText.textContent = 'En ligne';
-                    statusText.style.color = '#4caf50';
-                    document.getElementById('players-text').textContent = `${data.players.online} / ${data.players.max}`;
-                    document.getElementById('version-text').textContent = data.version;
-                } else {
-                    document.getElementById('status-text').textContent = 'Hors ligne';
-                    document.getElementById('status-text').style.color = '#ff4d4d';
-                    document.getElementById('players-text').textContent = '0 / 0';
-                }
-            } catch (e) { 
-                console.error('Erreur API', e); 
-                document.getElementById('status-text').textContent = 'Erreur API';
-            }
+<!-- BACK TO TOP -->
+<button id="backToTop" onclick="scrollToTop()">↑</button>
+
+<script>
+    /* ============================================
+       CONFIGURATION
+       ============================================ */
+    const SERVER_IP  = 'novafantasia.falixsrv.me';
+    const EMAIL_ADDR = 'novafantesia@gmail.com';
+    let playerList = [];
+
+    /* ============================================
+       1. MOTEUR DE PARTICULES (CENDRES ANIMÉES)
+       ============================================ */
+    const canvas = document.getElementById('particle-canvas');
+    const ctx    = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', () => { resizeCanvas(); particles = []; initParticles(); });
+    resizeCanvas();
+
+    class Particle {
+        constructor() { this.reset(true); }
+        reset(random = false) {
+            this.x      = Math.random() * canvas.width;
+            this.y      = random ? Math.random() * canvas.height : canvas.height + 10;
+            this.size   = Math.random() * 2.5 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.8;
+            this.speedY = -(Math.random() * 1.5 + 0.4);
+            this.life   = 1.0;
+            this.decay  = Math.random() * 0.004 + 0.002;
+            this.hue    = Math.random() > 0.6 ? 0 : 25;   // rouge ou orangé
         }
-
-        // 2. Bouton d'actualisation manuelle avec feedback visuel
-        async function manualRefresh() {
-            const btn = document.getElementById('refresh-btn');
-            const originalText = btn.innerHTML;
-            
-            btn.innerHTML = "<span>⏳</span> Chargement...";
-            btn.disabled = true;
-            
-            await fetchStats();
-            
-            if (document.getElementById('playerModal').style.display === 'flex') {
-                showPlayers();
-            }
-            
-            btn.innerHTML = "<span>✔️</span> À jour !";
-            setTimeout(() => {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }, 2000);
+        update() {
+            this.x    += this.speedX;
+            this.y    += this.speedY;
+            this.life -= this.decay;
+            if (this.life <= 0 || this.y < -10) this.reset();
         }
-
-        // NOUVEAU : Auto-refresh toutes les 2 minutes (120 000 ms)
-        setInterval(() => {
-            fetchStats();
-            // Si la modale est ouverte pendant l'auto-refresh, on l'actualise aussi
-            if (document.getElementById('playerModal').style.display === 'flex') {
-                showPlayers();
-            }
-        }, 120000);
-
-        // 3. Générateur de barres de connexion visuelles (Ping simulé)
-        function getPingBars() {
-            const barsCount = Math.floor(Math.random() * 4) + 1;
-            let html = '<div style="display:flex; gap: 3px; align-items: flex-end;">';
-            for (let i = 0; i < 4; i++) {
-                const color = (i < barsCount) ? (barsCount > 2 ? '#4caf50' : '#ff9800') : '#333333';
-                const height = 8 + (i * 4);
-                html += `<span style="width: 5px; height: ${height}px; background-color: ${color}; border-radius: 1px;"></span>`;
-            }
-            html += '</div>';
-            return html;
+        draw() {
+            ctx.globalAlpha = this.life * 0.7;
+            ctx.fillStyle   = `hsl(${this.hue}, 90%, 55%)`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
         }
+    }
 
-        // 4. Affichage de la modale des joueurs
-        function showPlayers() {
-            const listElement = document.getElementById('player-list');
-            listElement.innerHTML = ''; 
-            
-            if (playerList.length === 0) {
-                listElement.innerHTML = '<li style="text-align:center; padding: 20px; color:#888;">Aucun joueur n\'est en ligne actuellement.</li>';
+    function initParticles() {
+        for (let i = 0; i < 65; i++) particles.push(new Particle());
+    }
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(animateParticles);
+    }
+    initParticles();
+    animateParticles();
+
+    /* ============================================
+       2. API MINECRAFT — STATISTIQUES SERVEUR
+       ============================================ */
+    async function fetchStats() {
+        try {
+            const res  = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}?nocache=${Date.now()}`);
+            const data = await res.json();
+            const statusEl  = document.getElementById('status-text');
+            const playersEl = document.getElementById('players-text');
+            const versionEl = document.getElementById('version-text');
+
+            if (data.online) {
+                playerList = data.players?.list || [];
+                statusEl.textContent  = '✅ En ligne';
+                statusEl.style.color  = '#4caf50';
+                statusEl.style.fontSize = '1.6rem';
+                playersEl.textContent = `${data.players.online} / ${data.players.max}`;
+                if (data.version) versionEl.textContent = data.version;
             } else {
-                playerList.forEach(player => {
-                    const name = (typeof player === 'object' && player.name) ? player.name : player;
-                    listElement.innerHTML += `
-                        <li class="player-item">
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <img src="https://mc-heads.net/avatar/${name}/32" alt="${name}" style="border-radius: 4px; width: 32px; height: 32px; border: 1px solid #333;">
-                                <span style="font-weight: bold; font-size: 1.1rem; letter-spacing: 0.5px;">${name}</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <span style="font-size: 0.8rem; color: #888; text-transform: uppercase;">Ping</span>
-                                ${getPingBars()}
-                            </div>
-                        </li>`;
-                });
+                statusEl.textContent  = '🔴 Hors Ligne';
+                statusEl.style.color  = '#ff4d4d';
+                statusEl.style.fontSize = '1.6rem';
+                playersEl.textContent = '0 / 0';
+                playerList = [];
             }
-            document.getElementById('playerModal').style.display = 'flex';
+        } catch (e) {
+            console.error('Erreur API Minecraft:', e);
+            document.getElementById('status-text').textContent = '⚠️ Erreur';
         }
+    }
 
-        // 5. Fermer la modale
-        function closeModal() { 
-            document.getElementById('playerModal').style.display = 'none'; 
+    async function manualRefresh() {
+        const btn = document.getElementById('refresh-btn');
+        btn.innerHTML  = '<span>⏳</span> Synchronisation...';
+        btn.disabled   = true;
+        btn.style.opacity = '0.65';
+
+        await fetchStats();
+        if (document.getElementById('playerModal').style.display === 'flex') showPlayers();
+
+        btn.innerHTML    = '<span>✔️</span> Actualisé !';
+        btn.style.background = '#4caf50';
+
+        setTimeout(() => {
+            btn.innerHTML    = '<span>🔄</span> Forcer l\'actualisation';
+            btn.disabled     = false;
+            btn.style.opacity = '1';
+            btn.style.background = '';
+        }, 2200);
+    }
+
+    // Auto-refresh toutes les 60 secondes
+    setInterval(() => {
+        fetchStats();
+        if (document.getElementById('playerModal').style.display === 'flex') showPlayers();
+    }, 60000);
+
+    /* ============================================
+       3. MODALE JOUEURS
+       ============================================ */
+    function getPingBars(bars = null) {
+        const count = bars !== null ? bars : Math.floor(Math.random() * 4) + 1;
+        let html = '<div style="display:flex; gap:3px; align-items:flex-end; height:16px;">';
+        for (let i = 0; i < 4; i++) {
+            const active = i < count;
+            const color  = active ? (count > 2 ? '#4caf50' : count === 2 ? '#ffeb3b' : '#ff4d4d') : '#2a2a2a';
+            const h      = 5 + i * 3;
+            html += `<span style="width:4px;height:${h}px;background:${color};border-radius:2px;display:inline-block;"></span>`;
         }
+        return html + '</div>';
+    }
 
-        // 6. Système de copie d'IP
-        function copyIP() { 
-            navigator.clipboard.writeText(SERVER_IP).then(() => {
-                const hint = document.getElementById('copy-hint');
-                hint.textContent = '✔️ IP copiée dans le presse-papiers !';
-                hint.style.color = '#4caf50';
-                hint.style.fontWeight = 'bold';
-                
-                setTimeout(() => {
-                    hint.textContent = 'Cliquez sur l\'IP pour la copier';
-                    hint.style.color = 'var(--text-muted)';
-                    hint.style.fontWeight = 'normal';
-                }, 3000);
+    function showPlayers() {
+        const listEl = document.getElementById('player-list');
+        listEl.innerHTML = '';
+
+        if (!playerList || playerList.length === 0) {
+            listEl.innerHTML = `
+                <div style="text-align:center;padding:45px 20px;color:var(--text-muted);">
+                    <span style="font-size:3rem;display:block;margin-bottom:12px;">💀</span>
+                    <strong style="display:block;margin-bottom:6px;">Personne en vie</strong>
+                    Le serveur est vide — ou tous les joueurs sont cachés.
+                </div>`;
+        } else {
+            playerList.forEach(player => {
+                const name = (typeof player === 'object' && player.name) ? player.name : player;
+                const li = document.createElement('li');
+                li.className = 'player-item';
+                li.innerHTML = `
+                    <div class="player-info">
+                        <img src="https://mc-heads.net/avatar/${name}/36" alt="${name}" width="36" height="36">
+                        <span class="player-name">${name}</span>
+                    </div>
+                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
+                        <span style="font-size:0.68rem;color:#555;text-transform:uppercase;letter-spacing:1px;">Ping</span>
+                        ${getPingBars()}
+                    </div>`;
+                listEl.appendChild(li);
             });
         }
 
-        // NOUVEAU : 7. Animations au défilement (Scroll Reveal)
-        function revealOnScroll() {
-            const reveals = document.querySelectorAll('.reveal');
-            for (let i = 0; i < reveals.length; i++) {
-                const windowHeight = window.innerHeight;
-                const elementTop = reveals[i].getBoundingClientRect().top;
-                const elementVisible = 100;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add('active');
-                }
-            }
-        }
-        window.addEventListener('scroll', revealOnScroll);
+        document.getElementById('playerModal').style.display = 'flex';
+    }
 
-        // 8. Initialisation au chargement de la page
-        window.onload = () => {
-            fetchStats();
-            revealOnScroll(); // Pour afficher les éléments déjà visibles
-        };
+    function closeModal() { document.getElementById('playerModal').style.display = 'none'; }
+    window.addEventListener('click', e => {
+        if (e.target === document.getElementById('playerModal')) closeModal();
+    });
+    window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-        // 9. Fermer la modale en cliquant en dehors
-        window.onclick = function(event) {
-            const modal = document.getElementById('playerModal');
-            if (event.target === modal) {
-                closeModal();
-            }
+    /* ============================================
+       4. TOAST — SYSTÈME NOTIFICATIONS
+       ============================================ */
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        const icon = type === 'success' ? '✔️' : '❌';
+        toast.innerHTML = `<span style="font-size:1.1rem;">${icon}</span> ${message}`;
+        container.appendChild(toast);
+        // Force reflow pour lancer l'animation
+        void toast.offsetWidth;
+
+        setTimeout(() => {
+            toast.classList.add('hide');
+            setTimeout(() => toast.remove(), 500);
+        }, 4000);
+    }
+
+    /* ============================================
+       5. COPIE IP ET EMAIL
+       ============================================ */
+    function copyIP() {
+        navigator.clipboard.writeText(SERVER_IP)
+            .then(() => showToast(`IP copiée : <b>${SERVER_IP}</b>`, 'success'))
+            .catch(() => showToast('Impossible de copier. Copie manuelle : ' + SERVER_IP, 'error'));
+    }
+
+    function copyEmail() {
+        navigator.clipboard.writeText(EMAIL_ADDR)
+            .then(() => showToast(`Email copié : <b>${EMAIL_ADDR}</b>`, 'success'))
+            .catch(() => showToast('Email : ' + EMAIL_ADDR, 'error'));
+    }
+
+    /* ============================================
+       6. FORMULAIRE CONTACT
+       ============================================ */
+    function submitForm() {
+        const pseudo  = document.getElementById('f-pseudo').value.trim();
+        const email   = document.getElementById('f-email').value.trim();
+        const type    = document.getElementById('f-type').value;
+        const message = document.getElementById('f-message').value.trim();
+
+        // Validation basique
+        if (!pseudo) {
+            highlightError('f-pseudo', 'Entre ton pseudo Minecraft !');
+            return;
         }
-    </script>
+        if (!type) {
+            highlightError('f-type', 'Sélectionne une catégorie !');
+            return;
+        }
+        if (message.length < 20) {
+            highlightError('f-message', 'Message trop court (min. 20 caractères) !');
+            return;
+        }
+
+        // Simulation envoi (lien mailto)
+        const subject = encodeURIComponent(`[${type.toUpperCase()}] ${pseudo} - Nova Fantasia`);
+        const body    = encodeURIComponent(`Pseudo: ${pseudo}\nEmail: ${email || 'Non fourni'}\nCatégorie: ${type}\n\n${message}`);
+        window.location.href = `mailto:${EMAIL_ADDR}?subject=${subject}&body=${body}`;
+
+        // Feedback utilisateur
+        showToast('📨 Ouverture du client mail...', 'success');
+
+        // Reset form
+        setTimeout(() => {
+            document.getElementById('f-pseudo').value  = '';
+            document.getElementById('f-email').value   = '';
+            document.getElementById('f-type').value    = '';
+            document.getElementById('f-message').value = '';
+        }, 800);
+    }
+
+    function highlightError(id, msg) {
+        const el = document.getElementById(id);
+        el.style.borderColor = 'var(--primary-color)';
+        el.style.boxShadow = '0 0 0 3px rgba(255,77,77,0.15)';
+        el.style.animation = 'shake 0.4s ease';
+        showToast(msg, 'error');
+        setTimeout(() => {
+            el.style.borderColor = '';
+            el.style.boxShadow   = '';
+            el.style.animation   = '';
+        }, 2000);
+    }
+
+    /* ============================================
+       7. FAQ ACCORDION
+       ============================================ */
+    function toggleFaq(element) {
+        const parent = element.parentElement;
+        const isOpen = parent.classList.contains('active');
+        // Ferme tous
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+        // Ouvre si était fermé
+        if (!isOpen) parent.classList.add('active');
+    }
+
+    /* ============================================
+       8. SCROLL — REVEAL + SIDEBAR ACTIVE + BACK TO TOP
+       ============================================ */
+    function revealOnScroll() {
+        const triggers = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+        triggers.forEach(el => {
+            if (el.getBoundingClientRect().top < window.innerHeight - 80) {
+                el.classList.add('active');
+            }
+        });
+
+        // Active menu link en fonction de la section visible
+        const sections = document.querySelectorAll('section[id]');
+        let current = '';
+        sections.forEach(sec => {
+            if (window.scrollY >= sec.offsetTop - 200) current = sec.getAttribute('id');
+        });
+        document.querySelectorAll('.menu-link').forEach(link => {
+            link.classList.remove('active');
+            const href = link.getAttribute('href');
+            if (href === '#' + current || (current === 'home' && href === '#')) {
+                link.classList.add('active');
+            }
+        });
+
+        // Back to top
+        const btn = document.getElementById('backToTop');
+        if (window.scrollY > 450) btn.classList.add('visible');
+        else btn.classList.remove('visible');
+    }
+
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+    window.addEventListener('scroll', revealOnScroll, { passive: true });
+
+    /* MENU MOBILE — FERMER EN CLIQUANT UN LIEN */
+    document.querySelectorAll('.menu-link').forEach(link => {
+        link.addEventListener('click', () => {
+            document.getElementById('menu-toggle').checked = false;
+        });
+    });
+
+    /* ============================================
+       9. INITIALISATION AU CHARGEMENT
+       ============================================ */
+    window.addEventListener('load', () => {
+        fetchStats();
+        revealOnScroll();
+    });
+
+    /* SMOOTH SCROLL POUR LES LIENS ANCHOR */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const target = document.querySelector(a.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+</script>
 </body>
 </html>
