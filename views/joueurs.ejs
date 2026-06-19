@@ -5,23 +5,28 @@
     <link rel="stylesheet" href="/css/style.css">
     <title>Dashboard | Nova Fantasia</title>
     <style>
-        .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; padding: 20px; }
+        .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 20px; }
         .player-card { background: #1a1a1a; border: 1px solid #333; padding: 20px; border-radius: 15px; text-align: center; transition: 0.3s; }
-        .player-card:hover { border-color: #ff4d4d; box-shadow: 0 0 20px rgba(255,77,77,0.1); }
+        .player-card:hover { border-color: #ff4d4d; box-shadow: 0 0 15px rgba(255,77,77,0.2); }
         .btn-pro { display: inline-block; background: #ff4d4d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 8px; margin-top: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 style="text-align: center; color: #ff4d4d;">Liste des Guerriers</h1>
+        
         <div class="player-grid">
-            <% players.forEach(function(player) { %>
-            <div class="player-card">
-                <img src="https://mc-heads.net/avatar/<%= player %>" alt="avatar" style="border-radius: 50%; width: 80px;">
-                <h3 style="margin: 15px 0;"><%= player %></h3>
-                <a href="/details?player=<%= player %>" class="btn-pro">Voir Profil +</a>
-            </div>
-            <% }); %>
+            <% if (typeof players !== 'undefined' && players.length > 0) { %>
+                <% players.forEach(function(player) { %>
+                    <div class="player-card">
+                        <img src="https://mc-heads.net/avatar/<%= player %>" alt="avatar" style="border-radius: 50%; width: 80px;">
+                        <h3 style="margin: 15px 0; color: white;"><%= player %></h3>
+                        <a href="/details?player=<%= player %>" class="btn-pro">Voir Profil +</a>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p style="text-align: center; color: #888;">Aucun guerrier n'est en ligne pour le moment.</p>
+            <% } %>
         </div>
     </div>
 </body>
