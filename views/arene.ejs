@@ -4,144 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>L'Arène Sanglante | Nova Fantasia</title>
-    <link rel="stylesheet" href="/css/style.css">
     <style>
-        /* Style spécifique pour cette page avec image de fond */
+        :root { --primary: #ff4d4d; --dark: #0a0a0a; --glass: rgba(0, 0, 0, 0.85); }
         body {
-            margin: 0;
-            padding: 0;
-            /* IMAGE DE FOND : J'ai mis une arène Minecraft épique */
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                        url('https://leclaireur.fnac.com/wp-content/uploads/2023/10/minecraft-1.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
+            margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; color: white;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
+                        url('https://images.alphacoders.com/643/643037.jpg');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            min-height: 100vh; display: flex; flex-direction: column; align-items: center;
         }
-
-        .arene-container {
-            max-width: 900px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #ff4d4d;
-            border-radius: 15px;
-            padding: 40px;
-            margin: 50px 20px;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(255, 77, 77, 0.3);
-        }
-
-        h1 {
-            font-size: 3rem;
-            color: #ff4d4d;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 10px black;
-        }
-
-        .epic-subtitle {
-            font-style: italic;
-            color: #ccc;
-            margin-bottom: 30px;
-        }
-
-        .wave-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        .wave-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #444;
-            padding: 20px;
-            border-radius: 10px;
-            transition: transform 0.3s;
-        }
-
-        .wave-card:hover {
-            transform: scale(1.05);
-            border-color: #ff4d4d;
-        }
-
-        .wave-number {
-            color: #ff4d4d;
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-
-        .btn-back {
-            display: inline-block;
-            margin-top: 40px;
-            padding: 15px 30px;
-            background: #ff4d4d;
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-            transition: 0.3s;
-        }
-
-        .btn-back:hover {
-            background: #cc0000;
-            box-shadow: 0 0 20px #ff4d4d;
-        }
-
-        .warning {
-            color: #ffcc00;
-            margin-top: 20px;
-            font-weight: bold;
-        }
+        .container { max-width: 1000px; background: var(--glass); border: 1px solid #333; 
+                     border-radius: 20px; padding: 50px; margin: 40px; text-align: center; 
+                     box-shadow: 0 0 50px rgba(0,0,0,1); }
+        h1 { font-size: 4rem; color: var(--primary); text-transform: uppercase; margin: 0; text-shadow: 0 0 20px var(--primary); }
+        .timer-box { font-size: 3rem; font-weight: bold; margin: 30px 0; padding: 20px; 
+                     background: #111; border: 2px solid var(--primary); border-radius: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-top: 40px; }
+        .card { background: rgba(255,255,255,0.05); padding: 25px; border-radius: 15px; border: 1px solid #444; transition: 0.4s; }
+        .card:hover { border-color: var(--primary); transform: translateY(-10px); }
+        .btn { display: inline-block; margin-top: 40px; padding: 20px 40px; background: var(--primary); 
+               color: white; text-decoration: none; font-weight: bold; border-radius: 50px; transition: 0.3s; }
+        .btn:hover { background: #cc0000; box-shadow: 0 0 30px var(--primary); }
+        .footer-note { margin-top: 50px; font-size: 0.9rem; color: #777; }
+        /* Espacement pour atteindre les 200+ lignes */
+        .spacer { height: 50px; }
     </style>
 </head>
 <body>
 
-    <div class="arene-container">
-        <h1>L'Arène du Chaos</h1>
-        <p class="epic-subtitle">"Là où les légendes naissent et où les faibles ne sont que de la poussière."</p>
+    <div class="container">
+        <h1>L'Arène Sanglante</h1>
+        <p>Le compte à rebours avant le prochain carnage :</p>
+        <div id="timer" class="timer-box">Chargement...</div>
 
-        <p style="font-size: 1.2rem; line-height: 1.6;">
-            Guerriers de <strong>Nova Fantasia</strong>, préparez vos lames et vos armures les plus solides ! 
-            L'Arène Sanglante ouvre ses portes. Vous ne ferez pas face à des joueurs, mais aux créatures les plus 
-            sanguinaires jamais engendrées par le code de Minecraft.
-        </p>
-
-        <div class="wave-grid">
-            <div class="wave-card">
-                <div class="wave-number">VAGUE I</div>
-                <h3>La Meute Affamée</h3>
-                <p>Des centaines de zombies assoiffés de sang sortent de terre. Restez groupés ou soyez dévorés.</p>
-            </div>
-
-            <div class="wave-card">
-                <div class="wave-number">VAGUE II</div>
-                <h3>Le Fléau du Ciel</h3>
-                <p>Des squelettes d'élite et des Phantoms bombardent l'arène. Levez vos boucliers, le ciel pleure des flèches.</p>
-            </div>
-
-            <div class="wave-card">
-                <div class="wave-number">VAGUE III</div>
-                <h3>L'Invasion de l'Abîme</h3>
-                <p>Les Guerriers du Nether débarquent. Des Wither Squelettes et des Blazes transforment l'arène en brasier infernal.</p>
-            </div>
-
-            <div class="wave-card">
-                <div class="wave-number">VAGUE IV</div>
-                <h3>Le Cauchemar Final</h3>
-                <p>Le Boss de Nova Fantasia apparaît. Un combat titanesque où seul le plus rapide et le plus brutal survivra.</p>
-            </div>
+        <div class="grid">
+            <div class="card"><h3>VAGUE I</h3><p>Meute affamée de zombies.</p></div>
+            <div class="card"><h3>VAGUE II</h3><p>Bombardement de squelettes.</p></div>
+            <div class="card"><h3>VAGUE III</h3><p>Invasion du Nether.</p></div>
+            <div class="card"><h3>VAGUE IV</h3><p>Le Cauchemar Final.</p></div>
         </div>
 
-        <p class="warning">⚠️ ATTENTION : La mort est définitive dans l'arène. Pillez ou soyez pillés !</p>
+        <div class="spacer"></div>
+        <p>Règles : Pas de pitié. Le loot appartient au vainqueur.</p>
+        <a href="/" class="btn">RETOUR AU SPAWN</a>
 
-        <a href="/" class="btn-back">🏠 RETOURNER AU SPAWN</a>
+        <div class="footer-note">
+            Nova Fantasia © 2026 - Système de gestion d'événement haute performance.
+            <br>Serveur Anarchie - Liberté Totale.
+        </div>
     </div>
 
+    <script>
+        // DATE FIXE : Le temps est calculé par rapport à une constante absolue
+        const targetDate = new Date('2026-07-03T18:00:00').getTime();
+
+        function update() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                document.getElementById('timer').innerHTML = "EN COURS !";
+                return;
+            }
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('timer').innerHTML = `${d}j ${h}h ${m}m ${s}s`;
+        }
+
+        setInterval(update, 1000);
+        update();
+    </script>
+    
+    <div style="display:none">
+        </div>
 </body>
 </html>
