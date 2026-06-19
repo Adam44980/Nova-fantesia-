@@ -19,34 +19,58 @@ span {
 }
 
 /* ==========================================================================
-   BOUTON BURGER (FIXE À GAUCHE)
+   BOUTONS DE CONTRÔLE (BURGER ET CROIX SÉPARÉS)
    ========================================================================== */
 .menu-toggle {
     display: none;
 }
 
+/* Bouton d'ouverture (Menu principal) */
 .burger-btn {
     position: fixed;
     top: 20px;
-    left: 20px; /* Aligné à gauche */
-    font-size: 26px;
+    left: 20px;
+    font-size: 24px;
     color: #f0f6fc;
     cursor: pointer;
-    z-index: 1200;
+    z-index: 1000;
     background-color: #161b22;
-    padding: 10px 14px;
+    padding: 12px 15px;
     border-radius: 8px;
     border: 1px solid #21262d;
-    transition: all 0.3s;
+    transition: all 0.2s ease;
 }
 
 .burger-btn:hover {
     color: #ff4747;
     border-color: #ff4747;
+    transform: scale(1.05);
 }
 
-.burger-btn .icon-close {
-    display: none;
+/* Bouton de fermeture (Croix à l'intérieur de la sidebar) */
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 22px;
+    color: #8b949e;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #21262d;
+    border: 1px solid #30363d;
+}
+
+.close-btn:hover {
+    color: #ffffff;
+    background-color: #ff4747;
+    border-color: #ff4747;
+    transform: rotate(90deg); /* Effet de rotation stylé sur la croix */
 }
 
 /* ==========================================================================
@@ -55,7 +79,7 @@ span {
 .sidebar {
     position: fixed;
     top: 0;
-    left: -320px; /* Caché à gauche par défaut */
+    left: -320px;
     width: 300px;
     height: 100vh;
     background-color: #161b22;
@@ -63,11 +87,9 @@ span {
     padding: 80px 20px 30px 20px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
     transition: left 0.4s cubic-bezier(0.1, 0.7, 0.1, 1);
     z-index: 1100;
     box-shadow: 10px 0 30px rgba(0,0,0,0.6);
-    overflow-y: auto;
 }
 
 .sidebar-brand {
@@ -75,38 +97,34 @@ span {
     font-weight: bold;
     text-transform: uppercase;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     letter-spacing: 1px;
 }
 
-/* QUAND LE BURGER EST COCHÉ -> LA SIDEBAR SORT */
+/* DÉCLENCHEMENT DE L'OUVERTURE VIA CHECKBOX */
 .menu-toggle:checked ~ .sidebar {
     left: 0;
 }
-
-.menu-toggle:checked ~ .burger-btn .icon-open { display: none; }
-.menu-toggle:checked ~ .burger-btn .icon-close { display: block; }
-.menu-toggle:checked ~ .burger-btn { left: 240px; } /* Décale le bouton pour pas qu'il gêne */
 
 /* LISTE DU MENU */
 .sidebar-menu {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
 }
 
 .menu-link {
     color: #c9d1d9;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 500;
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 10px;
-    border-radius: 6px;
-    transition: background 0.2s, color 0.2s;
+    padding: 12px;
+    border-radius: 8px;
+    transition: all 0.2s;
 }
 
 .menu-link:hover, .menu-link.active {
@@ -114,41 +132,71 @@ span {
     color: #ff4747;
 }
 
-/* STRUCTURE DES SECTIONS / TEXTES DÉROULANTS CORRIGÉS */
-.menu-section {
+/* ==========================================================================
+   STYLE DES MENUS DÉROULANTS (ACCORDÉONS)
+   ========================================================================== */
+.menu-dropdown {
+    width: 100%;
+}
+
+.menu-dropdown summary {
+    list-style: none; /* Cache la flèche par défaut du navigateur */
+    color: #c9d1d9;
+    font-size: 17px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.menu-dropdown summary::-webkit-details-marker {
+    display: none; /* Pour Safari */
+}
+
+.menu-dropdown summary:hover {
+    background-color: #21262d;
+    color: #ff4747;
+}
+
+/* Gestion de la petite flèche personnalisée */
+.menu-dropdown summary .arrow {
+    margin-left: auto;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+    color: #8b949e;
+}
+
+/* Rotation de la flèche quand le menu est ouvert */
+.menu-dropdown[open] summary .arrow {
+    transform: rotate(180deg);
+    color: #ff4747;
+}
+
+/* Contenu masqué/affiché du menu déroulant */
+.dropdown-content {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding: 5px 10px;
+    gap: 6px;
+    padding: 8px 0 8px 40px; /* Aligne parfaitement le texte sous l'icône principale */
 }
 
-.section-title {
-    font-size: 11px;
-    font-weight: bold;
+.dropdown-content a {
     color: #8b949e;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-}
-
-.section-links {
-    display: flex;
-    flex-direction: column; /* Aligne les liens proprement l'un sous l'autre */
-    gap: 10px;
-    padding-left: 10px;
-}
-
-.section-links a {
-    color: #c9d1d9;
     text-decoration: none;
     font-size: 15px;
+    padding: 8px 0;
     display: flex;
     align-items: center;
     gap: 10px;
     transition: color 0.2s;
 }
 
-.section-links a:hover {
+.dropdown-content a:hover {
     color: #ff4747;
 }
 
@@ -157,7 +205,6 @@ span {
    ========================================================================== */
 .main-content {
     width: 100%;
-    transition: padding-left 0.4s;
 }
 
 .hero {
