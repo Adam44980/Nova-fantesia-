@@ -5,66 +5,594 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>L'Arène Sanglante | Nova Fantasia</title>
     <style>
-        :root { --primary: #ff4d4d; --dark: #0a0a0a; --glass: rgba(0, 0, 0, 0.85); }
-        
-        /* Reset et style global */
+        :root {
+            --primary: #ff4d4d;
+            --primary-dim: #8a1f1f;
+            --ember: #ff9d3f;
+            --dark: #050403;
+            --glass: rgba(8, 6, 5, 0.88);
+            --stone: #1c1715;
+            --bone: #d8cfc2;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            min-height: 100vh;
+        }
+
+        @font-face {
+            font-family: 'fallback-display';
+            src: local('Impact');
+        }
+
         body {
-            margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; color: white;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
-                        url('https://images.alphacoders.com/643/643037.jpg');
-            background-size: cover; background-position: center; background-attachment: fixed;
-            min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+            color: var(--bone);
+            background-color: var(--dark);
+            background-image:
+                radial-gradient(ellipse 120% 80% at 50% -10%, rgba(255,77,77,0.18), transparent 60%),
+                radial-gradient(ellipse 100% 60% at 50% 110%, rgba(255,77,77,0.12), transparent 60%),
+                repeating-linear-gradient(135deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 12px),
+                linear-gradient(180deg, #0d0a08 0%, #050403 50%, #0a0605 100%);
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Vignette de bord pour effet "arène" */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 40%, rgba(0,0,0,0.75) 100%);
+            z-index: 1;
+        }
+
+        /* Fissures décoratives en fond */
+        .crack {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0.15;
+            z-index: 0;
+        }
+        .crack svg { display: block; }
+        .crack.tl { top: 0; left: 0; width: 30vw; }
+        .crack.br { bottom: 0; right: 0; width: 30vw; transform: rotate(180deg); }
+
+        .eyebrow {
+            position: relative;
+            z-index: 2;
+            letter-spacing: 0.45em;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            color: var(--ember);
+            margin: 0 0 18px 0;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .eyebrow::before, .eyebrow::after {
+            content: '';
+            display: inline-block;
+            width: 28px;
+            height: 1px;
+            background: var(--ember);
+            vertical-align: middle;
+            margin: 0 12px;
         }
 
         /* Conteneur principal */
-        .container { 
-            max-width: 1000px; background: var(--glass); border: 1px solid #333; 
-            border-radius: 20px; padding: 50px; margin: 40px; text-align: center; 
-            box-shadow: 0 0 50px rgba(0,0,0,1); 
+        .container {
+            position: relative;
+            z-index: 2;
+            width: min(92vw, 1000px);
+            background: var(--glass);
+            background-image:
+                linear-gradient(var(--glass), var(--glass)),
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, transparent 2px, transparent 4px);
+            border: 1px solid #3a2a26;
+            border-radius: 6px;
+            padding: clamp(32px, 5vw, 64px);
+            margin: 24px;
+            text-align: center;
+            box-shadow:
+                0 0 0 1px rgba(255,77,77,0.08),
+                0 30px 80px rgba(0,0,0,0.85),
+                inset 0 0 120px rgba(255,77,77,0.04);
         }
 
-        h1 { font-size: 4rem; color: var(--primary); text-transform: uppercase; margin: 0; text-shadow: 0 0 20px var(--primary); }
+        /* Coins gravés */
+        .container::before, .container::after {
+            content: '';
+            position: absolute;
+            width: 22px; height: 22px;
+            border: 2px solid var(--primary-dim);
+        }
+        .container::before { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+        .container::after { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+
+        h1 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: clamp(2.6rem, 7vw, 4.6rem);
+            font-weight: 900;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin: 0;
+            text-shadow:
+                0 0 8px rgba(255,77,77,0.9),
+                0 0 40px rgba(255,77,77,0.5),
+                0 4px 0 #2b0a0a;
+            line-height: 1.05;
+            cursor: default;
+            transition: text-shadow 0.2s;
+        }
+
+        h1:hover {
+            animation: title-shake 0.4s ease;
+            text-shadow:
+                0 0 14px rgba(255,77,77,1),
+                0 0 60px rgba(255,157,63,0.7),
+                0 4px 0 #2b0a0a;
+        }
+
+        @keyframes title-shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-2px); }
+            40% { transform: translateX(2px); }
+            60% { transform: translateX(-1px); }
+            80% { transform: translateX(1px); }
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #b8aa9c;
+            letter-spacing: 0.05em;
+            margin: 18px 0 8px 0;
+        }
 
         /* Style du Timer */
-        .timer-box { 
-            font-size: 3rem; font-weight: bold; margin: 30px 0; padding: 20px; 
-            background: #111; border: 2px solid var(--primary); border-radius: 10px; 
+        .timer-box {
+            font-family: 'Courier New', monospace;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: bold;
+            letter-spacing: 0.04em;
+            margin: 30px 0;
+            padding: 22px 18px;
+            background: linear-gradient(180deg, #140d0c, #0a0606);
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            box-shadow:
+                0 0 25px rgba(255,77,77,0.35),
+                inset 0 0 30px rgba(255,77,77,0.08);
+            animation: pulse-glow 2.4s ease-in-out infinite;
+            color: #ffe8e0;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 25px rgba(255,77,77,0.35), inset 0 0 30px rgba(255,77,77,0.08); border-color: var(--primary); }
+            50% { box-shadow: 0 0 45px rgba(255,77,77,0.6), inset 0 0 40px rgba(255,77,77,0.15); border-color: var(--ember); }
         }
 
         /* Grille des vagues */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-top: 40px; }
-        .card { background: rgba(255,255,255,0.05); padding: 25px; border-radius: 15px; border: 1px solid #444; transition: 0.4s; }
-        .card:hover { border-color: var(--primary); transform: translateY(-10px); }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+            margin-top: 40px;
+        }
+
+        .card {
+            position: relative;
+            background: linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+            padding: 26px 20px;
+            border-radius: 8px;
+            border: 1px solid #3a2a26;
+            transition: 0.35s ease;
+            text-align: left;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .card:focus-visible {
+            outline: 2px solid var(--ember);
+            outline-offset: 3px;
+        }
+
+        .card-hint {
+            display: block;
+            margin-top: 14px;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--primary);
+            opacity: 0.75;
+        }
+
+        .card::before {
+            content: attr(data-num);
+            position: absolute;
+            top: -10px; right: -6px;
+            font-family: Georgia, serif;
+            font-size: 3.4rem;
+            font-weight: 900;
+            color: rgba(255,77,77,0.08);
+            line-height: 1;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            transform: translateY(-8px);
+            box-shadow: 0 14px 30px rgba(255,77,77,0.18);
+        }
+
+        .card h3 {
+            margin: 0 0 8px 0;
+            font-size: 0.95rem;
+            letter-spacing: 0.12em;
+            color: var(--ember);
+            text-transform: uppercase;
+        }
+
+        .card p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #c9bdb0;
+            line-height: 1.4;
+        }
+
+        /* Règles */
+        .rules {
+            margin-top: 50px;
+            padding-top: 24px;
+            border-top: 1px solid #3a2a26;
+            font-size: 0.95rem;
+            color: #a89a8c;
+            letter-spacing: 0.02em;
+        }
 
         /* Boutons et footer */
-        .btn { display: inline-block; margin-top: 40px; padding: 20px 40px; background: var(--primary); color: white; text-decoration: none; font-weight: bold; border-radius: 50px; transition: 0.3s; }
-        .btn:hover { background: #cc0000; box-shadow: 0 0 30px var(--primary); }
-        .footer-note { margin-top: 50px; font-size: 0.9rem; color: #777; }
-        .spacer { height: 50px; }
+        .btn {
+            display: inline-block;
+            margin-top: 28px;
+            padding: 18px 46px;
+            background: linear-gradient(135deg, var(--primary), #b91f1f);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            border-radius: 50px;
+            transition: 0.3s;
+            box-shadow: 0 8px 24px rgba(255,77,77,0.3);
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #ff6b6b, #cc0000);
+            box-shadow: 0 0 40px rgba(255,77,77,0.55);
+            transform: translateY(-2px);
+        }
+
+        .footer-note {
+            margin-top: 46px;
+            font-size: 0.8rem;
+            color: #6b5e54;
+            letter-spacing: 0.03em;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 28px 20px; }
+            .grid { grid-template-columns: 1fr; }
+            .card { text-align: center; }
+            .card::before { display: none; }
+        }
+
+        /* Flash d'entrée façon écran qui s'allume */
+        .flash-screen {
+            position: fixed;
+            inset: 0;
+            background: #fff2ea;
+            z-index: 999;
+            pointer-events: none;
+            animation: flash-out 0.7s ease-out forwards;
+        }
+
+        @keyframes flash-out {
+            0% { opacity: 1; }
+            12% { opacity: 0.15; }
+            22% { opacity: 0.7; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
+        /* Cascade d'entrée des éléments */
+        .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+            animation: reveal-up 0.7s ease-out forwards;
+        }
+
+        @keyframes reveal-up {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .eyebrow.reveal { animation-delay: 0.55s; }
+        h1.reveal {
+            animation: title-reveal 0.9s ease-out forwards;
+            animation-delay: 0.65s;
+            opacity: 0;
+        }
+        .subtitle.reveal { animation-delay: 0.95s; }
+        .timer-box.reveal { animation-delay: 1.1s; }
+        .grid .card.reveal:nth-child(1) { animation-delay: 1.3s; }
+        .grid .card.reveal:nth-child(2) { animation-delay: 1.42s; }
+        .grid .card.reveal:nth-child(3) { animation-delay: 1.54s; }
+        .grid .card.reveal:nth-child(4) { animation-delay: 1.66s; }
+        .rules.reveal { animation-delay: 1.85s; }
+        .btn.reveal { animation-delay: 1.95s; }
+        .footer-note.reveal { animation-delay: 2.1s; }
+
+        @keyframes title-reveal {
+            0% { opacity: 0; transform: translateY(8px) scale(0.96); letter-spacing: 0.25em; filter: blur(6px); }
+            60% { opacity: 1; filter: blur(0); }
+            100% { opacity: 1; transform: translateY(0) scale(1); letter-spacing: 0.03em; filter: blur(0); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .timer-box { animation: none; }
+            .card, .btn { transition: none; }
+            h1:hover { animation: none; }
+            #embers { display: none; }
+            .flash-screen { display: none; }
+            .reveal, h1.reveal, .timer-box.reveal { opacity: 1; transform: none; animation: none; filter: none; letter-spacing: 0.03em; }
+        }
+
+        /* Modale de détail des vagues */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 1, 1, 0.82);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+            padding: 20px;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            position: relative;
+            width: min(94vw, 560px);
+            max-height: 86vh;
+            overflow-y: auto;
+            background: linear-gradient(180deg, #160f0d, #0a0606);
+            border: 1px solid var(--primary-dim);
+            border-radius: 10px;
+            padding: clamp(26px, 4vw, 42px);
+            text-align: left;
+            box-shadow: 0 0 0 1px rgba(255,77,77,0.12), 0 30px 80px rgba(0,0,0,0.9);
+            transform: translateY(16px) scale(0.97);
+            transition: transform 0.25s ease;
+        }
+
+        .overlay.active .modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 14px; right: 14px;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            border: 1px solid #3a2a26;
+            background: rgba(255,255,255,0.03);
+            color: var(--bone);
+            font-size: 1.1rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .modal-close:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .modal-eyebrow {
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--ember);
+            margin: 0 0 6px 0;
+        }
+
+        .modal h2 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: clamp(1.5rem, 4vw, 2.1rem);
+            color: var(--primary);
+            margin: 0 0 18px 0;
+            text-shadow: 0 0 16px rgba(255,77,77,0.4);
+        }
+
+        .modal-section {
+            margin-bottom: 18px;
+        }
+
+        .modal-section h4 {
+            margin: 0 0 6px 0;
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ember);
+        }
+
+        .modal-section p {
+            margin: 0;
+            font-size: 0.98rem;
+            line-height: 1.55;
+            color: #d6c9bc;
+        }
+
+        .modal-section ul {
+            margin: 0;
+            padding-left: 1.1em;
+            color: #d6c9bc;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .tag-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 50px;
+            border: 1px solid var(--primary-dim);
+            color: #ffb8a8;
+            background: rgba(255,77,77,0.06);
+        }
+
+        /* Canvas de particules / braises */
+        #embers {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Bouton son */
+        .sound-toggle {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            z-index: 50;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid #3a2a26;
+            background: rgba(8,6,5,0.8);
+            backdrop-filter: blur(4px);
+            color: var(--bone);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: 0.25s;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+        }
+
+        .sound-toggle:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 18px rgba(255,77,77,0.4);
+        }
+
+        .sound-toggle.is-on {
+            color: var(--ember);
+            border-color: var(--primary);
+        }
+
+        .sound-toggle:focus-visible {
+            outline: 2px solid var(--ember);
+            outline-offset: 3px;
+        }
     </style>
 </head>
 <body>
 
+    <div class="flash-screen"></div>
+
+    <canvas id="embers"></canvas>
+
+    <button class="sound-toggle" id="soundToggle" aria-label="Activer l'ambiance sonore" aria-pressed="false">🔇</button>
+
+    <div class="crack tl">
+        <svg viewBox="0 0 300 300" width="300" height="300"><path d="M0 40 L60 70 L40 130 L90 160 L70 220 L130 250" stroke="#ff4d4d" stroke-width="2" fill="none"/></svg>
+    </div>
+    <div class="crack br">
+        <svg viewBox="0 0 300 300" width="300" height="300"><path d="M0 40 L60 70 L40 130 L90 160 L70 220 L130 250" stroke="#ff4d4d" stroke-width="2" fill="none"/></svg>
+    </div>
+
     <div class="container">
-        <h1>L'Arène Sanglante</h1>
-        <p>Le compte à rebours avant le prochain carnage :</p>
-        
-        <div id="timer" class="timer-box">Chargement...</div>
+        <p class="eyebrow reveal">Nova Fantasia · Événement PvE</p>
+        <h1 class="reveal">L'Arène Sanglante</h1>
+        <p class="subtitle reveal">Le compte à rebours avant le prochain carnage :</p>
+
+        <div id="timer" class="timer-box reveal">Chargement...</div>
 
         <div class="grid">
-            <div class="card"><h3>VAGUE I</h3><p>Meute affamée de zombies.</p></div>
-            <div class="card"><h3>VAGUE II</h3><p>Bombardement de squelettes.</p></div>
-            <div class="card"><h3>VAGUE III</h3><p>Invasion du Nether.</p></div>
-            <div class="card"><h3>VAGUE IV</h3><p>Le Cauchemar Final.</p></div>
+            <div class="card reveal" data-num="01" data-wave="0" tabindex="0" role="button" aria-haspopup="dialog">
+                <h3>Vague I</h3><p>Meute affamée de zombies.</p>
+                <span class="card-hint">Voir la stratégie →</span>
+            </div>
+            <div class="card reveal" data-num="02" data-wave="1" tabindex="0" role="button" aria-haspopup="dialog">
+                <h3>Vague II</h3><p>Bombardement de squelettes.</p>
+                <span class="card-hint">Voir la stratégie →</span>
+            </div>
+            <div class="card reveal" data-num="03" data-wave="2" tabindex="0" role="button" aria-haspopup="dialog">
+                <h3>Vague III</h3><p>Invasion du Nether.</p>
+                <span class="card-hint">Voir la stratégie →</span>
+            </div>
+            <div class="card reveal" data-num="04" data-wave="3" tabindex="0" role="button" aria-haspopup="dialog">
+                <h3>Vague IV</h3><p>Le Cauchemar Final.</p>
+                <span class="card-hint">Voir la stratégie →</span>
+            </div>
         </div>
 
-        <div class="spacer"></div>
-        <p>Règles : Pas de pitié. Le loot appartient au vainqueur.</p>
-        <a href="/" class="btn">RETOUR AU SPAWN</a>
+        <p class="rules reveal">Règles : Pas de pitié. Le loot appartient au vainqueur.</p>
+        <a href="/" class="btn reveal">Retour au spawn</a>
 
-        <div class="footer-note">
-            Nova Fantasia © 2026 - Système de gestion d'événement haute performance.
-            <br>Serveur Anarchie - Liberté Totale.
+        <div class="footer-note reveal">
+            Nova Fantasia © 2026 — Système de gestion d'événement haute performance.
+            <br>Serveur Anarchie · Liberté Totale.
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal">
+            <button class="modal-close" id="modalClose" aria-label="Fermer">✕</button>
+            <p class="modal-eyebrow" id="modal-eyebrow">Vague</p>
+            <h2 id="modal-title">—</h2>
+            <div class="tag-row" id="modal-tags"></div>
+            <div class="modal-section">
+                <h4>La menace</h4>
+                <p id="modal-threat">—</p>
+            </div>
+            <div class="modal-section">
+                <h4>Dangers à surveiller</h4>
+                <ul id="modal-dangers"></ul>
+            </div>
+            <div class="modal-section">
+                <h4>Meilleure tactique</h4>
+                <p id="modal-strategy">—</p>
+            </div>
         </div>
     </div>
 
@@ -87,13 +615,251 @@
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((diff % (1000 * 60)) / 1000);
-            
+
             document.getElementById('timer').innerHTML = `${d}j ${h}h ${m}m ${s}s`;
         }
 
         // Actualisation toutes les secondes
         setInterval(update, 1000);
         update();
+
+        // Données des vagues : menace, dangers, et meilleure tactique
+        const waves = [
+            {
+                title: "Vague I — Meute affamée de zombies",
+                tags: ["Mêlée", "Nombre élevé", "Difficulté ★☆☆☆"],
+                threat: "Une horde de zombies surgit de toutes les directions à la fois. Pris isolément ils sont faibles, mais leur nombre peut vite encercler un joueur imprudent.",
+                dangers: [
+                    "Encerclement si vous restez immobile",
+                    "Zombies bébés plus rapides cachés dans la masse",
+                    "Dégâts cumulés qui passent inaperçus en plein combat"
+                ],
+                strategy: "Adossez-vous à un mur ou un coin pour ne présenter qu'un seul angle d'attaque. Une épée avec tranchant (Sweeping Edge) ou une zone d'effet permet de nettoyer plusieurs cibles par coup. Reculez en cercle plutôt qu'en ligne droite pour ne jamais être pris en sandwich."
+            },
+            {
+                title: "Vague II — Bombardement de squelettes",
+                tags: ["Distance", "Précision", "Difficulté ★★☆☆"],
+                threat: "Des archers squelettes tirent en continu depuis les hauteurs ou le bord de l'arène, infligeant des dégâts à distance pendant que vous gérez d'autres menaces.",
+                dangers: [
+                    "Tirs groupés qui repoussent (knockback) vers une zone dangereuse",
+                    "Perte de visée si vous chargez tête baissée",
+                    "Flèches qui s'accumulent si plusieurs archers tirent en même temps"
+                ],
+                strategy: "Utilisez le décor comme bouclier : avancez de couvert en couvert plutôt qu'en ligne droite. Un bouclier en main réduit le repoussement, et fermer la distance rapidement en zigzag limite leur précision. Priorisez les archers avant les unités de mêlée pour arrêter les dégâts continus."
+            },
+            {
+                title: "Vague III — Invasion du Nether",
+                tags: ["Mixte", "Dégâts de feu", "Difficulté ★★★☆"],
+                threat: "Une vague mêlant Blazes, Wither Skeletons et Magma Cubes, combinant dégâts de feu, attaques rapprochées empoisonnées et projectiles explosifs.",
+                dangers: [
+                    "Effet de Wither (poison renforcé) qui réduit la régénération",
+                    "Boules de feu des Blazes qui mettent le décor en flammes",
+                    "Magma Cubes qui rebondissent de façon imprévisible"
+                ],
+                strategy: "Préparez une résistance au feu avant la vague si possible. Séparez les cibles : éliminez les Blazes à distance en premier (ce sont les plus dangereux à long terme), puis concentrez-vous sur les Wither Skeletons un par un en évitant leur portée d'épée. Ne restez jamais collé à un Magma Cube, son rebond est imprévisible."
+            },
+            {
+                title: "Vague IV — Le Cauchemar Final",
+                tags: ["Boss", "Toutes phases", "Difficulté ★★★★"],
+                threat: "La vague finale combine tout : nombre, distance et dégâts élevés, généralement couronnée par un boss ou une unité d'élite bien plus résistante que le reste.",
+                dangers: [
+                    "Surcharge sensorielle : plusieurs menaces à gérer simultanément",
+                    "Phases d'enrage du boss à mesure que ses points de vie baissent",
+                    "Fatigue d'inventaire : potions et munitions qui s'épuisent au pire moment"
+                ],
+                strategy: "Nettoyez les unités secondaires avant de vous engager sur le boss, pour ne pas être pris à revers. Gardez toujours une potion de soin ou de régénération en réserve pour la phase finale. Si vous jouez en équipe, désignez un rôle tank pour absorber les coups pendant que les autres infligent les dégâts à distance."
+            }
+        ];
+
+        const overlay = document.getElementById('overlay');
+        const modalClose = document.getElementById('modalClose');
+        let lastFocused = null;
+
+        function openWave(index) {
+            const w = waves[index];
+            document.getElementById('modal-eyebrow').textContent = `Détail de la vague ${index + 1}`;
+            document.getElementById('modal-title').textContent = w.title;
+            document.getElementById('modal-threat').textContent = w.threat;
+            document.getElementById('modal-strategy').textContent = w.strategy;
+
+            const tagsEl = document.getElementById('modal-tags');
+            tagsEl.innerHTML = '';
+            w.tags.forEach(t => {
+                const span = document.createElement('span');
+                span.className = 'tag';
+                span.textContent = t;
+                tagsEl.appendChild(span);
+            });
+
+            const dangersEl = document.getElementById('modal-dangers');
+            dangersEl.innerHTML = '';
+            w.dangers.forEach(d => {
+                const li = document.createElement('li');
+                li.textContent = d;
+                dangersEl.appendChild(li);
+            });
+
+            overlay.classList.add('active');
+        }
+
+        function closeModal() {
+            overlay.classList.remove('active');
+            if (lastFocused) lastFocused.focus();
+        }
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', () => {
+                lastFocused = card;
+                openWave(parseInt(card.dataset.wave, 10));
+            });
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    lastFocused = card;
+                    openWave(parseInt(card.dataset.wave, 10));
+                }
+            });
+        });
+
+        modalClose.addEventListener('click', closeModal);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
+        });
+
+        // ---- Particules de braises flottantes ----
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const canvas = document.getElementById('embers');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let animFrame = null;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function createParticle() {
+            return {
+                x: Math.random() * canvas.width,
+                y: canvas.height + 10,
+                r: Math.random() * 2.2 + 0.6,
+                speed: Math.random() * 0.8 + 0.3,
+                drift: (Math.random() - 0.5) * 0.6,
+                life: 0,
+                maxLife: Math.random() * 400 + 300,
+                hue: Math.random() > 0.5 ? '255,157,63' : '255,77,77',
+                flicker: Math.random() * Math.PI * 2
+            };
+        }
+
+        function initParticles() {
+            particles = Array.from({ length: 45 }, createParticle);
+        }
+
+        function animateEmbers() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, i) => {
+                p.y -= p.speed;
+                p.x += p.drift + Math.sin(p.flicker) * 0.3;
+                p.flicker += 0.05;
+                p.life++;
+
+                const fade = 1 - p.life / p.maxLife;
+                const alpha = Math.max(fade * 0.65, 0);
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${p.hue},${alpha})`;
+                ctx.shadowColor = `rgba(${p.hue},${alpha})`;
+                ctx.shadowBlur = 6;
+                ctx.fill();
+
+                if (p.life >= p.maxLife || p.y < -10) {
+                    particles[i] = createParticle();
+                }
+            });
+            animFrame = requestAnimationFrame(animateEmbers);
+        }
+
+        if (!reduceMotion) {
+            resizeCanvas();
+            initParticles();
+            animateEmbers();
+            window.addEventListener('resize', resizeCanvas);
+        }
+
+        // ---- Ambiance sonore générée (crépitement de feu) ----
+        let audioCtx = null;
+        let fireNodes = null;
+        let soundOn = false;
+        const soundToggle = document.getElementById('soundToggle');
+
+        function buildFireAmbience(ctx) {
+            // Bruit blanc filtré en boucle pour simuler un feu qui crépite
+            const bufferSize = 2 * ctx.sampleRate;
+            const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+
+            const noise = ctx.createBufferSource();
+            noise.buffer = noiseBuffer;
+            noise.loop = true;
+
+            const lowpass = ctx.createBiquadFilter();
+            lowpass.type = 'lowpass';
+            lowpass.frequency.value = 900;
+
+            const gain = ctx.createGain();
+            gain.gain.value = 0.0;
+
+            noise.connect(lowpass);
+            lowpass.connect(gain);
+            gain.connect(ctx.destination);
+
+            // Modulation lente du volume pour imiter les variations du feu
+            const lfo = ctx.createOscillator();
+            lfo.frequency.value = 4.5;
+            const lfoGain = ctx.createGain();
+            lfoGain.gain.value = 0.04;
+            lfo.connect(lfoGain);
+            lfoGain.connect(gain.gain);
+
+            noise.start();
+            lfo.start();
+
+            return { noise, lowpass, gain, lfo };
+        }
+
+        function toggleSound() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                fireNodes = buildFireAmbience(audioCtx);
+            }
+
+            soundOn = !soundOn;
+
+            if (soundOn) {
+                audioCtx.resume();
+                fireNodes.gain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 0.6);
+                soundToggle.textContent = '🔊';
+                soundToggle.classList.add('is-on');
+                soundToggle.setAttribute('aria-pressed', 'true');
+                soundToggle.setAttribute('aria-label', "Couper l'ambiance sonore");
+            } else {
+                fireNodes.gain.gain.linearRampToValueAtTime(0.0, audioCtx.currentTime + 0.4);
+                soundToggle.textContent = '🔇';
+                soundToggle.classList.remove('is-on');
+                soundToggle.setAttribute('aria-pressed', 'false');
+                soundToggle.setAttribute('aria-label', "Activer l'ambiance sonore");
+            }
+        }
+
+        soundToggle.addEventListener('click', toggleSound);
     </script>
 
     <% /* Espace réservé pour future logique serveur */ %>
