@@ -19,8 +19,8 @@
 
         html, body {
             margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            min-height: 100vh;
+            width: 100%;
+            min-height: 100%;
         }
 
         @font-face {
@@ -38,6 +38,7 @@
                 repeating-linear-gradient(135deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 12px),
                 linear-gradient(180deg, #0d0a08 0%, #050403 50%, #0a0605 100%);
             min-height: 100vh;
+            min-height: 100dvh;
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -45,6 +46,7 @@
             justify-content: center;
             overflow-x: hidden;
             position: relative;
+            padding: 16px 0;
         }
 
         /* Vignette de bord pour effet "arène" */
@@ -291,7 +293,8 @@
         }
 
         @media (max-width: 600px) {
-            .container { padding: 28px 20px; }
+            body { padding: 8px 0; }
+            .container { padding: 28px 18px; margin: 12px; width: calc(100vw - 24px); }
             .grid { grid-template-columns: 1fr; }
             .card { text-align: center; }
             .card::before { display: none; }
@@ -486,43 +489,6 @@
             z-index: 1;
             pointer-events: none;
         }
-
-        /* Bouton son */
-        .sound-toggle {
-            position: fixed;
-            top: 18px;
-            right: 18px;
-            z-index: 50;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: 1px solid #3a2a26;
-            background: rgba(8,6,5,0.8);
-            backdrop-filter: blur(4px);
-            color: var(--bone);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: 0.25s;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
-        }
-
-        .sound-toggle:hover {
-            border-color: var(--primary);
-            box-shadow: 0 0 18px rgba(255,77,77,0.4);
-        }
-
-        .sound-toggle.is-on {
-            color: var(--ember);
-            border-color: var(--primary);
-        }
-
-        .sound-toggle:focus-visible {
-            outline: 2px solid var(--ember);
-            outline-offset: 3px;
-        }
     </style>
 </head>
 <body>
@@ -530,8 +496,6 @@
     <div class="flash-screen"></div>
 
     <canvas id="embers"></canvas>
-
-    <button class="sound-toggle" id="soundToggle" aria-label="Activer l'ambiance sonore" aria-pressed="false">🔇</button>
 
     <div class="crack tl">
         <svg viewBox="0 0 300 300" width="300" height="300"><path d="M0 40 L60 70 L40 130 L90 160 L70 220 L130 250" stroke="#ff4d4d" stroke-width="2" fill="none"/></svg>
@@ -790,76 +754,6 @@
             animateEmbers();
             window.addEventListener('resize', resizeCanvas);
         }
-
-        // ---- Ambiance sonore générée (crépitement de feu) ----
-        let audioCtx = null;
-        let fireNodes = null;
-        let soundOn = false;
-        const soundToggle = document.getElementById('soundToggle');
-
-        function buildFireAmbience(ctx) {
-            // Bruit blanc filtré en boucle pour simuler un feu qui crépite
-            const bufferSize = 2 * ctx.sampleRate;
-            const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-            const output = noiseBuffer.getChannelData(0);
-            for (let i = 0; i < bufferSize; i++) {
-                output[i] = Math.random() * 2 - 1;
-            }
-
-            const noise = ctx.createBufferSource();
-            noise.buffer = noiseBuffer;
-            noise.loop = true;
-
-            const lowpass = ctx.createBiquadFilter();
-            lowpass.type = 'lowpass';
-            lowpass.frequency.value = 900;
-
-            const gain = ctx.createGain();
-            gain.gain.value = 0.0;
-
-            noise.connect(lowpass);
-            lowpass.connect(gain);
-            gain.connect(ctx.destination);
-
-            // Modulation lente du volume pour imiter les variations du feu
-            const lfo = ctx.createOscillator();
-            lfo.frequency.value = 4.5;
-            const lfoGain = ctx.createGain();
-            lfoGain.gain.value = 0.04;
-            lfo.connect(lfoGain);
-            lfoGain.connect(gain.gain);
-
-            noise.start();
-            lfo.start();
-
-            return { noise, lowpass, gain, lfo };
-        }
-
-        function toggleSound() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                fireNodes = buildFireAmbience(audioCtx);
-            }
-
-            soundOn = !soundOn;
-
-            if (soundOn) {
-                audioCtx.resume();
-                fireNodes.gain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 0.6);
-                soundToggle.textContent = '🔊';
-                soundToggle.classList.add('is-on');
-                soundToggle.setAttribute('aria-pressed', 'true');
-                soundToggle.setAttribute('aria-label', "Couper l'ambiance sonore");
-            } else {
-                fireNodes.gain.gain.linearRampToValueAtTime(0.0, audioCtx.currentTime + 0.4);
-                soundToggle.textContent = '🔇';
-                soundToggle.classList.remove('is-on');
-                soundToggle.setAttribute('aria-pressed', 'false');
-                soundToggle.setAttribute('aria-label', "Activer l'ambiance sonore");
-            }
-        }
-
-        soundToggle.addEventListener('click', toggleSound);
     </script>
 
     <% /* Espace réservé pour future logique serveur */ %>
