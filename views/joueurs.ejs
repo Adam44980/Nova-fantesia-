@@ -2,27 +2,459 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Joueurs en ligne</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joueurs en ligne | Nova Fantasia</title>
     <style>
-        body { background: #0e0e0e; color: white; font-family: sans-serif; text-align: center; }
-        .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 20px; }
-        .card { background: #1a1a1a; padding: 15px; border-radius: 10px; width: 120px; border: 1px solid #333; }
-        img { border-radius: 5px; width: 64px; }
-        h3 { font-size: 14px; margin-top: 10px; }
+        :root {
+            --primary: #ff4d4d;
+            --primary-dim: #8a1f1f;
+            --ember: #ff9d3f;
+            --dark: #050403;
+            --card: #15110f;
+            --border: #3a2a26;
+            --bone: #d8cfc2;
+            --text-dim: #998d82;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+            color: var(--bone);
+            text-align: center;
+            background-color: var(--dark);
+            background-image:
+                radial-gradient(ellipse 120% 80% at 50% -10%, rgba(255,77,77,0.16), transparent 60%),
+                radial-gradient(ellipse 100% 60% at 50% 110%, rgba(255,77,77,0.1), transparent 60%),
+                linear-gradient(180deg, #0d0a08 0%, #050403 50%, #0a0605 100%);
+            padding: 36px 16px 60px;
+        }
+
+        h1 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: clamp(1.6rem, 5vw, 2.3rem);
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin: 0 0 8px 0;
+            text-shadow: 0 0 8px rgba(255,77,77,0.7), 0 0 30px rgba(255,77,77,0.35);
+        }
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 30px;
+        }
+
+        .live-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--ember);
+            box-shadow: 0 0 8px var(--ember);
+            animation: blink-dot 1.6s ease-in-out infinite;
+        }
+
+        @keyframes blink-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 18px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .card {
+            position: relative;
+            background: linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)), var(--card);
+            padding: 18px 14px;
+            border-radius: 12px;
+            width: 130px;
+            border: 1px solid var(--border);
+            transition: 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 24px rgba(255,77,77,0.18);
+        }
+
+        .card img.avatar {
+            border-radius: 6px;
+            width: 64px;
+            display: block;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+        }
+
+        .card h3 {
+            font-size: 14px;
+            margin: 10px 0 4px 0;
+            word-break: break-word;
+            color: var(--bone);
+        }
+
+        .mini-stats {
+            font-size: 11px;
+            color: var(--text-dim);
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        /* Bouton + */
+        .more-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: rgba(0,0,0,0.4);
+            color: var(--bone);
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            padding: 0;
+        }
+
+        .more-btn:hover {
+            background: var(--primary-dim);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .more-btn:focus-visible {
+            outline: 2px solid var(--ember);
+            outline-offset: 2px;
+        }
+
+        .empty-message {
+            color: var(--text-dim);
+            padding: 60px 20px;
+            font-size: 0.95rem;
+        }
+
+        /* ---- Modale de détail joueur ---- */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2,1,1,0.82);
+            backdrop-filter: blur(3px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.22s, visibility 0.22s;
+            padding: 16px;
+        }
+
+        .overlay.active { opacity: 1; visibility: visible; }
+
+        .modal {
+            width: min(94vw, 420px);
+            max-height: 86vh;
+            overflow-y: auto;
+            background: linear-gradient(180deg, #160f0d, #0a0606);
+            border: 1px solid var(--primary-dim);
+            border-radius: 12px;
+            padding: 26px;
+            text-align: left;
+            position: relative;
+            box-shadow: 0 0 0 1px rgba(255,77,77,0.1), 0 30px 70px rgba(0,0,0,0.85);
+            transform: translateY(12px) scale(0.97);
+            transition: transform 0.22s;
+        }
+
+        .overlay.active .modal { transform: translateY(0) scale(1); }
+
+        .modal-close {
+            position: absolute;
+            top: 12px; right: 12px;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.03);
+            color: var(--bone);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+
+        .modal-close:hover { border-color: var(--primary); color: var(--primary); }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .modal-header img {
+            width: 56px;
+            border-radius: 7px;
+            border: 1px solid var(--border);
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-family: Georgia, serif;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .stat-block { margin-bottom: 18px; }
+
+        .stat-label {
+            font-size: 0.74rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--ember);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .bar-track {
+            width: 100%;
+            height: 13px;
+            background: #2a2220;
+            border-radius: 7px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 7px 0 0 7px;
+            transition: width 0.4s ease;
+        }
+
+        .bar-fill.health { background: linear-gradient(90deg, #ff4d4d, #c92c2c); }
+        .bar-fill.hunger { background: linear-gradient(90deg, #d9b566, #a87f2f); }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 4px;
+        }
+
+        .inv-slot {
+            aspect-ratio: 1;
+            background: #201b18;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.55rem;
+            color: var(--text-dim);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            padding: 2px;
+        }
+
+        .inv-slot.filled {
+            background: #2a2421;
+            color: #ddd;
+            border-color: #4a3a34;
+        }
+
+        .inv-count {
+            position: absolute;
+            bottom: 1px;
+            right: 3px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 2px black;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .live-dot { animation: none; }
+            .card, .more-btn, .overlay, .modal, .bar-fill { transition: none; }
+        }
     </style>
 </head>
 <body>
 
-    <h1>Joueurs en ligne (<%= players.length %>)</h1>
+    <h1>Joueurs en ligne (<span id="player-count"><%= players.length %></span>)</h1>
+    <div class="live-indicator">
+        <span class="live-dot"></span>
+        <span>Mise à jour en direct</span>
+    </div>
 
     <div class="grid">
         <% players.forEach(function(player) { %>
             <div class="card">
-                <img src="https://mc-heads.net/avatar/<%= player %>" alt="avatar">
+                <button class="more-btn" data-player="<%= player %>" aria-label="Voir le détail de <%= player %>">+</button>
+                <img class="avatar" src="https://mc-heads.net/avatar/<%= player %>" alt="avatar de <%= player %>">
                 <h3><%= player %></h3>
+                <div class="mini-stats" data-mini="<%= player %>">
+                    <span>❤️ —</span>
+                    <span>🍗 —</span>
+                </div>
             </div>
         <% }); %>
     </div>
+
+    <% if (players.length === 0) { %>
+        <p class="empty-message">Aucun joueur en ligne pour le moment.</p>
+    <% } %>
+
+    <!-- Modale de détail joueur -->
+    <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modal-name">
+        <div class="modal">
+            <button class="modal-close" id="modalClose" aria-label="Fermer">✕</button>
+            <div class="modal-header">
+                <img id="modal-avatar" src="" alt="avatar">
+                <h2 id="modal-name">—</h2>
+            </div>
+
+            <div class="stat-block">
+                <div class="stat-label"><span>Vie</span><span id="health-text">—</span></div>
+                <div class="bar-track"><div class="bar-fill health" id="health-bar" style="width:0%"></div></div>
+            </div>
+
+            <div class="stat-block">
+                <div class="stat-label"><span>Faim</span><span id="hunger-text">—</span></div>
+                <div class="bar-track"><div class="bar-fill hunger" id="hunger-bar" style="width:0%"></div></div>
+            </div>
+
+            <div class="stat-block">
+                <div class="stat-label"><span>Inventaire</span><span id="inv-count-text">—</span></div>
+                <div class="inventory-grid" id="inventory-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Adresse de l'API du plugin sur Falix (port supplémentaire 20309)
+        const API_BASE = 'http://eu18-free.falixserver.net:20309';
+
+        async function fetchPlayerData(pseudo) {
+            const res = await fetch(`${API_BASE}/api/players/${encodeURIComponent(pseudo)}`);
+            if (!res.ok) throw new Error('Erreur réseau');
+            const data = await res.json();
+            if (data.error) throw new Error(data.error);
+            return data;
+        }
+
+        function capitalize(str) {
+            return str.replace(/\b\w/g, c => c.toUpperCase());
+        }
+
+        const overlay = document.getElementById('overlay');
+        const modalClose = document.getElementById('modalClose');
+        let lastFocused = null;
+
+        async function openPlayerDetail(pseudo) {
+            document.getElementById('modal-name').textContent = pseudo;
+            document.getElementById('modal-avatar').src = `https://mc-heads.net/avatar/${pseudo}`;
+            document.getElementById('modal-avatar').alt = `avatar de ${pseudo}`;
+            overlay.classList.add('active');
+
+            try {
+                const data = await fetchPlayerData(pseudo);
+                renderPlayerDetail(data);
+                updateMiniStats(pseudo, data);
+            } catch (err) {
+                document.getElementById('health-text').textContent = 'Indisponible';
+                document.getElementById('hunger-text').textContent = 'Indisponible';
+            }
+        }
+
+        function renderPlayerDetail(data) {
+            const healthPct = Math.max(0, Math.min(100, (data.health / data.maxHealth) * 100));
+            const hungerPct = Math.max(0, Math.min(100, (data.hunger / data.maxHunger) * 100));
+
+            document.getElementById('health-bar').style.width = healthPct + '%';
+            document.getElementById('hunger-bar').style.width = hungerPct + '%';
+            document.getElementById('health-text').textContent = `${data.health} / ${data.maxHealth}`;
+            document.getElementById('hunger-text').textContent = `${data.hunger} / ${data.maxHunger}`;
+
+            const invGrid = document.getElementById('inventory-grid');
+            invGrid.innerHTML = '';
+            const totalSlots = 36;
+            for (let i = 0; i < totalSlots; i++) {
+                const slot = document.createElement('div');
+                const item = data.inventory[i];
+                if (item) {
+                    slot.className = 'inv-slot filled';
+                    slot.textContent = capitalize(item.name);
+                    if (item.count > 1) {
+                        const countEl = document.createElement('span');
+                        countEl.className = 'inv-count';
+                        countEl.textContent = item.count;
+                        slot.appendChild(countEl);
+                    }
+                } else {
+                    slot.className = 'inv-slot';
+                }
+                invGrid.appendChild(slot);
+            }
+            document.getElementById('inv-count-text').textContent = `${data.inventory.length} / ${totalSlots}`;
+        }
+
+        function updateMiniStats(pseudo, data) {
+            const mini = document.querySelector(`[data-mini="${pseudo}"]`);
+            if (mini) {
+                mini.innerHTML = `<span>❤️ ${data.health}/${data.maxHealth}</span><span>🍗 ${data.hunger}/${data.maxHunger}</span>`;
+            }
+        }
+
+        function closeModal() {
+            overlay.classList.remove('active');
+            if (lastFocused) lastFocused.focus();
+        }
+
+        document.querySelectorAll('.more-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                lastFocused = btn;
+                openPlayerDetail(btn.dataset.player);
+            });
+        });
+
+        modalClose.addEventListener('click', closeModal);
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal(); });
+
+        // Rafraîchissement automatique des mini-aperçus toutes les 5 secondes
+        async function refreshAllMiniStats() {
+            const elements = document.querySelectorAll('[data-mini]');
+            for (const el of elements) {
+                const pseudo = el.dataset.mini;
+                try {
+                    const data = await fetchPlayerData(pseudo);
+                    updateMiniStats(pseudo, data);
+                } catch (err) { /* joueur hors ligne, on ignore */ }
+            }
+        }
+
+        refreshAllMiniStats();
+        setInterval(refreshAllMiniStats, 5000);
+    </script>
 
 </body>
 </html>

@@ -9,9 +9,6 @@
     <title>Nova Fantasia | Serveur Minecraft Anarchie</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        /* =========================================
-           VARIABLES ET RESET DE BASE
-           ========================================= */
         :root {
             --primary-color: #ff4d4d;
             --primary-hover: #cc3d3d;
@@ -55,15 +52,11 @@
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34"><g fill="none" stroke="%23ff4d4d" stroke-width="2.6" stroke-linecap="round"><line x1="6" y1="6" x2="28" y2="28"/><line x1="28" y1="6" x2="6" y2="28"/></g><g fill="%23ff4d4d"><circle cx="6" cy="6" r="2.8"/><circle cx="28" cy="6" r="2.8"/><circle cx="6" cy="28" r="2.8"/><circle cx="28" cy="28" r="2.8"/><circle cx="17" cy="17" r="3.4" fill="%23ffffff"/></g></svg>') 17 17, pointer;
         }
 
-        /* SCROLLBAR PERSONNALISÉE */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-color); }
         ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
 
-        /* =========================================
-           ANIMATIONS CSS GLOBALES
-           ========================================= */
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(50px); }
             to { opacity: 1; transform: translateY(0); }
@@ -176,9 +169,6 @@
             transform: translateX(0);
         }
 
-        /* =========================================
-           CANVAS BACKGROUND (PARTICULES CENDRES)
-           ========================================= */
         #particle-canvas {
             position: fixed;
             top: 0; left: 0;
@@ -188,9 +178,6 @@
             opacity: 0.5;
         }
 
-        /* =========================================
-           SIDEBAR PREMIUM
-           ========================================= */
         .sidebar {
             width: 270px;
             background: linear-gradient(180deg, #0e0e0e 0%, #080808 100%);
@@ -320,7 +307,6 @@
             margin: 8px 10px 8px 20px;
         }
 
-        /* SOUS-MENUS IMBRIQUÉS (3 réseaux distincts dans "Réseaux") */
         .nested-dropdown { margin: 2px 8px 4px 14px; }
         .nested-dropdown summary {
             padding: 8px 10px 8px 14px;
@@ -398,9 +384,6 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.7);
         }
 
-        /* =========================================
-           CONTENU PRINCIPAL
-           ========================================= */
         .main-content {
             margin-left: 270px;
             flex: 1;
@@ -436,9 +419,6 @@
         }
         .section-title span { color: var(--primary-color); }
 
-        /* =========================================
-           SECTION HERO — GLITCH PREMIUM
-           ========================================= */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -484,7 +464,6 @@
         .hero h1 .line1 { display: block; color: #fff; }
         .hero h1 .line2 { display: block; color: var(--primary-color); animation: pulseGlowText 4s infinite; }
 
-        /* GLITCH EFFECT */
         .glitch-wrap { position: relative; }
         .glitch-wrap::before, .glitch-wrap::after {
             content: attr(data-text);
@@ -517,7 +496,6 @@
             padding: 0 12px;
         }
 
-        /* BOUTON IP */
         .ip-container { animation: fadeUp 1.3s ease-out forwards; padding: 0 12px; max-width: 100%; }
         .server-ip-box {
             background: rgba(15, 15, 15, 0.9);
@@ -560,9 +538,6 @@
         .server-ip-box:active { transform: translateY(1px) scale(0.98); }
         .ip-hint { margin-top: 14px; font-size: 0.82rem; color: #444; }
 
-        /* =========================================
-           SECTION FEATURES / ABOUT
-           ========================================= */
         .about-section {
             background: linear-gradient(180deg, #080808, #0c0c0c);
             border-bottom: 1px solid #181818;
@@ -619,9 +594,6 @@
         }
         .about-card:hover .icon-large { transform: scale(1.2) rotate(-5deg); animation: floatY 2s ease infinite; }
 
-        /* =========================================
-           SECTION STATISTIQUES ULTRA PREMIUM
-           ========================================= */
         .stats-section { background: #070707; border-top: 1px solid #181818; }
         .stats-header {
             display: flex;
@@ -698,9 +670,6 @@
         }
         .stat-card.clickable:hover .click-hint { opacity: 1; }
 
-        /* =========================================
-           SECTION FAQ PREMIUM
-           ========================================= */
         .faq-section { background: linear-gradient(180deg, #0a0a0a, #060606); }
         .faq-container { max-width: 820px; margin: 0 auto; }
         .faq-item {
@@ -729,9 +698,6 @@
         .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.45s ease, padding 0.3s; padding: 0 25px; color: var(--text-muted); line-height: 1.8; font-size: 0.95rem; }
         .faq-item.active .faq-answer { max-height: 300px; padding: 0 25px 22px 25px; }
 
-        /* =========================================
-           SECTION CONTACT FORMULAIRE
-           ========================================= */
         .contact-section {
             background: #080808;
             border-top: 1px solid #181818;
@@ -794,7 +760,6 @@
             font-weight: 600;
         }
 
-        /* FORMULAIRE CONTACT */
         .contact-form-wrap {
             background: #0b0b0b;
             border: 1px solid #1e1e1e;
@@ -888,9 +853,6 @@
 
         .form-note { font-size: 0.75rem; color: #444; text-align: center; margin-top: 14px; }
 
-        /* =========================================
-           FOOTER ULTRA PREMIUM
-           ========================================= */
         footer {
             background: #040404;
             padding: 80px 6% 40px 6%;
@@ -953,9 +915,6 @@
             line-height: 2;
         }
 
-        /* =========================================
-           TOAST — SYSTÈME NOTIFICATIONS
-           ========================================= */
         .toast-container {
             position: fixed;
             bottom: 30px; right: 30px;
@@ -988,9 +947,6 @@
         .toast.error { border-left-color: var(--primary-color); }
         .toast.hide { animation: fadeOutRight 0.4s forwards; }
 
-        /* =========================================
-           MODALE JOUEURS
-           ========================================= */
         .modal {
             position: fixed;
             inset: 0;
@@ -1048,13 +1004,84 @@
             margin-bottom: 8px;
             border-radius: 10px;
             transition: 0.25s;
+            cursor: pointer;
         }
         .player-item:hover { background: rgba(255,255,255,0.03); border-color: #2a2a2a; transform: translateX(4px); }
         .player-info { display: flex; align-items: center; gap: 14px; min-width: 0; }
         .player-info img { border-radius: 6px; box-shadow: 0 0 12px rgba(0,0,0,0.6); flex-shrink: 0; }
         .player-name { font-weight: 700; overflow: hidden; text-overflow: ellipsis; }
 
-        /* BACK TO TOP */
+        /* =========================================
+           MODALE DÉTAIL JOUEUR (vie / faim / inventaire)
+           ========================================= */
+        #detailModal .modal-content { max-width: 420px; }
+        .detail-stat-block { padding: 0 25px; margin-bottom: 18px; }
+        .detail-stat-block:first-of-type { margin-top: 20px; }
+        .detail-stat-label {
+            font-size: 0.74rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--primary-color);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .detail-bar-track {
+            width: 100%;
+            height: 13px;
+            background: #1a1a1a;
+            border-radius: 7px;
+            overflow: hidden;
+            border: 1px solid #2a2a2a;
+        }
+        .detail-bar-fill {
+            height: 100%;
+            border-radius: 7px 0 0 7px;
+            transition: width 0.4s ease;
+        }
+        .detail-bar-fill.health { background: linear-gradient(90deg, #ff4d4d, #c92c2c); }
+        .detail-bar-fill.hunger { background: linear-gradient(90deg, #f0a500, #a87f2f); }
+        .detail-inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 4px;
+            padding: 0 25px 22px 25px;
+        }
+        .detail-inv-slot {
+            aspect-ratio: 1;
+            background: #121212;
+            border: 1px solid #222;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.55rem;
+            color: #555;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            padding: 2px;
+        }
+        .detail-inv-slot.filled {
+            background: #1c1c1c;
+            color: #ccc;
+            border-color: #333;
+        }
+        .detail-inv-count {
+            position: absolute;
+            bottom: 1px;
+            right: 3px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 2px black;
+        }
+        .detail-loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
         #backToTop {
             position: fixed;
             bottom: 30px; right: 30px;
@@ -1076,10 +1103,6 @@
         #backToTop.visible { opacity: 1; visibility: visible; }
         #backToTop:hover { background: var(--primary-color); border-color: var(--primary-color); transform: translateY(-4px); }
 
-        /* =========================================
-           RESPONSIVE — Adaptation totale ordinateur / téléphone
-           (aucun zoom/dézoom requis dans les deux cas)
-           ========================================= */
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); width: min(270px, 82vw); }
             .main-content { margin-left: 0; width: 100%; }
@@ -1138,7 +1161,6 @@
                 <summary>👥 Réseaux ▼</summary>
                 <div class="dropdown-content" style="padding-left: 0;">
 
-                    <!-- SOUS-MENU DÉROULANT 1 : GAME REVIVE -->
                     <details class="nested-dropdown">
                         <summary>📺 Game Revive <span class="nested-arrow">▾</span></summary>
                         <div class="nested-content">
@@ -1147,7 +1169,6 @@
                         </div>
                     </details>
 
-                    <!-- SOUS-MENU DÉROULANT 2 : NOGHOSTTT -->
                     <details class="nested-dropdown">
                         <summary>🎥 Noghosttt <span class="nested-arrow">▾</span></summary>
                         <div class="nested-content">
@@ -1157,7 +1178,6 @@
                         </div>
                     </details>
 
-                    <!-- SOUS-MENU DÉROULANT 3 : DISCORD -->
                     <details class="nested-dropdown">
                         <summary>💬 Discord <span class="nested-arrow">▾</span></summary>
                         <div class="nested-content">
@@ -1314,7 +1334,6 @@
                 <h3>Un bug, un problème<br>ou une question ?</h3>
                 <p>L'équipe Nova Fantasia est disponible pour toute demande sérieuse : signalement de joueurs, problèmes techniques, suggestions d'événements ou partenariats. Nous répondons sous 48h.</p>
 
-                <!-- ENCADRÉ EMAIL PREMIUM -->
                 <div class="contact-email-box" onclick="copyEmail()" title="Cliquer pour copier l'adresse mail">
                     <span class="email-icon">✉️</span>
                     <div class="email-details">
@@ -1429,6 +1448,22 @@
     </div>
 </div>
 
+<!-- MODALE DÉTAIL JOUEUR -->
+<div id="detailModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">
+                <img id="detail-avatar" src="" alt="" width="28" height="28" style="border-radius:5px;">
+                <span id="detail-name">—</span>
+            </h3>
+            <span class="close-btn" onclick="closeDetailModal()">✕</span>
+        </div>
+        <div id="detail-body">
+            <div class="detail-loading">Chargement des données...</div>
+        </div>
+    </div>
+</div>
+
 <!-- TOASTS -->
 <div id="toast-container" class="toast-container"></div>
 
@@ -1441,6 +1476,7 @@
        ============================================ */
     const SERVER_IP  = 'novafantasia.falixsrv.me';
     const EMAIL_ADDR = 'novafantesia@gmail.com';
+    const API_BASE   = 'http://eu18-free.falixserver.net:20309'; // API du plugin PlayerStatsAPI
     let playerList = [];
 
     /* ============================================
@@ -1467,7 +1503,7 @@
             this.speedY = -(Math.random() * 1.5 + 0.4);
             this.life   = 1.0;
             this.decay  = Math.random() * 0.004 + 0.002;
-            this.hue    = Math.random() > 0.6 ? 0 : 25;   // rouge ou orangé
+            this.hue    = Math.random() > 0.6 ? 0 : 25;
         }
         update() {
             this.x    += this.speedX;
@@ -1548,7 +1584,6 @@
         }, 2200);
     }
 
-    // Auto-refresh toutes les 60 secondes
     setInterval(() => {
         fetchStats();
         if (document.getElementById('playerModal').style.display === 'flex') showPlayers();
@@ -1594,6 +1629,7 @@
                         <span style="font-size:0.68rem;color:#555;text-transform:uppercase;letter-spacing:1px;">Ping</span>
                         ${getPingBars()}
                     </div>`;
+                li.addEventListener('click', () => openDetailModal(name));
                 listEl.appendChild(li);
             });
         }
@@ -1604,8 +1640,73 @@
     function closeModal() { document.getElementById('playerModal').style.display = 'none'; }
     window.addEventListener('click', e => {
         if (e.target === document.getElementById('playerModal')) closeModal();
+        if (e.target === document.getElementById('detailModal')) closeDetailModal();
     });
-    window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    window.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { closeModal(); closeDetailModal(); }
+    });
+
+    /* ============================================
+       3b. MODALE DÉTAIL JOUEUR (vie / faim / inventaire)
+       ============================================ */
+    function capitalizeItem(str) {
+        return str.replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    async function fetchPlayerDetail(pseudo) {
+        const res = await fetch(`${API_BASE}/api/players/${encodeURIComponent(pseudo)}`);
+        if (!res.ok) throw new Error('Erreur réseau');
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        return data;
+    }
+
+    function openDetailModal(pseudo) {
+        document.getElementById('detail-name').textContent = pseudo;
+        document.getElementById('detail-avatar').src = `https://mc-heads.net/avatar/${pseudo}/28`;
+        document.getElementById('detail-body').innerHTML = '<div class="detail-loading">Chargement des données...</div>';
+        document.getElementById('detailModal').style.display = 'flex';
+
+        fetchPlayerDetail(pseudo).then(renderPlayerDetail).catch(() => {
+            document.getElementById('detail-body').innerHTML =
+                '<div class="detail-loading">Impossible de récupérer les données (joueur hors ligne ou API indisponible).</div>';
+        });
+    }
+
+    function closeDetailModal() { document.getElementById('detailModal').style.display = 'none'; }
+
+    function renderPlayerDetail(data) {
+        const healthPct = Math.max(0, Math.min(100, (data.health / data.maxHealth) * 100));
+        const hungerPct = Math.max(0, Math.min(100, (data.hunger / data.maxHunger) * 100));
+
+        let invSlotsHtml = '';
+        const totalSlots = 36;
+        for (let i = 0; i < totalSlots; i++) {
+            const item = data.inventory[i];
+            if (item) {
+                const countBadge = item.count > 1
+                    ? `<span class="detail-inv-count">${item.count}</span>` : '';
+                invSlotsHtml += `<div class="detail-inv-slot filled">${capitalizeItem(item.name)}${countBadge}</div>`;
+            } else {
+                invSlotsHtml += `<div class="detail-inv-slot"></div>`;
+            }
+        }
+
+        document.getElementById('detail-body').innerHTML = `
+            <div class="detail-stat-block">
+                <div class="detail-stat-label"><span>Vie</span><span>${data.health} / ${data.maxHealth}</span></div>
+                <div class="detail-bar-track"><div class="detail-bar-fill health" style="width:${healthPct}%"></div></div>
+            </div>
+            <div class="detail-stat-block">
+                <div class="detail-stat-label"><span>Faim</span><span>${data.hunger} / ${data.maxHunger}</span></div>
+                <div class="detail-bar-track"><div class="detail-bar-fill hunger" style="width:${hungerPct}%"></div></div>
+            </div>
+            <div class="detail-stat-block">
+                <div class="detail-stat-label"><span>Inventaire</span><span>${data.inventory.length} / ${totalSlots}</span></div>
+            </div>
+            <div class="detail-inventory-grid">${invSlotsHtml}</div>
+        `;
+    }
 
     /* ============================================
        4. TOAST — SYSTÈME NOTIFICATIONS
@@ -1617,7 +1718,6 @@
         const icon = type === 'success' ? '✔️' : '❌';
         toast.innerHTML = `<span style="font-size:1.1rem;">${icon}</span> ${message}`;
         container.appendChild(toast);
-        // Force reflow pour lancer l'animation
         void toast.offsetWidth;
 
         setTimeout(() => {
@@ -1650,7 +1750,6 @@
         const type    = document.getElementById('f-type').value;
         const message = document.getElementById('f-message').value.trim();
 
-        // Validation basique
         if (!pseudo) {
             highlightError('f-pseudo', 'Entre ton pseudo Minecraft !');
             return;
@@ -1664,15 +1763,12 @@
             return;
         }
 
-        // Simulation envoi (lien mailto)
         const subject = encodeURIComponent(`[${type.toUpperCase()}] ${pseudo} - Nova Fantasia`);
         const body    = encodeURIComponent(`Pseudo: ${pseudo}\nEmail: ${email || 'Non fourni'}\nCatégorie: ${type}\n\n${message}`);
         window.location.href = `mailto:${EMAIL_ADDR}?subject=${subject}&body=${body}`;
 
-        // Feedback utilisateur
         showToast('📨 Ouverture du client mail...', 'success');
 
-        // Reset form
         setTimeout(() => {
             document.getElementById('f-pseudo').value  = '';
             document.getElementById('f-email').value   = '';
@@ -1700,9 +1796,7 @@
     function toggleFaq(element) {
         const parent = element.parentElement;
         const isOpen = parent.classList.contains('active');
-        // Ferme tous
         document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-        // Ouvre si était fermé
         if (!isOpen) parent.classList.add('active');
     }
 
@@ -1717,7 +1811,6 @@
             }
         });
 
-        // Active menu link en fonction de la section visible
         const sections = document.querySelectorAll('section[id]');
         let current = '';
         sections.forEach(sec => {
@@ -1731,7 +1824,6 @@
             }
         });
 
-        // Back to top
         const btn = document.getElementById('backToTop');
         if (window.scrollY > 450) btn.classList.add('visible');
         else btn.classList.remove('visible');
@@ -1741,7 +1833,6 @@
 
     window.addEventListener('scroll', revealOnScroll, { passive: true });
 
-    /* MENU MOBILE — FERMER EN CLIQUANT UN LIEN */
     document.querySelectorAll('.menu-link').forEach(link => {
         link.addEventListener('click', () => {
             document.getElementById('menu-toggle').checked = false;
@@ -1756,7 +1847,6 @@
         revealOnScroll();
     });
 
-    /* SMOOTH SCROLL POUR LES LIENS ANCHOR */
     document.querySelectorAll('a[href^="#"]').forEach(a => {
         a.addEventListener('click', e => {
             const target = document.querySelector(a.getAttribute('href'));
