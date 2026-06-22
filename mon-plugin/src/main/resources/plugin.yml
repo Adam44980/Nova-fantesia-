@@ -1,0 +1,6 @@
+name: PlayerStatsAPI
+version: 1.0.0
+main: com.example.playerstats.PlayerStatsPlugin
+api-version: '1.20'
+author: Toi
+description: Expose vie, faim et inventaire des joueurs en JSON via une API HTTP locale.
