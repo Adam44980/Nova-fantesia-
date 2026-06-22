@@ -27,7 +27,6 @@ public class PlayerStatsPlugin extends JavaPlugin {
         this.port = getConfig().getInt("port", 8181);
 
         try {
-            // MODIFICATION 1 : Écoute sur "0.0.0.0" pour que FalixNodes laisse entrer Render
             server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0);
             server.createContext("/api/players", new PlayersHandler());
             server.setExecutor(null);
@@ -53,8 +52,11 @@ public class PlayerStatsPlugin extends JavaPlugin {
             exchange.getResponseHeaders().add("Content-Type", "application/json; charset=utf-8");
 
             String path = exchange.getRequestURI().getPath();
-            String json;
+            
+            // LOG : On regarde ce que le site web demande exactement
+            getLogger().info("Requête reçue sur l'URL : " + path);
 
+            String json;
             if (path.equals("/api/players") || path.equals("/api/players/")) {
                 json = handleListPlayers();
             } else {
@@ -87,49 +89,71 @@ public class PlayerStatsPlugin extends JavaPlugin {
     }
 
     private String handlePlayerDetail(String pseudo) {
-        // MODIFICATION 2 : On nettoie le pseudo (enlève le slash final et les espaces)
         if (pseudo.endsWith("/")) {
             pseudo = pseudo.substring(0, pseudo.length() - 1);
         }
         String pseudoPropre = pseudo.trim();
 
-        AtomicReference<String> result = new AtomicReference<>("{\"error\":\"Joueur introuvable ou hors ligne\"}");
+        // LOG : On vérifie le pseudo nettoyé
+        getLogger().info("Recherche des stats pour le pseudo : '" + pseudoPropre + "'");
+
+        AtomicReference<String> result = new AtomicReference<>("{\"error\":\"Une erreur inconnue est survenue\"}");
+        
         runSyncAndWait(() -> {
-            // MODIFICATION 3 : getPlayer() au lieu de getPlayerExact() (insensible aux majuscules)
-            Player player = Bukkit.getPlayer(pseudoPropre);
-            
-            if (player == null || !player.isOnline()) {
-                return;
+            try {
+                Player player = Bukkit.getPlayer(pseudoPropre);
+                
+                if (player == null) {
+                    getLogger().warning("Bukkit ne trouve aucun joueur en ligne avec le nom : " + pseudoPropre);
+                    result.set("{\"error\":\"Joueur '" + pseudoPropre + "' introuvable (Script Java)\"}");
+                    return;
+                }
+
+                if (!player.isOnline()) {
+                    getLogger().warning("Le joueur " + player.getName() + " est détecté hors ligne.");
+                    result.set("{\"error\":\"Joueur '" + player.getName() + "' hors ligne (Script Java)\"}");
+                    return;
+                }
+
+                double health = player.getHealth();
+                double maxHealth = player.getMaxHealth();
+                int hunger = player.getFoodLevel();
+                int maxHunger = 20;
+
+                StringBuilder inv = new StringBuilder("[");
+                boolean first = true;
+                
+                // Utilisation de getContents() plus stable sur toutes les versions de Minecraft
+                for (ItemStack item : player.getInventory().getContents()) {
+                    if (item == null || item.getType().isAir()) continue;
+                    if (!first) inv.append(",");
+                    String displayName = item.getType().name().toLowerCase().replace("_", " ");
+                    inv.append("{\"name\":\"").append(escapeJson(displayName))
+                       .append("\",\"count\":").append(item.getAmount()).append("}");
+                    first = false;
+                }
+                inv.append("]");
+
+                String json = "{"
+                    + "\"pseudo\":\"" + escapeJson(player.getName()) + "\","
+                    + "\"health\":" + health + ","
+                    + "\"maxHealth\":" + maxHealth + ","
+                    + "\"hunger\":" + hunger + ","
+                    + "\"maxHunger\":" + maxHunger + ","
+                    + "\"inventory\":" + inv
+                    + "}";
+
+                result.set(json);
+                getLogger().info("Stats de " + player.getName() + " générées avec succès !");
+
+            } catch (Throwable t) {
+                // SÉCURITÉ CRASH : Si Minecraft bloque sur une fonction, on capture l'erreur exacte
+                getLogger().severe("CRASH INTERNE lors de la récupération des stats de " + pseudoPropre);
+                t.printStackTrace();
+                result.set("{\"error\":\"Crash Java : " + escapeJson(t.getClass().getSimpleName() + " - " + t.getMessage()) + "\"}");
             }
-
-            double health = player.getHealth();
-            double maxHealth = player.getMaxHealth();
-            int hunger = player.getFoodLevel();
-            int maxHunger = 20;
-
-            StringBuilder inv = new StringBuilder("[");
-            boolean first = true;
-            for (ItemStack item : player.getInventory().getStorageContents()) {
-                if (item == null || item.getType().isAir()) continue;
-                if (!first) inv.append(",");
-                String displayName = item.getType().name().toLowerCase().replace("_", " ");
-                inv.append("{\"name\":\"").append(escapeJson(displayName))
-                   .append("\",\"count\":").append(item.getAmount()).append("}");
-                first = false;
-            }
-            inv.append("]");
-
-            String json = "{"
-                + "\"pseudo\":\"" + escapeJson(player.getName()) + "\","
-                + "\"health\":" + health + ","
-                + "\"maxHealth\":" + maxHealth + ","
-                + "\"hunger\":" + hunger + ","
-                + "\"maxHunger\":" + maxHunger + ","
-                + "\"inventory\":" + inv
-                + "}";
-
-            result.set(json);
         });
+        
         return result.get();
     }
 
@@ -154,6 +178,7 @@ public class PlayerStatsPlugin extends JavaPlugin {
     }
 
     private String escapeJson(String input) {
+        if (input == null) return "";
         return input.replace("\\", "\\\\").replace("\"", "\\\"");
     }
 }
