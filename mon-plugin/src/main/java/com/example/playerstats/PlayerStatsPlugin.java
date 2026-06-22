@@ -27,7 +27,8 @@ public class PlayerStatsPlugin extends JavaPlugin {
         this.port = getConfig().getInt("port", 8181);
 
         try {
-            server = HttpServer.create(new InetSocketAddress(port), 0);
+            // MODIFICATION 1 : Écoute sur "0.0.0.0" pour que FalixNodes laisse entrer Render
+            server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0);
             server.createContext("/api/players", new PlayersHandler());
             server.setExecutor(null);
             server.start();
@@ -86,9 +87,17 @@ public class PlayerStatsPlugin extends JavaPlugin {
     }
 
     private String handlePlayerDetail(String pseudo) {
+        // MODIFICATION 2 : On nettoie le pseudo (enlève le slash final et les espaces)
+        if (pseudo.endsWith("/")) {
+            pseudo = pseudo.substring(0, pseudo.length() - 1);
+        }
+        String pseudoPropre = pseudo.trim();
+
         AtomicReference<String> result = new AtomicReference<>("{\"error\":\"Joueur introuvable ou hors ligne\"}");
         runSyncAndWait(() -> {
-            Player player = Bukkit.getPlayerExact(pseudo);
+            // MODIFICATION 3 : getPlayer() au lieu de getPlayerExact() (insensible aux majuscules)
+            Player player = Bukkit.getPlayer(pseudoPropre);
+            
             if (player == null || !player.isOnline()) {
                 return;
             }
